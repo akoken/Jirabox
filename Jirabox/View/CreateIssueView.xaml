@@ -1,0 +1,142 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="Jirabox.View.CreateIssueView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
+    xmlns:converter="clr-namespace:Jirabox.Converters"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"    
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    DataContext="{Binding Source={StaticResource Locator},Path=CreateIssueViewModel}"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="False">
+
+    <phone:PhoneApplicationPage.Resources>
+        <converter:DataLoadedToVisibilityConverter x:Key="IsDataLoadedToVisibilityConverter"/>
+        <converter:NameToImageConverter x:Key="NameToImageConverter"/>
+    </phone:PhoneApplicationPage.Resources>
+
+    <Grid x:Name="LayoutRoot" Background="#FFECECEC">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ProgressBar x:Name="progressBar"
+                     IsIndeterminate="True"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Top"
+                     Visibility="{Binding IsDataLoaded, Converter={StaticResource IsDataLoadedToVisibilityConverter}}"
+                     Margin="0,4,0,0" />
+        <StackPanel Grid.Row="1">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/Jirabox;component/Assets/logo.png"
+                       Width="80"
+                       Height="80"
+                       Margin="10,0,0,0" />
+                <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}"
+                           Style="{StaticResource PhoneTextTitle1Style}"
+                           Foreground="{StaticResource BlackForeground}"
+                           VerticalAlignment="Center" />
+            </StackPanel>
+            <TextBlock Text="Create Issue"
+                       Style="{StaticResource PhoneTextTitle2Style}"
+                       Foreground="{StaticResource BlackForeground}" />
+        </StackPanel>
+
+        <Grid x:Name="ContentPanel" Grid.Row="2" Margin="15,15,15,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="Project" VerticalAlignment="Center"/>
+                <Image Name="projectPicture" Source="{Binding Project.Key, Converter={StaticResource NameToImageConverter}}" Margin="50,0,0,0"/>
+                <TextBlock Text="{Binding Project.Name}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="1">
+                <TextBlock Text="Issue Type" VerticalAlignment="Center"/>
+                <toolkit:ListPicker ExpansionMode="FullScreenOnly" ItemsSource="{Binding IssueTypes}" SelectedItem="{Binding SelectedIssueType, Mode=TwoWay}" Foreground="Black" VerticalAlignment="Center" Width="323">
+                    <toolkit:ListPicker.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="15,0,0,0" Orientation="Horizontal">
+                                <Image Source="{Binding Name,Converter={StaticResource NameToImageConverter}}" Width="25" Height="25"/>
+                                <TextBlock Text="{Binding Name}" Margin="5,0,0,0" Foreground="Black"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </toolkit:ListPicker.ItemTemplate>
+                    <toolkit:ListPicker.FullModeItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="15" Orientation="Horizontal">
+                                <Image Source="{Binding Name, Converter={StaticResource NameToImageConverter}}" Width="30" Height="30"/>
+                                <TextBlock Text="{Binding Name}" Margin="5,0,0,0" Foreground="Snow" FontSize="24"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </toolkit:ListPicker.FullModeItemTemplate>
+                </toolkit:ListPicker>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="2">
+                <TextBlock Text="Summary" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding Summary, Mode=TwoWay}" Height="70" Width="343" Margin="6,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="3">
+                <TextBlock Text="Priority" VerticalAlignment="Center"/>
+                <toolkit:ListPicker ItemsSource="{Binding PriorityList}" SelectedItem="{Binding SelectedPriority, Mode=TwoWay}" Foreground="Black" VerticalAlignment="Center" Width="323" Margin="40,0,0,0">
+                    <toolkit:ListPicker.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="15,0,0,0" Orientation="Horizontal">
+                                <Image Source="{Binding Name, Converter={StaticResource NameToImageConverter}}" Width="25" Height="25"/>
+                                <TextBlock Text="{Binding Name}" Margin="5,0,0,0" Foreground="Black"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </toolkit:ListPicker.ItemTemplate>
+                    <toolkit:ListPicker.FullModeItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="15" Orientation="Horizontal">
+                                <Image Source="{Binding Name, Converter={StaticResource NameToImageConverter}}" Width="30" Height="30"/>
+                                <TextBlock Text="{Binding Name}" Margin="5,0,0,0" Foreground="Snow" FontSize="24"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </toolkit:ListPicker.FullModeItemTemplate>
+                </toolkit:ListPicker>
+            </StackPanel>
+            <StackPanel  Grid.Row="4" Margin="0,20,0,0">
+                <TextBlock Text="Description"/>
+                <TextBox Text="{Binding Description, Mode=TwoWay}" TextWrapping="Wrap" Height="210" Margin="-10,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="5" HorizontalAlignment="Center">
+                <Button  Width="220" Content="Create" Command="{Binding CreateIssueCommand}" Background="#1199CC"/>
+                <Button  Width="220" Content="Cancel" Command="{Binding CancelCommand}" Background="#1199CC"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+</phone:PhoneApplicationPage>
