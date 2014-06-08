@@ -217,9 +217,16 @@ namespace Jirabox.Services
             request.MaxResults = 50;
             request.StartAt = 0;
 
+            var extras = BugSenseHandler.Instance.CrashExtraData;
             string data = JsonConvert.SerializeObject(request);
             try
             {
+                extras.Add(new CrashExtraData
+                {
+                    Key = "Url",
+                    Value = String.Format("Url:{0}, Data:{1}", url, data)
+                });
+
                 var result = await httpManager.PostAsync(url, data, true, App.UserName, App.Password);
                 result.EnsureSuccessStatusCode();
                 var responseString = await result.Content.ReadAsStringAsync();
@@ -229,7 +236,6 @@ namespace Jirabox.Services
             }
             catch (Exception exception)
             {
-                var extras = BugSenseHandler.Instance.CrashExtraData;
                 extras.Add(new CrashExtraData
                 {
                     Key = "Method",
