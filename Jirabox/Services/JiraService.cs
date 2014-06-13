@@ -78,7 +78,7 @@ namespace Jirabox.Services
                 extras.Add(new CrashExtraData
                 {
                     Key = "Method",
-                    Value = System.Reflection.MethodInfo.GetCurrentMethod().Name
+                    Value = "JiraService.GetProjects"
                 });
 
                 BugSenseHandler.Instance.LogException(exception, extras);
@@ -120,7 +120,7 @@ namespace Jirabox.Services
                 extras.Add(new CrashExtraData
                 {
                     Key = "Method",
-                    Value = System.Reflection.MethodInfo.GetCurrentMethod().Name
+                    Value = "JiraService.GetProjectByKey"
                 });
 
                 BugSenseHandler.Instance.LogException(exception, extras);
@@ -165,7 +165,7 @@ namespace Jirabox.Services
                 extras.Add(new CrashExtraData
                 {
                     Key = "Method",
-                    Value = System.Reflection.MethodInfo.GetCurrentMethod().Name
+                    Value = "JiraService.GetIssueByKey"
                 });
                 extras.Add(new CrashExtraData
                 {
@@ -224,8 +224,13 @@ namespace Jirabox.Services
             {
                 extras.Add(new CrashExtraData
                 {
-                    Key = "Url",
-                    Value = String.Format("Url:{0}, Data:{1}", url, data)
+                    Key = "Request Url",
+                    Value = url
+                });
+                extras.Add(new CrashExtraData
+                {
+                    Key = "Post Data",
+                    Value = data
                 });
 
                 var result = await httpManager.PostAsync(url, data, true, App.UserName, App.Password);
@@ -240,7 +245,7 @@ namespace Jirabox.Services
                 extras.Add(new CrashExtraData
                 {
                     Key = "Method",
-                    Value = System.Reflection.MethodInfo.GetCurrentMethod().Name
+                    Value = "JiraService.Search"
                 });
 
                 BugSenseHandler.Instance.LogException(exception, extras);
@@ -294,7 +299,7 @@ namespace Jirabox.Services
                 extras.Add(new CrashExtraData
                 {
                     Key = "Method",
-                    Value = System.Reflection.MethodInfo.GetCurrentMethod().Name
+                    Value = "JiraService.GetIssues"
                 });
 
                 BugSenseHandler.Instance.LogException(exception, extras); 
@@ -341,7 +346,7 @@ namespace Jirabox.Services
                 extras.Add(new CrashExtraData
                 {
                     Key = "Method",
-                    Value = System.Reflection.MethodInfo.GetCurrentMethod().Name
+                    Value = "JiraService.GetIssueTypesOfProject"
                 });
 
                 BugSenseHandler.Instance.LogException(exception, extras);
@@ -368,7 +373,7 @@ namespace Jirabox.Services
                 extras.Add(new CrashExtraData
                 {
                     Key = "Method",
-                    Value = System.Reflection.MethodInfo.GetCurrentMethod().Name
+                    Value = "JiraService.CreateIssue"
                 });
 
                 BugSenseHandler.Instance.LogException(exception, extras);
@@ -410,7 +415,7 @@ namespace Jirabox.Services
                 extras.Add(new CrashExtraData
                 {
                     Key = "Method",
-                    Value = System.Reflection.MethodInfo.GetCurrentMethod().Name
+                    Value = "JiraService.GetPriorities"
                 });
 
                 BugSenseHandler.Instance.LogException(exception, extras);
@@ -453,7 +458,7 @@ namespace Jirabox.Services
                 extras.Add(new CrashExtraData
                 {
                     Key = "Method",
-                    Value = System.Reflection.MethodInfo.GetCurrentMethod().Name
+                    Value = "JiraService.GetUserProfileAsync"
                 });
 
                 BugSenseHandler.Instance.LogException(exception, extras);
@@ -481,7 +486,7 @@ namespace Jirabox.Services
                 extras.Add(new CrashExtraData
                 {
                     Key = "Method",
-                    Value = System.Reflection.MethodInfo.GetCurrentMethod().Name
+                    Value = "JiraService.AddComment"
                 });
 
                 BugSenseHandler.Instance.LogException(exception, extras);
@@ -521,7 +526,7 @@ namespace Jirabox.Services
                 extras.Add(new CrashExtraData
                 {
                     Key = "Method",
-                    Value = System.Reflection.MethodInfo.GetCurrentMethod().Name
+                    Value = "JiraService.GetDisplayPicture"
                 });
 
                 BugSenseHandler.Instance.LogException(exception, extras);
