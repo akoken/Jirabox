@@ -21,6 +21,7 @@ namespace Jirabox
         public static string UserName { get; set; }
         public static string Password { get; set; }
         public static string DisplayName { get; set; }
+        public static string BaseUrl { get; set; }   
         public static User User { get; set; }
        
         public static PhoneApplicationFrame RootFrame { get; private set; }

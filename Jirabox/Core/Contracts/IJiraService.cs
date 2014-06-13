@@ -6,8 +6,7 @@ using System.Windows.Media.Imaging;
 namespace Jirabox.Core.Contracts
 {
     public interface IJiraService
-    {
-        string BaseUrl { get; set; }
+    {        
         Task<bool> LoginAsync(string serverUrl, string username, string password);
 
         Task<ObservableCollection<Project>> GetProjects(string serverUrl, string username, string password);

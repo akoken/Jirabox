@@ -101,7 +101,6 @@ namespace Jirabox.ViewModel
 
         public async void Login()
         {
-            this.jiraService.BaseUrl = string.Format("{0}/rest/api/latest/", App.ServerUrl); 
             IsDataLoaded = false;
 
             if (!IsInputsValid())
@@ -119,6 +118,8 @@ namespace Jirabox.ViewModel
             }
             try
             {
+                //Set base url for rest api
+                App.BaseUrl = string.Format("{0}/rest/api/latest/", App.ServerUrl);
                 var isLoginSuccess = await jiraService.LoginAsync(ServerUrl, UserName, Password);
                 if (isLoginSuccess)
                 {
@@ -134,20 +135,20 @@ namespace Jirabox.ViewModel
             {
                 if (exception.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    dialogService.ShowDialog(AppResources.UnauthorizedMessage, "Login failed");    
-                }                
-                else if(exception.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                    dialogService.ShowDialog(AppResources.UnauthorizedMessage, "Login failed");
+                }
+                else if (exception.StatusCode == System.Net.HttpStatusCode.Forbidden)
                 {
-                    dialogService.ShowDialog(AppResources.ForbiddenMessage, "Login failed");    
+                    dialogService.ShowDialog(AppResources.ForbiddenMessage, "Login failed");
                 }
                 else
                 {
-                    dialogService.ShowDialog(AppResources.ConnectionErrorMessage, "Login failed");  
+                    dialogService.ShowDialog(AppResources.ConnectionErrorMessage, "Login failed");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                dialogService.ShowDialog(string.Format(AppResources.FormattedErrorMessage, ex.Message), "Login failed");  
+                dialogService.ShowDialog(string.Format(AppResources.FormattedErrorMessage, ex.Message), "Login failed");
             }
          
            IsDataLoaded = true;

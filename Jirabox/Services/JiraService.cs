@@ -24,8 +24,7 @@ namespace Jirabox.Services
     {       
         private IHttpManager httpManager;
         private IDialogService dialogService;
-        private ICacheDataService cacheDataService;
-        public string BaseUrl { get; set; }        
+        private ICacheDataService cacheDataService;             
 
         public JiraService(IHttpManager httpManager, IDialogService dialogService, ICacheDataService cacheDataService)
         {
@@ -36,7 +35,7 @@ namespace Jirabox.Services
 
         public async Task<bool> LoginAsync(string serverUrl, string username, string password)
         {            
-            var requestUrl = string.Format("{0}{1}/", BaseUrl, JiraRequestType.Search.ToString().ToLower());
+            var requestUrl = string.Format("{0}{1}/", App.BaseUrl, JiraRequestType.Search.ToString().ToLower());
             var response = await httpManager.GetAsync(requestUrl, true, username, password);
             if (response.IsSuccessStatusCode)
                 return true;
@@ -48,14 +47,15 @@ namespace Jirabox.Services
         {
             const string cacheFileName = "Projects.cache";
             //Check cache data
-            if (await cacheDataService.DoesFileExist(cacheFileName))
+            var isCacheExist = await cacheDataService.DoesFileExist(cacheFileName);
+            if (isCacheExist)
             {
                 var projectListFile = await cacheDataService.Get(cacheFileName);
                 return JsonConvert.DeserializeObject<ObservableCollection<Project>>(projectListFile);
             }
 
-            var requestUrl = string.Format("{0}{1}/", BaseUrl, JiraRequestType.Project.ToString().ToLower());
-            ObservableCollection<Project> projects = null;
+            var requestUrl = string.Format("{0}{1}/", App.BaseUrl, JiraRequestType.Project.ToString().ToLower());
+            ObservableCollection<Project> projects = new ObservableCollection<Project>();
             try
             {
                 var response = await httpManager.GetAsync(requestUrl, true, username, password);
@@ -90,13 +90,14 @@ namespace Jirabox.Services
         {
             var cacheFileName = string.Format("ProjectByKey.{0}.cache", key);
             //Check cache file is exist            
-            if (await cacheDataService.DoesFileExist(cacheFileName))
+            var isCacheExist = await cacheDataService.DoesFileExist(cacheFileName);
+            if (isCacheExist)
             {
                 var projectFile = await cacheDataService.Get(cacheFileName);
                 return JsonConvert.DeserializeObject<Project>(projectFile);
             }
             
-            var requestUrl = string.Format("{0}{1}/{2}", BaseUrl, JiraRequestType.Project.ToString().ToLower(), key);
+            var requestUrl = string.Format("{0}{1}/{2}", App.BaseUrl, JiraRequestType.Project.ToString().ToLower(), key);
             Project project = null;
             HttpResponseMessage response = null;
             try
@@ -131,7 +132,7 @@ namespace Jirabox.Services
         {
             HttpResponseMessage response = null;
             Issue issue = null;            
-            var requestUrl = string.Format("{0}{1}/{2}", BaseUrl, JiraRequestType.Issue.ToString().ToLower(CultureInfo.InvariantCulture), key);
+            var requestUrl = string.Format("{0}{1}/{2}", App.BaseUrl, JiraRequestType.Issue.ToString().ToLower(CultureInfo.InvariantCulture), key);
             try
             {
                 response = await httpManager.GetAsync(requestUrl, true, username, password);
@@ -181,7 +182,7 @@ namespace Jirabox.Services
         public async Task<ObservableCollection<Issue>> Search(string searchText, bool assignedToMe = false, bool reportedByMe = false)
         {
             var fields = new List<string> { "summary", "status", "assignee", "reporter", "description", "issuetype", "priority", "comment" };
-            var url = string.Format("{0}{1}", BaseUrl, JiraRequestType.Search.ToString().ToLower());
+            var url = string.Format("{0}{1}", App.BaseUrl, JiraRequestType.Search.ToString().ToLower());
             var jql = string.Empty;
 
             if (!string.IsNullOrEmpty(searchText))
@@ -250,13 +251,14 @@ namespace Jirabox.Services
         public async Task<ObservableCollection<Issue>> GetIssuesByProjectKey(string serverUrl, string username, string password, string key)
         {
             var cacheFileName = string.Format("IssuesByProjectKey.{0}.cache", key);
-            if (await cacheDataService.DoesFileExist(cacheFileName))
+            var isCacheExist = await cacheDataService.DoesFileExist(cacheFileName);
+            if (isCacheExist)
             {
                 var issuesFile = await cacheDataService.Get(cacheFileName);
                 return JsonConvert.DeserializeObject<ObservableCollection<Issue>>(issuesFile);
             }
             
-            var requestUrl = string.Format("{0}{1}/{2}", BaseUrl, JiraRequestType.Issue.ToString().ToLower(CultureInfo.InvariantCulture), key);
+            var requestUrl = string.Format("{0}{1}/{2}", App.BaseUrl, JiraRequestType.Issue.ToString().ToLower(CultureInfo.InvariantCulture), key);
             string jql = "project = " + key;
             var issues = await GetIssues(jql);            
 
@@ -268,7 +270,7 @@ namespace Jirabox.Services
         public async Task<ObservableCollection<Issue>> GetIssues(string jql, List<string> fields = null, int startAt = 0, int maxResult = 50)
         {
             fields = fields ?? new List<string> { "summary", "status", "assignee", "reporter", "description", "issuetype", "priority", "comment" };
-            var requestUrl = string.Format("{0}{1}", BaseUrl, JiraRequestType.Search.ToString().ToLower());
+            var requestUrl = string.Format("{0}{1}", App.BaseUrl, JiraRequestType.Search.ToString().ToLower());
 
             var request = new SearchRequest();
             request.Fields = fields;
@@ -305,13 +307,14 @@ namespace Jirabox.Services
             var cacheFileName = string.Format("IssueTypesOfProject.{0}.cache", projectKey);
 
             //Check cache data file
-            if (await cacheDataService.DoesFileExist(cacheFileName))
+            var isCacheExist = await cacheDataService.DoesFileExist(cacheFileName);
+            if (isCacheExist)
             {
                 var issueTypesFile = await cacheDataService.Get(cacheFileName);
                 return JsonConvert.DeserializeObject<ObservableCollection<IssueType>>(issueTypesFile);
             }
 
-            var requestUrl = string.Format("{0}{1}/createmeta?projectKeys={2}", BaseUrl, JiraRequestType.Issue.ToString().ToLower(CultureInfo.InvariantCulture), projectKey);
+            var requestUrl = string.Format("{0}{1}/createmeta?projectKeys={2}", App.BaseUrl, JiraRequestType.Issue.ToString().ToLower(CultureInfo.InvariantCulture), projectKey);
             ObservableCollection<IssueType> issueTypes = null;
             try
             {
@@ -348,7 +351,7 @@ namespace Jirabox.Services
 
         public async Task<CreateIssueResponse> CreateIssue(CreateIssueRequest request)
         {
-            var url = string.Format("{0}{1}/", BaseUrl, JiraRequestType.Issue.ToString().ToLower(CultureInfo.InvariantCulture));
+            var url = string.Format("{0}{1}/", App.BaseUrl, JiraRequestType.Issue.ToString().ToLower(CultureInfo.InvariantCulture));
             var data = JsonConvert.SerializeObject(request);
             CreateIssueResponse createIssueResponse = null;
            
@@ -376,13 +379,14 @@ namespace Jirabox.Services
         public async Task<ObservableCollection<Priority>> GetPriorities()
         {
             const string cacheFileName = "Priorities.cache";
-            if (await cacheDataService.DoesFileExist(cacheFileName))
+            var isCacheExist = await cacheDataService.DoesFileExist(cacheFileName);
+            if (isCacheExist)
             {
                 var prioritiesFile = await cacheDataService.Get(cacheFileName);
                 return JsonConvert.DeserializeObject<ObservableCollection<Priority>>(prioritiesFile);
             }
 
-            var url = string.Format("{0}{1}", BaseUrl, JiraRequestType.Priority.ToString().ToLower());
+            var url = string.Format("{0}{1}", App.BaseUrl, JiraRequestType.Priority.ToString().ToLower());
             ObservableCollection<Priority> priorityList = null;
             try
             {
@@ -419,13 +423,14 @@ namespace Jirabox.Services
             var cacheFileName = string.Format("UserProfile.{0}.cache", username);
 
             //Check cache file 
-            if (await cacheDataService.DoesFileExist(cacheFileName))
+            var isCacheExist = await cacheDataService.DoesFileExist(cacheFileName);
+            if (isCacheExist)
             {
                 var userProfileFile = await cacheDataService.Get(cacheFileName);
                 return JsonConvert.DeserializeObject<User>(userProfileFile);
             }
 
-            string url = string.Format("{0}user?username={1}", BaseUrl, username);
+            string url = string.Format("{0}user?username={1}", App.BaseUrl, username);
             var response = await httpManager.GetAsync(url, true, username, App.Password);
             response.EnsureSuccessStatusCode();
             User user = null;
@@ -459,7 +464,7 @@ namespace Jirabox.Services
         public async Task<bool> AddComment(string issueKey, string comment)
         {
             HttpResponseMessage response = null;
-            var requestUrl = string.Format("{0}{1}/{2}/comment", BaseUrl, JiraRequestType.Issue.ToString().ToLower(CultureInfo.InvariantCulture), issueKey);
+            var requestUrl = string.Format("{0}{1}/{2}/comment", App.BaseUrl, JiraRequestType.Issue.ToString().ToLower(CultureInfo.InvariantCulture), issueKey);
 
             var commentRequest = new AddCommentRequest();
             commentRequest.Body = comment;
@@ -561,7 +566,7 @@ namespace Jirabox.Services
                 extras.Add(new CrashExtraData
                 {
                     Key = "Method",
-                    Value = System.Reflection.MethodInfo.GetCurrentMethod().Name
+                    Value = "JiraService.DownloadImage"
                 });              
 
                 BugSenseHandler.Instance.LogException(exception, extras);                
