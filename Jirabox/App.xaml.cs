@@ -126,7 +126,7 @@ namespace Jirabox
             extras.Add(new CrashExtraData
             {
                 Key = "Method",
-                Value = System.Reflection.MethodInfo.GetCurrentMethod().Name
+                Value = "Application_UnhandledException"
             });           
             BugSenseHandler.Instance.LogException(e.ExceptionObject, extras);
             e.Handled = true;
