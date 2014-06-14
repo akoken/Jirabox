@@ -22,6 +22,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         
         <StackPanel Grid.Row="0" >
@@ -42,7 +43,7 @@
 
         <StackPanel Grid.Row="1" Margin="15,0,0,0" VerticalAlignment="Center">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Version: "
+                <TextBlock Text="Version : "
                            FontSize="{StaticResource PhoneFontSizeMedium}"
                            VerticalAlignment="Center" />
                 <TextBlock Text="{Binding Version}"
@@ -50,7 +51,7 @@
                            VerticalAlignment="Center" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Created by: "
+                <TextBlock Text="Created by : "
                            VerticalAlignment="Center"
                            FontSize="{StaticResource PhoneFontSizeMedium}" />
                 <TextBlock Text="Abdurrahman Köken"
@@ -58,17 +59,30 @@
                            FontSize="{StaticResource PhoneFontSizeNormal}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Twitter: "
+                <TextBlock Text="Twitter : "
                            VerticalAlignment="Center"
                            FontSize="{StaticResource PhoneFontSizeMedium}" />
-                <TextBlock Text="@AAKoken"
+                <HyperlinkButton Content="@AAKoken"
                            VerticalAlignment="Center"
-                           FontSize="{StaticResource PhoneFontSizeNormal}" />                
-            </StackPanel>            
+                                 FontSize="{StaticResource PhoneFontSizeNormal}"                                 
+                                 Command="{Binding NavigateToTwitter}"
+                                 Foreground="#1199CC"/>                
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="GitHub : "
+                           VerticalAlignment="Center"
+                           FontSize="{StaticResource PhoneFontSizeMedium}" />
+                <HyperlinkButton Content="@AKoken"
+                                 VerticalAlignment="Center"
+                                 FontSize="{StaticResource PhoneFontSizeNormal}"
+                                 Command="{Binding NavigateToGitHub}"
+                                 Foreground="#1199CC" />
+            </StackPanel>
         </StackPanel>
-        <Button Content="send feedback" Grid.Row="2" Command="{Binding EmailCommand}"  Background="#1199CC" FontSize="24"/>        
+        <Button Content="send email" Grid.Row="2" Command="{Binding EmailCommand}"  Background="#1199CC" FontSize="24"/>        
         <Button Content="review this app" Grid.Row="3" Command="{Binding ReviewCommand}"  Background="#1199CC" FontSize="24"/>
         <Button Content="share with your friends" Grid.Row="4" Command="{Binding ShareCommand}"  Background="#1199CC" FontSize="24"/>
+        <Button Content="report bugs/suggestions" Grid.Row="5" Command="{Binding FeedbackCommand}" Background="#1199CC" FontSize="24" />
     </Grid>
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>

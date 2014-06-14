@@ -14,6 +14,10 @@ namespace Jirabox.ViewModel
         public RelayCommand EmailCommand{ get; private set; }
         public RelayCommand ShareCommand { get; private set; }
         public RelayCommand ReviewCommand { get; private set; }
+        public RelayCommand FeedbackCommand { get; private set; }
+        public RelayCommand NavigateToTwitter { get; private set; }
+        public RelayCommand NavigateToGitHub { get; private set; }
+
         public string Version
         {
             get { return version; }
@@ -32,9 +36,33 @@ namespace Jirabox.ViewModel
             EmailCommand = new RelayCommand(SendEmail);
             ShareCommand = new RelayCommand(ShareThisApp);
             ReviewCommand = new RelayCommand(ReviewThisApp);
+            FeedbackCommand = new RelayCommand(Feedback);
+            NavigateToTwitter = new RelayCommand(OpenTwitterProfile);
+            NavigateToGitHub = new RelayCommand(OpenGitHubProfile);
 
             var app = new AssemblyName(Assembly.GetExecutingAssembly().FullName);
             Version = app.Version.ToString();
+        }
+
+        private void OpenGitHubProfile()
+        {
+            var webBrowserTask = new WebBrowserTask();
+            webBrowserTask.Uri = new Uri("https://github.com/akoken");
+            webBrowserTask.Show(); 
+        }
+
+        private void OpenTwitterProfile()
+        {
+            var webBrowserTask = new WebBrowserTask();
+            webBrowserTask.Uri = new Uri("https://twitter.com/AAKoken");
+            webBrowserTask.Show(); 
+        }
+
+        private void Feedback()
+        {
+            var webBrowserTask = new WebBrowserTask();
+            webBrowserTask.Uri = new Uri("http://jirabox.uservoice.com");
+            webBrowserTask.Show(); 
         }
         private void SendEmail()
         {
