@@ -20,6 +20,9 @@ namespace Jirabox.Model
         public SearchRequest()
         {
             Fields = new List<string>();
+            Expands = new List<string>();
         }
+        [JsonProperty("expand")]
+        public List<string> Expands { get; set; }
     }
 }

@@ -111,10 +111,13 @@
     <Compile Include="Common\ViewNames.cs" />
     <Compile Include="Common\ToolStackCRCLib.cs" />
     <Compile Include="Common\ToolStackPNGWriterLib.cs" />
+    <Compile Include="Converters\CheckIssueSummaryLengthConverter.cs" />
     <Compile Include="Converters\DataLoadedToVisibilityConverter.cs" />
     <Compile Include="Converters\DateTimeConverter.cs" />
+    <Compile Include="Converters\HistoryToCreateDateConverter.cs" />
     <Compile Include="Converters\UserStatusToString.cs" />
     <Compile Include="Model\AddCommentRequest.cs" />
+    <Compile Include="Model\ChangeLog.cs" />
     <Compile Include="Model\Comment.cs" />
     <Compile Include="Model\Comments.cs" />
     <Compile Include="Model\CreateIssueFields.cs" />
@@ -123,6 +126,7 @@
     <Compile Include="Model\CreateIssueResponse.cs" />
     <Compile Include="Model\CreateIssueType.cs" />
     <Compile Include="Model\Fields.cs" />
+    <Compile Include="Model\History.cs" />
     <Compile Include="Model\Issue.cs" />
     <Compile Include="Model\IssueKey.cs" />
     <Compile Include="Model\IssueTypeRequest.cs" />

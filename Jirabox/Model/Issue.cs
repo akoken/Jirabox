@@ -43,5 +43,9 @@ namespace Jirabox.Model
 
         [JsonProperty("fields")]
         public Fields Fields { get; set; }
+
+
+        [JsonProperty("changelog")]
+        public ChangeLog ChangeLog { get; set; }
     }
 }

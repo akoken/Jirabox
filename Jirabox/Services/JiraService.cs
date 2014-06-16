@@ -132,7 +132,7 @@ namespace Jirabox.Services
         {
             HttpResponseMessage response = null;
             Issue issue = null;            
-            var requestUrl = string.Format("{0}{1}/{2}", App.BaseUrl, JiraRequestType.Issue.ToString().ToLower(CultureInfo.InvariantCulture), key);
+            var requestUrl = string.Format("{0}{1}/{2}?expand=changelog", App.BaseUrl, JiraRequestType.Issue.ToString().ToLower(CultureInfo.InvariantCulture), key);
             try
             {
                 response = await httpManager.GetAsync(requestUrl, true, username, password);
@@ -182,6 +182,7 @@ namespace Jirabox.Services
         public async Task<ObservableCollection<Issue>> Search(string searchText, bool assignedToMe = false, bool reportedByMe = false)
         {
             var fields = new List<string> { "summary", "status", "assignee", "reporter", "description", "issuetype", "priority", "comment" };
+            var expands = new List<string> { "changelog"};
             var url = string.Format("{0}{1}", App.BaseUrl, JiraRequestType.Search.ToString().ToLower());
             var jql = string.Empty;
 
@@ -214,6 +215,7 @@ namespace Jirabox.Services
 
             SearchRequest request = new SearchRequest();
             request.Fields = fields;
+            request.Expands = expands;
             request.JQL = jql;
             request.MaxResults = 50;
             request.StartAt = 0;

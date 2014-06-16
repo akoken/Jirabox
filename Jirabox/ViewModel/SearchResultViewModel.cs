@@ -54,7 +54,7 @@ namespace Jirabox.ViewModel
             IsDataLoaded = false;
             var searchParameter = (SearchParameter)navigationService.GetNavigationParameter();
             if(searchParameter != null)
-            Issues = await jiraService.Search(searchParameter.SearchText, searchParameter.IsAssignedToMe, searchParameter.IsReportedByMe);
+            Issues = await jiraService.Search(searchParameter.SearchText, searchParameter.IsAssignedToMe, searchParameter.IsReportedByMe);            
             IsDataLoaded = true;
         }
 
