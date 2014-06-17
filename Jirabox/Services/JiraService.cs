@@ -300,6 +300,11 @@ namespace Jirabox.Services
                 var extras = BugSenseHandler.Instance.CrashExtraData;
                 extras.Add(new CrashExtraData
                 {
+                    Key = "Post Data",
+                    Value = data
+                });
+                extras.Add(new CrashExtraData
+                {
                     Key = "Method",
                     Value = "JiraService.GetIssues"
                 });
