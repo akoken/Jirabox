@@ -5,6 +5,9 @@ using Jirabox.Core.Contracts;
 using Jirabox.Core.ExceptionExtension;
 using Jirabox.Resources;
 using System;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Jirabox.ViewModel
 {
@@ -18,6 +21,7 @@ namespace Jirabox.ViewModel
         private string password;
         private bool isDataLoaded;
         private bool isRememberMe;
+        private CancellationTokenSource cancellationTokenSource = null;
 
         public RelayCommand LoginCommand { get; private set; }        
 
@@ -118,9 +122,12 @@ namespace Jirabox.ViewModel
             }
             try
             {
+                //Create new cancellation token source
+                cancellationTokenSource = new CancellationTokenSource();
+
                 //Set base url for rest api
                 App.BaseUrl = string.Format("{0}/rest/api/latest/", App.ServerUrl);
-                var isLoginSuccess = await jiraService.LoginAsync(ServerUrl, UserName, Password);
+                var isLoginSuccess = await jiraService.LoginAsync(ServerUrl, UserName, Password, cancellationTokenSource);
                 if (isLoginSuccess)
                 {
                     if (IsRememberMe)
@@ -130,7 +137,7 @@ namespace Jirabox.ViewModel
 
                     navigationService.Navigate<ProjectListViewModel>();
                 }
-            }
+            }         
             catch (HttpRequestStatusCodeException exception)
             {
                 if (exception.StatusCode == System.Net.HttpStatusCode.Unauthorized)
@@ -179,6 +186,11 @@ namespace Jirabox.ViewModel
                 Password = credential.Password;
                 IsRememberMe = true;
             }
+        }
+
+        public void CancelLogin()
+        {
+            cancellationTokenSource.Cancel();
         }
     }
 }

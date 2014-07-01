@@ -1,4 +1,5 @@
-﻿using Microsoft.Phone.Controls;
+﻿using Jirabox.ViewModel;
+using Microsoft.Phone.Controls;
 
 namespace Jirabox.View
 {
@@ -7,6 +8,12 @@ namespace Jirabox.View
         public LoginView()
         {
             InitializeComponent();
+        }
+
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            var vm = DataContext as LoginViewModel;
+            vm.CancelLogin();
         }
     }
 }

@@ -17,5 +17,11 @@ namespace Jirabox.View
             vm.CleanUp();
             vm.Initialize();
         }
+
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            var vm = DataContext as SearchResultViewModel;
+            vm.CancelSearch();
+        }
     }
 }

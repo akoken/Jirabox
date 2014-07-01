@@ -1,5 +1,6 @@
 ﻿using Jirabox.Model;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
@@ -7,7 +8,7 @@ namespace Jirabox.Core.Contracts
 {
     public interface IJiraService
     {        
-        Task<bool> LoginAsync(string serverUrl, string username, string password);
+        Task<bool> LoginAsync(string serverUrl, string username, string password, CancellationTokenSource cancellationTokenSource);
 
         Task<ObservableCollection<Project>> GetProjects(string serverUrl, string username, string password);
 
@@ -29,7 +30,7 @@ namespace Jirabox.Core.Contracts
 
         Task<CreateIssueResponse> CreateIssue(CreateIssueRequest request);
 
-        Task<ObservableCollection<Issue>> Search(string searchText, bool assignedToMe = false, bool reportedByMe = false);
+        Task<ObservableCollection<Issue>> Search(string searchText, bool assignedToMe = false, bool reportedByMe = false, CancellationTokenSource tokenSource = null);
 
         
     }
