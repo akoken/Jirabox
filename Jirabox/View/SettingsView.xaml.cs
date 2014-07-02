@@ -1,4 +1,5 @@
-﻿using Microsoft.Phone.Controls;
+﻿using Jirabox.ViewModel;
+using Microsoft.Phone.Controls;
 
 namespace Jirabox.View
 {
@@ -6,7 +7,14 @@ namespace Jirabox.View
     {
         public SettingsView()
         {
-            InitializeComponent();
-        }     
+            InitializeComponent();            
+        }
+
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            var vm = DataContext as SettingsViewModel;
+            var maxSearchResult = SearchResultCount.Text;
+            vm.SaveSettingsCommand.Execute(int.Parse(maxSearchResult));            
+        }
     }
 }

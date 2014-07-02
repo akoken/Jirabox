@@ -10,7 +10,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.IO.IsolatedStorage;
@@ -219,11 +218,12 @@ namespace Jirabox.Services
                 }
             }
 
+            var maxSearchResultSetting = new IsolatedStorageProperty<int>(Settings.MaxSearchResult, 50);            
             var request = new SearchRequest();
             request.Fields = fields;
             request.Expands = expands;
             request.JQL = jql;
-            request.MaxResults = 50;
+            request.MaxResults = maxSearchResultSetting.Value;
             request.StartAt = 0;
 
             var extras = BugSenseHandler.Instance.CrashExtraData;

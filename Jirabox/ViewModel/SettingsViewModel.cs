@@ -1,4 +1,6 @@
-﻿using GalaSoft.MvvmLight;
+﻿using BugSense;
+using BugSense.Core.Model;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Jirabox.Common;
 using Jirabox.Core.Contracts;
@@ -11,8 +13,10 @@ namespace Jirabox.ViewModel
     {
         private IDialogService dialogService;
         private bool isGroupingEnabled;
+        private double maxSearchResult;      
         private IsolatedStorageProperty<bool> setting;
         public RelayCommand ClearCacheCommand { get; private set; }
+        public RelayCommand<int> SaveSettingsCommand { get; private set; }
 
         public bool IsGroupingEnabled
         {
@@ -29,13 +33,28 @@ namespace Jirabox.ViewModel
                 }
             }
         }
+        public double MaxSearchResult
+        {
+            get { return maxSearchResult; }
+            set 
+            {
+                if (maxSearchResult != value)
+                {
+                    maxSearchResult = value;
+                    RaisePropertyChanged(() => MaxSearchResult);
+                }
+            }
+        }
 
         public SettingsViewModel(IDialogService dialogService)
         {
             this.dialogService = dialogService;
+            //Set grouping setting
             setting = new IsolatedStorageProperty<bool>(Settings.IsGroupingEnabled, true);
             IsGroupingEnabled = setting.Value;
 
+            //Set maximum search result setting
+            MaxSearchResult = new IsolatedStorageProperty<int>(Settings.MaxSearchResult, 50).Value;
             ClearCacheCommand = new RelayCommand(() =>
             {
                 try
@@ -44,11 +63,38 @@ namespace Jirabox.ViewModel
                     cacheSetting.Value = true;
                     dialogService.ShowDialog(AppResources.ImageCacheCleanedMessage, "Done");
                 }
-                catch (Exception ex)
+                catch (Exception exception)
                 {
-                    dialogService.ShowDialog(ex.Message, "Error");
+                    var extras = BugSenseHandler.Instance.CrashExtraData;
+                    extras.Add(new CrashExtraData
+                    {
+                        Key = "Method",
+                        Value = "SettingsViewModel.ClearCacheCommand"
+                    });
+
+                    BugSenseHandler.Instance.LogException(exception, extras);
                 }
 
+            });
+
+            SaveSettingsCommand = new RelayCommand<int>((value) =>
+            {
+                try
+                {
+                    var maxSearchResultSetting = new IsolatedStorageProperty<int>(Settings.MaxSearchResult, 50);
+                    maxSearchResultSetting.Value = value;                    
+                }
+                catch (Exception exception)
+                {                    
+                    var extras = BugSenseHandler.Instance.CrashExtraData;
+                    extras.Add(new CrashExtraData
+                    {
+                        Key = "Method",
+                        Value = "SettingsViewModel.SaveSettingsCommand"
+                    });
+
+                    BugSenseHandler.Instance.LogException(exception, extras);
+                }
             });
         }
     }
