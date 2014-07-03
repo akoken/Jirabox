@@ -6,13 +6,20 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WP8"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"  
+    xmlns:converter="clr-namespace:Jirabox.Converters"
     DataContext="{Binding Source={StaticResource Locator}, Path=SettingsViewModel}"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"    
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="False">
+    
+    <phone:PhoneApplicationPage.Resources>
+        <converter:DoubleToIntConverter x:Key="DoubleToIntConverter" />
+    </phone:PhoneApplicationPage.Resources>
 
     <Grid x:Name="LayoutRoot" Background="#FFECECEC">
         <Grid.RowDefinitions>
@@ -36,20 +43,48 @@
                        Foreground="{StaticResource BlackForeground}" />
         </StackPanel>
 
-        <Grid x:Name="ContentPanel" Grid.Row="2" Margin="12,0,12,94">
+        <Grid x:Name="ContentPanel"
+              Grid.Row="2"
+              Margin="12,0,12,94">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="3*"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="2*" />
             </Grid.RowDefinitions>
 
-            <toolkit:ToggleSwitch Foreground="Black" IsChecked="{Binding IsGroupingEnabled, Mode=TwoWay}" Margin="0,15,0,0">
+            <toolkit:ToggleSwitch Foreground="Black"
+                                  IsChecked="{Binding IsGroupingEnabled, Mode=TwoWay}"
+                                  Margin="0,15,0,0">
                 <toolkit:ToggleSwitch.HeaderTemplate>
                     <DataTemplate>
-                        <TextBlock Text="Group Projects" Foreground="Black"/>
+                        <TextBlock Text="Group Projects"
+                                   Foreground="Black" />
                     </DataTemplate>
                 </toolkit:ToggleSwitch.HeaderTemplate>
-            </toolkit:ToggleSwitch>            
-            <Button Content="clear cached images" Grid.Row="1" Command="{Binding ClearCacheCommand}"  Background="#1199CC" FontSize="24" VerticalAlignment="Top"/>
+            </toolkit:ToggleSwitch>
+            <StackPanel Grid.Row="1">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Maximum Search Result :" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+                    <TextBlock x:Name="SearchResultCount" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"
+                               Text="{Binding ElementName=SearchResultSlider, Path=Value,Converter={StaticResource DoubleToIntConverter}}" />
+                </StackPanel>
+                <Slider Height="84"
+                        HorizontalAlignment="Left"
+                        Name="SearchResultSlider"
+                        VerticalAlignment="Top"
+                        Width="446"
+                        Minimum="10"
+                        Maximum="1000"
+                        Value="{Binding MaxSearchResult, Mode=TwoWay}"                        
+                        SmallChange="10"
+                        LargeChange="20" />
+            </StackPanel>
+            <Button Content="clear cached images"
+                    Grid.Row="2"
+                    Command="{Binding ClearCacheCommand}"
+                    Background="#1199CC"
+                    FontSize="24"
+                    VerticalAlignment="Top" />
         </Grid>
     </Grid>
 
@@ -73,5 +108,5 @@
             </toolkit:NavigationOutTransition.Forward>
         </toolkit:NavigationOutTransition>
     </toolkit:TransitionService.NavigationOutTransition>
-
+  
 </phone:PhoneApplicationPage>

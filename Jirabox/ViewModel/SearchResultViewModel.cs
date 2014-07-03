@@ -3,6 +3,9 @@ using GalaSoft.MvvmLight.Command;
 using Jirabox.Core.Contracts;
 using Jirabox.Model;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Jirabox.ViewModel
 {
@@ -11,6 +14,7 @@ namespace Jirabox.ViewModel
         private IJiraService jiraService;
         private INavigationService navigationService;
         private bool isDataLoaded;
+        private CancellationTokenSource cancellationTokenSource = null;
 
         public RelayCommand<Issue> ShowIssueDetailCommand { get; private set; }
 
@@ -48,19 +52,26 @@ namespace Jirabox.ViewModel
             this.navigationService = navigationService;
             ShowIssueDetailCommand = new RelayCommand<Issue>(issue => NavigateToIssueDetailView(issue), issue => issue != null);
         }
-        
+
         public async void Initialize()
         {
             IsDataLoaded = false;
             var searchParameter = (SearchParameter)navigationService.GetNavigationParameter();
-            if(searchParameter != null)
-            Issues = await jiraService.Search(searchParameter.SearchText, searchParameter.IsAssignedToMe, searchParameter.IsReportedByMe);            
+            if (searchParameter != null)
+            {
+                cancellationTokenSource = new CancellationTokenSource();
+                Issues = await jiraService.Search(searchParameter.SearchText, searchParameter.IsAssignedToMe, searchParameter.IsReportedByMe, cancellationTokenSource);
+            }
             IsDataLoaded = true;
         }
 
         public void CleanUp()
         {
             Issues = null;
+        }
+        public void CancelSearch()
+        {
+            cancellationTokenSource.Cancel();
         }
 
         private void NavigateToIssueDetailView(Issue selectedIssue)

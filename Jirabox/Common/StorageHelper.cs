@@ -1,4 +1,6 @@
-﻿using Jirabox.Model;
+﻿using BugSense;
+using BugSense.Core.Model;
+using Jirabox.Model;
 using System;
 using System.IO;
 using System.IO.IsolatedStorage;
@@ -10,6 +12,7 @@ namespace Jirabox.Common
     public class StorageHelper
     {
         private const string path = "credential.ak";
+        private static object sync = new object();
         public static void SaveUserCredential(string serverUrl, string username, string password)
         {
             using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
@@ -68,12 +71,29 @@ namespace Jirabox.Common
             using (var local = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 var pattern = @"Images\*";
-                var files = local.GetFileNames(pattern);                
+                var files = local.GetFileNames(pattern);
 
                 foreach (var file in files)
                 {
-                    local.DeleteFile(Path.Combine("Images",file));
-                }                
+                    try
+                    {
+                        lock (sync)
+                        {
+                            local.DeleteFile(Path.Combine("Images", file));
+                        }
+                    }
+                    catch (IsolatedStorageException storageException)
+                    {
+                        var extras = BugSenseHandler.Instance.CrashExtraData;
+                        extras.Add(new CrashExtraData
+                        {
+                            Key = "Method",
+                            Value = "StorageHelper.ClearCache"
+                        });
+
+                        BugSenseHandler.Instance.LogException(storageException, extras);
+                    }
+                }         
             }
         }
 

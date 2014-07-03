@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Jirabox.Tests.Mocks
@@ -11,7 +12,7 @@ namespace Jirabox.Tests.Mocks
     {
         public string BaseUrl { get; set; }       
 
-        public async Task<bool> LoginAsync(string serverUrl, string username, string password)
+        public async Task<bool> LoginAsync(string serverUrl, string username, string password, CancellationTokenSource cancellationTokenSource)
         {
             var server = "https://dev.atlassian.com/jira";
             var userName = "jirabox";
@@ -71,7 +72,7 @@ namespace Jirabox.Tests.Mocks
             throw new NotImplementedException();
         }
 
-        public async Task<System.Collections.ObjectModel.ObservableCollection<Model.Issue>> Search(string searchText, bool assignedToMe = false, bool reportedByMe = false)
+        public async Task<System.Collections.ObjectModel.ObservableCollection<Model.Issue>> Search(string searchText, bool assignedToMe = false, bool reportedByMe = false, CancellationTokenSource tokenSource = null)
         {
             throw new NotImplementedException();
         }

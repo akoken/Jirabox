@@ -114,6 +114,7 @@
     <Compile Include="Converters\CheckIssueSummaryLengthConverter.cs" />
     <Compile Include="Converters\DataLoadedToVisibilityConverter.cs" />
     <Compile Include="Converters\DateTimeConverter.cs" />
+    <Compile Include="Converters\DoubleToIntConverter.cs" />
     <Compile Include="Converters\HistoryToCreateDateConverter.cs" />
     <Compile Include="Converters\UserStatusToString.cs" />
     <Compile Include="Model\AddCommentRequest.cs" />
@@ -320,8 +321,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BindableApplicationBar.1.1.0.0\lib\wp8\BindableApplicationBar.dll</HintPath>
     </Reference>
-    <Reference Include="BugSense-WP8">
-      <HintPath>..\packages\BugSense.WP8.3.6.5.0\lib\wp8\BugSense-WP8.dll</HintPath>
+    <Reference Include="BugSense-WP8, Version=3.6.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BugSense.WP8.3.6.7.0\lib\wp8\BugSense-WP8.dll</HintPath>
     </Reference>
     <Reference Include="CS.Windows.Controls">
       <HintPath>..\packages\WindowsPhoneControls.0.3.0\lib\sl4-windowsphone71\CS.Windows.Controls.dll</HintPath>
@@ -339,17 +341,21 @@
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\packages\MvvmLightLibs.4.3.31.0\lib\wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.2\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.20\lib\sl4-windowsphone71\System.Net.Http.dll</HintPath>
+    <Reference Include="System.Net.Http, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.22\lib\sl4-windowsphone71\System.Net.Http.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.Extensions">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.20\lib\sl4-windowsphone71\System.Net.Http.Extensions.dll</HintPath>
+    <Reference Include="System.Net.Http.Extensions, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.22\lib\sl4-windowsphone71\System.Net.Http.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.Primitives">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.20\lib\sl4-windowsphone71\System.Net.Http.Primitives.dll</HintPath>
+    <Reference Include="System.Net.Http.Primitives, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.22\lib\sl4-windowsphone71\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Interactivity, Version=3.9.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.4.3.31.0\lib\wp8\System.Windows.Interactivity.dll</HintPath>

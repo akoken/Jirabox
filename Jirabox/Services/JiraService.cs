@@ -15,6 +15,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
@@ -24,21 +25,24 @@ namespace Jirabox.Services
     {       
         private IHttpManager httpManager;
         private IDialogService dialogService;
-        private ICacheDataService cacheDataService;             
+        private ICacheDataService cacheDataService;
+        public CancellationTokenSource tokenSource = null;
 
         public JiraService(IHttpManager httpManager, IDialogService dialogService, ICacheDataService cacheDataService)
         {
             this.httpManager = httpManager;
             this.dialogService = dialogService;
-            this.cacheDataService = cacheDataService;            
+            this.cacheDataService = cacheDataService;
+            tokenSource = new CancellationTokenSource();
         }
 
-        public async Task<bool> LoginAsync(string serverUrl, string username, string password)
+        public async Task<bool> LoginAsync(string serverUrl, string username, string password, CancellationTokenSource cancellationTokenSource)
         {            
             var requestUrl = string.Format("{0}{1}/", App.BaseUrl, JiraRequestType.Search.ToString().ToLower());
             var response = await httpManager.GetAsync(requestUrl, true, username, password);
-            if (response.IsSuccessStatusCode)
-                return true;
+
+            if (response == null) return false;
+            if (response.IsSuccessStatusCode) return true;
 
             throw new HttpRequestStatusCodeException(response.StatusCode);
         }
@@ -46,6 +50,7 @@ namespace Jirabox.Services
         public async Task<ObservableCollection<Project>> GetProjects(string serverUrl, string username, string password)
         {
             const string cacheFileName = "Projects.cache";
+
             //Check cache data
             var isCacheExist = await cacheDataService.DoesFileExist(cacheFileName);
             if (isCacheExist)
@@ -55,7 +60,7 @@ namespace Jirabox.Services
             }
 
             var requestUrl = string.Format("{0}{1}/", App.BaseUrl, JiraRequestType.Project.ToString().ToLower());
-            ObservableCollection<Project> projects = new ObservableCollection<Project>();
+            var projects = new ObservableCollection<Project>();
             try
             {
                 var response = await httpManager.GetAsync(requestUrl, true, username, password);
@@ -179,7 +184,7 @@ namespace Jirabox.Services
             return issue;
         }
 
-        public async Task<ObservableCollection<Issue>> Search(string searchText, bool assignedToMe = false, bool reportedByMe = false)
+        public async Task<ObservableCollection<Issue>> Search(string searchText, bool assignedToMe = false, bool reportedByMe = false, CancellationTokenSource tokenSource = null)
         {
             var fields = new List<string> { "summary", "status", "assignee", "reporter", "description", "issuetype", "priority", "comment" };
             var expands = new List<string> { "changelog"};
@@ -213,17 +218,23 @@ namespace Jirabox.Services
                 }
             }
 
-            SearchRequest request = new SearchRequest();
+            var maxSearchResultSetting = new IsolatedStorageProperty<int>(Settings.MaxSearchResult, 50);            
+            var request = new SearchRequest();
             request.Fields = fields;
             request.Expands = expands;
             request.JQL = jql;
-            request.MaxResults = 50;
+            request.MaxResults = maxSearchResultSetting.Value;
             request.StartAt = 0;
 
             var extras = BugSenseHandler.Instance.CrashExtraData;
             string data = JsonConvert.SerializeObject(request);
             try
             {
+                extras.Add(new CrashExtraData
+                {
+                    Key = "Method",
+                    Value = "JiraService.Search"
+                });
                 extras.Add(new CrashExtraData
                 {
                     Key = "Request Url",
@@ -234,24 +245,23 @@ namespace Jirabox.Services
                     Key = "Post Data",
                     Value = data
                 });
-
-                var result = await httpManager.PostAsync(url, data, true, App.UserName, App.Password);
+                
+                var result = await httpManager.PostAsync(url, data, true, App.UserName, App.Password, tokenSource);
+                if (result == null) return null;
                 result.EnsureSuccessStatusCode();
                 var responseString = await result.Content.ReadAsStringAsync();
-                var response = JsonConvert.DeserializeObject<SearchResponse>(responseString);
-                return new ObservableCollection<Issue>(response.Issues);
-
-            }
-            catch (Exception exception)
-            {
                 extras.Add(new CrashExtraData
                 {
-                    Key = "Method",
-                    Value = "JiraService.Search"
+                    Key = "Response String",
+                    Value = responseString
                 });
-
+                var response = JsonConvert.DeserializeObject<SearchResponse>(responseString);
+                return new ObservableCollection<Issue>(response.Issues);
+            }          
+            catch (Exception exception)
+            {                
                 BugSenseHandler.Instance.LogException(exception, extras);
-            }
+            }            
             return null;
         }
 
@@ -571,6 +581,18 @@ namespace Jirabox.Services
                         }
                     }
                 }
+            }
+            catch(IsolatedStorageException storageException)
+            {
+                var extras = BugSenseHandler.Instance.CrashExtraData;
+                extras.Add(new CrashExtraData
+                {
+                    Key = "Method",
+                    Value = "JiraService.DownloadImage.IsolatedStorageException"
+                });
+
+                BugSenseHandler.Instance.LogException(storageException, extras);                
+
             }
             catch (Exception exception)
             {
