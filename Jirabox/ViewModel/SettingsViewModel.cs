@@ -11,12 +11,13 @@ namespace Jirabox.ViewModel
 {
     public class SettingsViewModel : ViewModelBase
     {
-        private IDialogService dialogService;
+        private readonly IDialogService dialogService;
         private bool isGroupingEnabled;
         private double maxSearchResult;      
         private IsolatedStorageProperty<bool> setting;
+
         public RelayCommand ClearCacheCommand { get; private set; }
-        public RelayCommand<int> SaveSettingsCommand { get; private set; }
+        public RelayCommand<int> SaveMaxSearchResultCommand { get; private set; }
 
         public bool IsGroupingEnabled
         {
@@ -49,12 +50,14 @@ namespace Jirabox.ViewModel
         public SettingsViewModel(IDialogService dialogService)
         {
             this.dialogService = dialogService;
+
             //Set grouping setting
             setting = new IsolatedStorageProperty<bool>(Settings.IsGroupingEnabled, true);
             IsGroupingEnabled = setting.Value;
 
             //Set maximum search result setting
             MaxSearchResult = new IsolatedStorageProperty<int>(Settings.MaxSearchResult, 50).Value;
+
             ClearCacheCommand = new RelayCommand(() =>
             {
                 try
@@ -77,7 +80,7 @@ namespace Jirabox.ViewModel
 
             });
 
-            SaveSettingsCommand = new RelayCommand<int>((value) =>
+            SaveMaxSearchResultCommand = new RelayCommand<int>((value) =>
             {
                 try
                 {

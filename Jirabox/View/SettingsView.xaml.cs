@@ -14,7 +14,7 @@ namespace Jirabox.View
         {
             var vm = DataContext as SettingsViewModel;
             var maxSearchResult = SearchResultCount.Text;
-            vm.SaveSettingsCommand.Execute(int.Parse(maxSearchResult));            
+            vm.SaveMaxSearchResultCommand.Execute(int.Parse(maxSearchResult));            
         }
     }
 }

@@ -3,7 +3,9 @@
     <local:LocalizedStrings xmlns:local="clr-namespace:Jirabox" x:Key="LocalizedStrings" />
     <vm:ViewModelLocator xmlns:vm="clr-namespace:Jirabox.ViewModel" x:Key="Locator" />
     <SolidColorBrush x:Key="BlackForeground" Color="Black" />
-    <Style x:Key="PanoramaItemHeaderTextStyle" TargetType="TextBlock">
+        <SolidColorBrush x:Key="JiraboxSolidColorBrush"
+                         Color="#1199CC" />
+        <Style x:Key="PanoramaItemHeaderTextStyle" TargetType="TextBlock">
       <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
       <Setter Property="FontSize" Value="{StaticResource PanoramaItemHeaderFontSize}" />
       <Setter Property="CharacterSpacing" Value="-35" />
