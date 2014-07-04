@@ -190,6 +190,7 @@ namespace Jirabox.ViewModel
 
         public void CancelLogin()
         {
+            if(cancellationTokenSource != null)
             cancellationTokenSource.Cancel();
         }
     }

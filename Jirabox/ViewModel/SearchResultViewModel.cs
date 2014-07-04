@@ -71,6 +71,7 @@ namespace Jirabox.ViewModel
         }
         public void CancelSearch()
         {
+            if(cancellationTokenSource != null)
             cancellationTokenSource.Cancel();
         }
 
