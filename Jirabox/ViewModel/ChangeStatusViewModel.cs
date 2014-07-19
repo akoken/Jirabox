@@ -89,9 +89,13 @@ namespace Jirabox.ViewModel
             this.jiraService = jiraService;
             this.dialogService = dialogService;
 
-            ChangeStatusCommand = new RelayCommand(() =>
+            ChangeStatusCommand = new RelayCommand(async() =>
             {
-                jiraService.PerformTransition(IssueKey, SelectedTransition.Id, Comment);
+                var isSuccess = await jiraService.PerformTransition(IssueKey, SelectedTransition.Id, Comment);
+                if (isSuccess)               
+                    dialogService.ShowDialog("Status changed.", "Done");                
+                else                
+                    dialogService.ShowDialog("Opps! Something went wrong while changing status.", "Error");
             });
 
             CancelCommand = new RelayCommand(() =>
