@@ -4,6 +4,7 @@ using Jirabox.Core.Contracts;
 using Jirabox.Core.ExceptionExtension;
 using Jirabox.Model;
 using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace Jirabox.ViewModel
@@ -18,8 +19,14 @@ namespace Jirabox.ViewModel
         private bool isOpen;
         private Thickness dynamicMargin;
         private Comment selectedComment;
+        private ObservableCollection<Transition> transitions;
+
         public RelayCommand<Comment> ShowCommentDetailCommand { get; private set; }
+        
         public RelayCommand AddCommentCommand { get; private set; }
+
+        public RelayCommand ChangeStatusCommand { get; private set; }
+
         public Comment SelectedComment
         {
             get { return selectedComment; }
@@ -88,17 +95,49 @@ namespace Jirabox.ViewModel
             }
         }
 
+        public ObservableCollection<Transition> Transitions
+        {
+            get
+            {
+                return transitions;
+            }
+            set
+            {
+                if (transitions != value)
+                {
+                    transitions = value;
+                    RaisePropertyChanged(() => Transitions);
+                    ChangeStatusCommand.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public IssueDetailViewModel(IJiraService jiraService, INavigationService navigationService)
         {
             this.jiraService = jiraService;
             this.navigationService = navigationService;
             ShowCommentDetailCommand = new RelayCommand<Comment>(comment => ShowCommentDetail(comment), comment => comment != null);
             AddCommentCommand = new RelayCommand(AddComment);
+            ChangeStatusCommand = new RelayCommand(() =>
+            {
+                var parameterPackage = new StatusPackage
+                {
+                    IssueKey = Issue.Key.ProjectKey,
+                    Transitions = Transitions,
+                    SearchParameter = (SearchParameter)navigationService.GetNavigationParameter()
+                };
+                navigationService.Navigate<ChangeStatusViewModel>(parameterPackage);
+            }, CanChangeStatus);
             MessengerInstance.Register<RoutedEventArgs>(this, arg => 
             {                
                     SelectedComment = null;
                     IsOpen = false;                                          
             });            
+        }
+
+        private bool CanChangeStatus()
+        {
+            return Transitions!= null && Transitions.Count > 0;
         }
 
         private void ShowCommentDetail(Comment comment)
@@ -116,6 +155,7 @@ namespace Jirabox.ViewModel
             IsDataLoaded = false;
             IsOpen = false;
             Issue = await jiraService.GetIssueByKey(App.ServerUrl, App.UserName, App.Password, issueKey);
+            Transitions =  await jiraService.GetTransitions(issueKey);
             IsDataLoaded = true;
         }
 

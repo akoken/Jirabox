@@ -13,5 +13,6 @@ namespace Jirabox.Common
         public const string UserProfileView = "View/UserProfileView.xaml";
         public const string AboutView = "View/AboutView.xaml";
         public const string SettingsView = "View/SettingsView.xaml";
+        public const string ChangeStatusView = "View/ChangeStatusView.xaml";
     }
 }

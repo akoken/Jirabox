@@ -213,7 +213,12 @@
 
     <bar:Bindable.ApplicationBar>
         <bar:BindableApplicationBar IsVisible="True" BackgroundColor="#1199CC" Mode="Minimized">
-            <bar:BindableApplicationBarButton Text="comment" Command="{Binding AddCommentCommand}" IconUri="/Assets/add.png"/>
+            <bar:BindableApplicationBarButton Text="status"
+                                              Command="{Binding ChangeStatusCommand}"
+                                              IconUri="/Assets/add.png" />
+            <bar:BindableApplicationBarButton Text="comment"
+                                              Command="{Binding AddCommentCommand}"
+                                              IconUri="/Assets/add.png" />
         </bar:BindableApplicationBar>
     </bar:Bindable.ApplicationBar>
 </phone:PhoneApplicationPage>
