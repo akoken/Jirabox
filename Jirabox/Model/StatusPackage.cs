@@ -6,7 +6,7 @@ namespace Jirabox.Model
     {
         public ObservableCollection<Transition> Transitions { get; set; }
 
-        public string IssueKey { get; set; }
+        public Issue SelectedIssue { get; set; }
 
         public SearchParameter SearchParameter { get; set; }
     }

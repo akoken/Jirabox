@@ -17,6 +17,10 @@
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="False">
 
+    <phone:PhoneApplicationPage.Resources>        
+        <converter:NameToImageConverter x:Key="NameToImageConverter" />
+    </phone:PhoneApplicationPage.Resources>
+
     <Grid x:Name="LayoutRoot"
           Background="#FFECECEC">
         <Grid.RowDefinitions>
@@ -53,10 +57,14 @@
             <StackPanel Orientation="Horizontal"
                         VerticalAlignment="Center">
                 <TextBlock Text="Issue"
-                           VerticalAlignment="Center"
-                           Foreground="Black" />
-                <TextBlock Text="{Binding IssueKey}"
-                           Margin="50,0,0,0"
+                           Foreground="Black"
+                           VerticalAlignment="Center" />
+                <Image Source="{Binding SelectedIssue.Fields.IssueType.IconUrl}"
+                       Margin="55,0,0,0"
+                       Width="25"
+                       Height="25" />
+                <TextBlock Text="{Binding SelectedIssue.ProxyKey}"
+                           Margin="10,0,0,0"
                            Foreground="Black"
                            VerticalAlignment="Center" />
             </StackPanel>
@@ -78,7 +86,7 @@
                             <StackPanel Margin="15,0,0,0"
                                         Orientation="Horizontal" VerticalAlignment="Center">                            
                                 <TextBlock Text="{Binding Name}"
-                                           Margin="5,0,0,0"
+                                           Margin="5,0,0,0"                                           
                                            Foreground="Black" />
                             </StackPanel>
                         </DataTemplate>

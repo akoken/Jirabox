@@ -11,10 +11,11 @@ namespace Jirabox.ViewModel
         private readonly INavigationService navigationService;
         private readonly IDialogService dialogService;
         private readonly IJiraService jiraService;
+
         private ObservableCollection<Transition> transitions;
         private Transition selectedTransition;
+        private Issue selectedIssue;
         private string comment;
-        private string issueKey;
 
         public RelayCommand ChangeStatusCommand { get; private set; }
         public RelayCommand CancelCommand { get; private set; }
@@ -36,18 +37,18 @@ namespace Jirabox.ViewModel
             }
         }
 
-        public string IssueKey
+        public Issue SelectedIssue
         {
             get
             {
-                return issueKey;
+                return selectedIssue;
             }
             set
             {
-                if (issueKey != value)
+                if (selectedIssue != value)
                 {
-                    issueKey = value;
-                    RaisePropertyChanged(() => IssueKey);
+                    selectedIssue = value;
+                    RaisePropertyChanged(() => SelectedIssue);
                 }
             }
         }
@@ -91,7 +92,7 @@ namespace Jirabox.ViewModel
 
             ChangeStatusCommand = new RelayCommand(async() =>
             {
-                var isSuccess = await jiraService.PerformTransition(IssueKey, SelectedTransition.Id, Comment);
+                var isSuccess = await jiraService.PerformTransition(SelectedIssue.ProxyKey, SelectedTransition.Id, Comment);
                 if (isSuccess)
                 {
                     dialogService.ShowDialog("Status has been updated.", "Done");
@@ -109,7 +110,7 @@ namespace Jirabox.ViewModel
         public void Initialize()
         {
             var parameter = navigationService.GetNavigationParameter() as StatusPackage;
-            IssueKey = parameter.IssueKey;
+            SelectedIssue = parameter.SelectedIssue;
             Transitions = parameter.Transitions;
         }
 
