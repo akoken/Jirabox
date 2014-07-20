@@ -299,7 +299,6 @@
   <ItemGroup>
     <Content Include="Assets\about.png" />
     <Content Include="Assets\add.png" />
-    <Content Include="Assets\AlignmentGrid.png" />
     <Content Include="Assets\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -310,6 +309,7 @@
     <Content Include="Assets\reported.png" />
     <Content Include="Assets\search.png" />
     <Content Include="Assets\setting.png" />
+    <Content Include="Assets\status.png" />
     <Content Include="Assets\Tiles\LiveTileM.png" />
     <Content Include="Assets\Tiles\LiveTileS.png" />
     <Content Include="BugSense\BugSense - SDK License Agreement.txt" />

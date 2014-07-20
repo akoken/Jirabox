@@ -14,7 +14,15 @@ namespace Jirabox.View
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             var vm = DataContext as ChangeStatusViewModel;
+
+           // if(TransitionPicker.ItemsSource == null)
             vm.Initialize();
+        }
+
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            var vm = DataContext as ChangeStatusViewModel;
+            vm.GoBack();
         }
     }
 }

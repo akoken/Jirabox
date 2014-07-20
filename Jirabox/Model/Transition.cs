@@ -15,5 +15,17 @@ namespace Jirabox.Model
 
         [JsonProperty("name")]
         public string Name { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var target = obj as Transition;
+
+            if (target == null) return false;
+
+            if (this.Id == target.Id)
+                return true;
+
+            return false;
+        }
     }
 }

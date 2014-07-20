@@ -14,6 +14,7 @@ namespace Jirabox.View
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             var vm = this.DataContext as CreateIssueViewModel;           
+
             //Prevent getting data twice
             if (vm.Project != null) return;
             vm.Initialize();      

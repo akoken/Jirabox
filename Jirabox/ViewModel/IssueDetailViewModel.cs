@@ -122,7 +122,7 @@ namespace Jirabox.ViewModel
             {
                 var parameterPackage = new StatusPackage
                 {
-                    IssueKey = Issue.Key.ProjectKey,
+                    IssueKey = Issue.ProxyKey,
                     Transitions = Transitions,
                     SearchParameter = (SearchParameter)navigationService.GetNavigationParameter()
                 };

@@ -92,17 +92,18 @@ namespace Jirabox.ViewModel
             ChangeStatusCommand = new RelayCommand(async() =>
             {
                 var isSuccess = await jiraService.PerformTransition(IssueKey, SelectedTransition.Id, Comment);
-                if (isSuccess)               
-                    dialogService.ShowDialog("Status changed.", "Done");                
-                else                
+                if (isSuccess)
+                {
+                    dialogService.ShowDialog("Status has been updated.", "Done");
+                    GoBack();
+                }
+                else
+                {
                     dialogService.ShowDialog("Opps! Something went wrong while changing status.", "Error");
+                }
             });
 
-            CancelCommand = new RelayCommand(() =>
-            {
-                navigationService.NavigationParameter = ((StatusPackage)navigationService.GetNavigationParameter()).SearchParameter;
-                navigationService.GoBack();
-            });
+            CancelCommand = new RelayCommand(GoBack);           
         }
 
         public void Initialize()
@@ -110,6 +111,12 @@ namespace Jirabox.ViewModel
             var parameter = navigationService.GetNavigationParameter() as StatusPackage;
             IssueKey = parameter.IssueKey;
             Transitions = parameter.Transitions;
+        }
+
+        public void GoBack()
+        {
+            navigationService.NavigationParameter = ((StatusPackage)navigationService.GetNavigationParameter()).SearchParameter;                  
+            navigationService.GoBack();
         }
     }
 }

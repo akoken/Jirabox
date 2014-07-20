@@ -665,7 +665,7 @@ namespace Jirabox.Services
                 BugSenseHandler.Instance.LogException(exception, extras);
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.Created)
+            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
                 return true;
             return false;
         }
