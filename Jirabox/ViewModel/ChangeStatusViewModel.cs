@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using Jirabox.Core.Contracts;
 using Jirabox.Model;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace Jirabox.ViewModel
 {
@@ -15,6 +16,7 @@ namespace Jirabox.ViewModel
         private ObservableCollection<Transition> transitions;
         private Transition selectedTransition;
         private Issue selectedIssue;
+        private bool isDataLoaded;
         private string comment;
 
         public RelayCommand ChangeStatusCommand { get; private set; }
@@ -84,26 +86,26 @@ namespace Jirabox.ViewModel
             }
         }
 
+        public bool IsDataLoaded
+        {
+            get { return isDataLoaded; }
+            set
+            {
+                if (isDataLoaded != value)
+                {
+                    isDataLoaded = value;
+                    RaisePropertyChanged(() => IsDataLoaded);
+                }
+            }
+        }
+
         public ChangeStatusViewModel(INavigationService navigationService, IDialogService dialogService, IJiraService jiraService)
         {
             this.navigationService = navigationService;
             this.jiraService = jiraService;
             this.dialogService = dialogService;
 
-            ChangeStatusCommand = new RelayCommand(async() =>
-            {
-                var isSuccess = await jiraService.PerformTransition(SelectedIssue.ProxyKey, SelectedTransition.Id, Comment);
-                if (isSuccess)
-                {
-                    dialogService.ShowDialog("Status has been updated.", "Done");
-                    GoBack();
-                }
-                else
-                {
-                    dialogService.ShowDialog("Opps! Something went wrong while changing status.", "Error");
-                }
-            });
-
+            ChangeStatusCommand = new RelayCommand(async() => await ChangeStatus());
             CancelCommand = new RelayCommand(GoBack);           
         }
 
@@ -112,12 +114,28 @@ namespace Jirabox.ViewModel
             var parameter = navigationService.GetNavigationParameter() as StatusPackage;
             SelectedIssue = parameter.SelectedIssue;
             Transitions = parameter.Transitions;
-        }
+        }        
 
         public void GoBack()
         {
             navigationService.NavigationParameter = ((StatusPackage)navigationService.GetNavigationParameter()).SearchParameter;                  
             navigationService.GoBack();
+        }
+
+        private async Task ChangeStatus()
+        {
+            IsDataLoaded = false;
+            var isSuccess = await jiraService.PerformTransition(SelectedIssue.ProxyKey, SelectedTransition.Id, Comment);
+            if (isSuccess)
+            {
+                dialogService.ShowDialog("Status has been updated.", "Done");
+                GoBack();
+            }
+            else
+            {
+                dialogService.ShowDialog("Opps! Something went wrong while changing status.", "Error");
+            }
+            IsDataLoaded = true;
         }
     }
 }

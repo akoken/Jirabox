@@ -1,9 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Jirabox.Core.Contracts;
-using Jirabox.Core.ExceptionExtension;
 using Jirabox.Model;
-using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 
@@ -116,18 +114,11 @@ namespace Jirabox.ViewModel
         {
             this.jiraService = jiraService;
             this.navigationService = navigationService;
+
             ShowCommentDetailCommand = new RelayCommand<Comment>(comment => ShowCommentDetail(comment), comment => comment != null);
             AddCommentCommand = new RelayCommand(AddComment);
-            ChangeStatusCommand = new RelayCommand(() =>
-            {
-                var parameterPackage = new StatusPackage
-                {
-                    SelectedIssue = Issue,
-                    Transitions = Transitions,
-                    SearchParameter = (SearchParameter)navigationService.GetNavigationParameter()
-                };
-                navigationService.Navigate<ChangeStatusViewModel>(parameterPackage);
-            }, CanChangeStatus);
+            ChangeStatusCommand = new RelayCommand(NavigateToChangeStatusView, CanChangeStatus);
+            
             MessengerInstance.Register<RoutedEventArgs>(this, arg => 
             {                
                     SelectedComment = null;
@@ -138,6 +129,17 @@ namespace Jirabox.ViewModel
         private bool CanChangeStatus()
         {
             return Transitions!= null && Transitions.Count > 0;
+        }
+
+        private void NavigateToChangeStatusView()
+        {
+            var parameterPackage = new StatusPackage
+            {
+                SelectedIssue = Issue,
+                Transitions = Transitions,
+                SearchParameter = (SearchParameter)navigationService.GetNavigationParameter()
+            };
+            navigationService.Navigate<ChangeStatusViewModel>(parameterPackage);
         }
 
         private void ShowCommentDetail(Comment comment)
