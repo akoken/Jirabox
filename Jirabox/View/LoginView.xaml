@@ -48,15 +48,15 @@
             </Grid.RowDefinitions>
             <StackPanel>
                 <TextBlock Text="server url" Margin="10,0,0,0"/>
-                <controls:WatermarkTextBox Text="{Binding ServerUrl, Mode=TwoWay}" HorizontalAlignment="Left" Width="446" Height="70"  WatermarkText="https://dev.atlassian.com/jira"/>
+                <controls:WatermarkTextBox Text="{Binding ServerUrl, Mode=TwoWay}" HorizontalAlignment="Left" Width="446" Height="72"  WatermarkText="https://dev.atlassian.com/jira" VerticalContentAlignment="Center"/>
             </StackPanel>
             <StackPanel Grid.Row="1">
                 <TextBlock Text="username" Margin="10,0,0,0"/>
-                <TextBox Text="{Binding UserName, Mode=TwoWay}" Height="70" HorizontalAlignment="Left" Width="446"/>
+                <TextBox Text="{Binding UserName, Mode=TwoWay}" Height="72" HorizontalAlignment="Left" Width="446"/>
             </StackPanel>
             <StackPanel Grid.Row="2">
                 <TextBlock Text="password" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                <PasswordBox Password="{Binding Password, Mode=TwoWay}" Width="446" Height="70" HorizontalAlignment="Left"/>
+                <PasswordBox Password="{Binding Password, Mode=TwoWay}" Width="446" Height="72" HorizontalAlignment="Left"/>
             </StackPanel>
             <CheckBox IsChecked="{Binding IsRememberMe, Mode=TwoWay}" HorizontalAlignment="Left" x:Name="rememberMe" Content="remember me" Grid.Row="3" VerticalAlignment="Top"/>
             <Button Content="LOGIN" Grid.Row="4" Command="{Binding LoginCommand}"  Background="#1199CC" FontSize="24" Margin="0,0,0,24"/>

@@ -197,4 +197,7 @@
   <data name="LoginFailedMessage" xml:space="preserve">
     <value>Login failed</value>
   </data>
+  <data name="AddCommentMessage" xml:space="preserve">
+    <value>Please type a comment.</value>
+  </data>
 </root>

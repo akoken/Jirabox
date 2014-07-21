@@ -61,6 +61,15 @@ namespace Jirabox.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please type a comment..
+        /// </summary>
+        public static string AddCommentMessage {
+            get {
+                return ResourceManager.GetString("AddCommentMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to add.
         /// </summary>
         public static string AppBarButtonText {

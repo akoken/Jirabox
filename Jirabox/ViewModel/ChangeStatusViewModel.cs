@@ -15,7 +15,7 @@ namespace Jirabox.ViewModel
         private readonly IJiraService jiraService;
 
         private ObservableCollection<Transition> transitions;
-        private Transition selectedTransition;
+        private int selectedTransitionIndex;
         private Issue selectedIssue;
         private bool isDataLoaded;
         private string comment;
@@ -34,7 +34,7 @@ namespace Jirabox.ViewModel
             {
                 if (comment != value)
                 {
-                    comment = value;
+                    comment = value;                    
                     RaisePropertyChanged(() => Comment);
                 }
             }
@@ -56,18 +56,18 @@ namespace Jirabox.ViewModel
             }
         }
 
-        public Transition SelectedTransition
+        public int SelectedTransitionIndex
         {
             get
             {
-                return selectedTransition;
+                return selectedTransitionIndex;
             }
             set
             {
-                if (selectedTransition != value)
+                if (selectedTransitionIndex != value)
                 {
-                    selectedTransition = value;
-                    RaisePropertyChanged(() => SelectedTransition);
+                    selectedTransitionIndex = value;
+                    RaisePropertyChanged(() => SelectedTransitionIndex);
                 }
             }
         }
@@ -112,6 +112,7 @@ namespace Jirabox.ViewModel
 
         public void Initialize()
         {
+            IsDataLoaded = true;
             var parameter = navigationService.GetNavigationParameter() as StatusPackage;
             SelectedIssue = parameter.SelectedIssue;
             Transitions = parameter.Transitions;
@@ -119,14 +120,22 @@ namespace Jirabox.ViewModel
 
         public void GoBack()
         {
-            navigationService.NavigationParameter = ((StatusPackage)navigationService.GetNavigationParameter()).SearchParameter;                  
+            navigationService.NavigationParameter = ((StatusPackage)navigationService.GetNavigationParameter()).SearchParameter;
+            SelectedTransitionIndex = 0;
+            Comment = string.Empty;    
             navigationService.GoBack();
         }
 
         private async Task ChangeStatus()
         {
+            if (string.IsNullOrEmpty(Comment))
+            {
+                dialogService.ShowDialog(AppResources.AddCommentMessage, AppResources.Warning);
+                return;
+            }
+
             IsDataLoaded = false;
-            var isSuccess = await jiraService.PerformTransition(SelectedIssue.ProxyKey, SelectedTransition.Id, Comment);
+            var isSuccess = await jiraService.PerformTransition(SelectedIssue.ProxyKey, Transitions[SelectedTransitionIndex].Id, Comment??string.Empty);
             if (isSuccess)
             {
                 dialogService.ShowDialog(AppResources.StatusUpdatedMessage, AppResources.Done);
@@ -137,6 +146,6 @@ namespace Jirabox.ViewModel
                 dialogService.ShowDialog(AppResources.StatusUpdateErrorMessage, AppResources.Error);
             }
             IsDataLoaded = true;
-        }
+        }       
     }
 }

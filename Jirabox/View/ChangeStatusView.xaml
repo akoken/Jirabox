@@ -8,6 +8,7 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
     DataContext="{Binding Source={StaticResource Locator}, Path=ChangeStatusViewModel}"
+    xmlns:controls="clr-namespace:CS.Windows.Controls;assembly=CS.Windows.Controls"
     xmlns:converter="clr-namespace:Jirabox.Converters"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -82,7 +83,7 @@
                            VerticalAlignment="Center" />
                 <toolkit:ListPicker ExpansionMode="FullScreenOnly"
                                     ItemsSource="{Binding Transitions}"
-                                    SelectedItem="{Binding SelectedTransition, Mode=TwoWay}"
+                                    SelectedIndex="{Binding SelectedTransitionIndex, Mode=TwoWay}"
                                     Foreground="Black"
                                     Name="TransitionPicker"
                                     VerticalAlignment="Center"
@@ -113,20 +114,24 @@
            
             <StackPanel  Grid.Row="2"
                          Margin="0,20,0,0">
-                <TextBlock Text="Comment" Foreground="Black"/>
-                <TextBox Text="{Binding Comment, Mode=TwoWay}"
-                         TextWrapping="Wrap"
-                         Height="210"
-                         Margin="-10,0,0,0" />
+                <TextBlock Text="Comment"
+                           Foreground="Black" />
+                <controls:WatermarkTextBox Text="{Binding Comment, Mode=TwoWay}"
+                                           WatermarkText="Type a comment here"
+                                           TextWrapping="Wrap"
+                                           Height="365"
+                                           Margin="-10,0,0,0" />
             </StackPanel>
             <StackPanel Orientation="Horizontal"
                         Grid.Row="3"
                         HorizontalAlignment="Center">
                 <Button  Width="220"
                          Content="Send"
+                         Height="80"
                          Command="{Binding ChangeStatusCommand}"
                          Background="#1199CC" />
                 <Button  Width="220"
+                         Height="80"
                          Content="Cancel"
                          Command="{Binding CancelCommand}"
                          Background="#1199CC" />
