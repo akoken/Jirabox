@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using Jirabox.Core.Contracts;
 using Jirabox.Model;
+using Jirabox.Resources;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
@@ -128,12 +129,12 @@ namespace Jirabox.ViewModel
             var isSuccess = await jiraService.PerformTransition(SelectedIssue.ProxyKey, SelectedTransition.Id, Comment);
             if (isSuccess)
             {
-                dialogService.ShowDialog("Status has been updated.", "Done");
+                dialogService.ShowDialog(AppResources.StatusUpdatedMessage, AppResources.Done);
                 GoBack();
             }
             else
             {
-                dialogService.ShowDialog("Opps! Something went wrong while changing status.", "Error");
+                dialogService.ShowDialog(AppResources.StatusUpdateErrorMessage, AppResources.Error);
             }
             IsDataLoaded = true;
         }

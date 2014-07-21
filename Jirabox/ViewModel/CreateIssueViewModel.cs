@@ -172,7 +172,7 @@ namespace Jirabox.ViewModel
             request.Fields.Summary = Summary;
 
             var createdIssue = await jiraService.CreateIssue(request);
-            dialogService.ShowDialog(string.Format(AppResources.IssueCreatedMessage, createdIssue.Key), "Done");
+            dialogService.ShowDialog(string.Format(AppResources.IssueCreatedMessage, createdIssue.Key), AppResources.Done);
             IsDataLoaded = true;
             navigationService.GoBack();
         }

@@ -97,11 +97,11 @@ namespace Jirabox.ViewModel
             IsDataLoaded = true;
             if (success)
             {
-                dialogService.ShowDialog(AppResources.CommentAddedMessage, "Done");
+                dialogService.ShowDialog(AppResources.CommentAddedMessage, AppResources.Done);
                 navigationService.GoBack();
             }
             else
-                dialogService.ShowDialog(AppResources.ErrorMessage, "Error");
+                dialogService.ShowDialog(AppResources.ErrorMessage, AppResources.Error);
         }      
         private void CancelComment()
         {

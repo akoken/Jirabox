@@ -3,9 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using Jirabox.Core.Contracts;
 using Jirabox.Model;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Jirabox.ViewModel
 {

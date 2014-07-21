@@ -13,9 +13,7 @@ namespace Jirabox.View
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var vm = DataContext as ChangeStatusViewModel;
-
-           // if(TransitionPicker.ItemsSource == null)
+            var vm = DataContext as ChangeStatusViewModel;           
             vm.Initialize();
         }
 
