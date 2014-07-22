@@ -61,6 +61,15 @@ namespace Jirabox.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please type a comment..
+        /// </summary>
+        public static string AddCommentMessage {
+            get {
+                return ResourceManager.GetString("AddCommentMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to add.
         /// </summary>
         public static string AppBarButtonText {
@@ -124,6 +133,24 @@ namespace Jirabox.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Done.
+        /// </summary>
+        public static string Done {
+            get {
+                return ResourceManager.GetString("Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Oops! Something went wrong!.
         /// </summary>
         public static string ErrorMessage {
@@ -178,11 +205,20 @@ namespace Jirabox.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Information.
+        /// </summary>
+        public static string Information {
+            get {
+                return ResourceManager.GetString("Information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, server url is not valid..
         /// </summary>
-        public static string InvalidServerUrl {
+        public static string InvalidServerUrlMessage {
             get {
-                return ResourceManager.GetString("InvalidServerUrl", resourceCulture);
+                return ResourceManager.GetString("InvalidServerUrlMessage", resourceCulture);
             }
         }
         
@@ -192,6 +228,15 @@ namespace Jirabox.Resources {
         public static string IssueCreatedMessage {
             get {
                 return ResourceManager.GetString("IssueCreatedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login failed.
+        /// </summary>
+        public static string LoginFailedMessage {
+            get {
+                return ResourceManager.GetString("LoginFailedMessage", resourceCulture);
             }
         }
         
@@ -214,6 +259,24 @@ namespace Jirabox.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Status has been updated..
+        /// </summary>
+        public static string StatusUpdatedMessage {
+            get {
+                return ResourceManager.GetString("StatusUpdatedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opps! Something went wrong while changing status..
+        /// </summary>
+        public static string StatusUpdateErrorMessage {
+            get {
+                return ResourceManager.GetString("StatusUpdateErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, your username and password are incorrect - please try again..
         /// </summary>
         public static string UnauthorizedMessage {
@@ -228,6 +291,15 @@ namespace Jirabox.Resources {
         public static string UnhandledErrorMessage {
             get {
                 return ResourceManager.GetString("UnhandledErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        public static string Warning {
+            get {
+                return ResourceManager.GetString("Warning", resourceCulture);
             }
         }
     }

@@ -27,7 +27,8 @@ namespace Jirabox.ViewModel
             SimpleIoc.Default.Register<SearchResultViewModel>();
             SimpleIoc.Default.Register<UserProfileViewModel>();
             SimpleIoc.Default.Register<AboutViewModel>();
-            SimpleIoc.Default.Register<SettingsViewModel>();            
+            SimpleIoc.Default.Register<SettingsViewModel>();
+            SimpleIoc.Default.Register<ChangeStatusViewModel>();
         }
 
         public ProjectListViewModel ProjectListViewModel
@@ -114,6 +115,14 @@ namespace Jirabox.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<SettingsViewModel>();
+            }
+        }
+
+        public ChangeStatusViewModel ChangeStatusViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ChangeStatusViewModel>();
             }
         }
         public static void Cleanup()

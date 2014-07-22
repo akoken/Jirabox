@@ -44,6 +44,9 @@ namespace Jirabox.Services
                                                                           },
                                                                           {
                                                                               typeof(SettingsViewModel), ViewNames.SettingsView
+                                                                          },
+                                                                          {
+                                                                              typeof(ChangeStatusViewModel), ViewNames.ChangeStatusView
                                                                           }
                                                                     };        
        

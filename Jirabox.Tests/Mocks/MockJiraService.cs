@@ -76,5 +76,16 @@ namespace Jirabox.Tests.Mocks
         {
             throw new NotImplementedException();
         }
+
+
+        public Task<System.Collections.ObjectModel.ObservableCollection<Model.Transition>> GetTransitions(string issueKey)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> PerformTransition(string issueKey, string transitionId, string comment)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

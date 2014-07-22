@@ -5,9 +5,7 @@ using Jirabox.Core.Contracts;
 using Jirabox.Core.ExceptionExtension;
 using Jirabox.Resources;
 using System;
-using System.Diagnostics;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Jirabox.ViewModel
 {
@@ -110,14 +108,14 @@ namespace Jirabox.ViewModel
             if (!IsInputsValid())
             {
                 IsDataLoaded = true;
-                dialogService.ShowDialog(AppResources.UnauthorizedMessage, "Login failed");
+                dialogService.ShowDialog(AppResources.UnauthorizedMessage, AppResources.LoginFailedMessage);
                 return;
             }
 
             if (!ValidateUrl(ServerUrl))
             {
                 IsDataLoaded = true;
-                dialogService.ShowDialog(AppResources.InvalidServerUrl, "Login failed");                
+                dialogService.ShowDialog(AppResources.InvalidServerUrlMessage, AppResources.LoginFailedMessage);                
                 return;
             }
             try
@@ -142,15 +140,15 @@ namespace Jirabox.ViewModel
             {
                 if (exception.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    dialogService.ShowDialog(AppResources.UnauthorizedMessage, "Login failed");
+                    dialogService.ShowDialog(AppResources.UnauthorizedMessage, AppResources.LoginFailedMessage);
                 }
                 else if (exception.StatusCode == System.Net.HttpStatusCode.Forbidden)
                 {
-                    dialogService.ShowDialog(AppResources.ForbiddenMessage, "Login failed");
+                    dialogService.ShowDialog(AppResources.ForbiddenMessage, AppResources.LoginFailedMessage);
                 }
                 else
                 {
-                    dialogService.ShowDialog(AppResources.ConnectionErrorMessage, "Login failed");
+                    dialogService.ShowDialog(AppResources.ConnectionErrorMessage, AppResources.LoginFailedMessage);
                 }
             }
             catch (Exception ex)

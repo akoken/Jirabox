@@ -64,7 +64,7 @@ namespace Jirabox.ViewModel
                 {
                     var cacheSetting = new IsolatedStorageProperty<bool>(Settings.ClearImageCache, false);
                     cacheSetting.Value = true;
-                    dialogService.ShowDialog(AppResources.ImageCacheCleanedMessage, "Done");
+                    dialogService.ShowDialog(AppResources.ImageCacheCleanedMessage, AppResources.Done);
                 }
                 catch (Exception exception)
                 {

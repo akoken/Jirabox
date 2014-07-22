@@ -22,7 +22,7 @@ using System.Windows.Media.Imaging;
 namespace Jirabox.Services
 {
     public class JiraService : IJiraService
-    {       
+    {
         private IHttpManager httpManager;
         private IDialogService dialogService;
         private ICacheDataService cacheDataService;
@@ -37,7 +37,7 @@ namespace Jirabox.Services
         }
 
         public async Task<bool> LoginAsync(string serverUrl, string username, string password, CancellationTokenSource cancellationTokenSource)
-        {            
+        {
             var requestUrl = string.Format("{0}{1}/", App.BaseUrl, JiraRequestType.Search.ToString().ToLower());
             var response = await httpManager.GetAsync(requestUrl, true, username, password);
 
@@ -101,7 +101,7 @@ namespace Jirabox.Services
                 var projectFile = await cacheDataService.Get(cacheFileName);
                 return JsonConvert.DeserializeObject<Project>(projectFile);
             }
-            
+
             var requestUrl = string.Format("{0}{1}/{2}", App.BaseUrl, JiraRequestType.Project.ToString().ToLower(), key);
             Project project = null;
             HttpResponseMessage response = null;
@@ -136,7 +136,7 @@ namespace Jirabox.Services
         public async Task<Issue> GetIssueByKey(string serverUrl, string username, string password, string key)
         {
             HttpResponseMessage response = null;
-            Issue issue = null;            
+            Issue issue = null;
             var requestUrl = string.Format("{0}{1}/{2}?expand=changelog", App.BaseUrl, JiraRequestType.Issue.ToString().ToLower(CultureInfo.InvariantCulture), key);
             try
             {
@@ -187,7 +187,7 @@ namespace Jirabox.Services
         public async Task<ObservableCollection<Issue>> Search(string searchText, bool assignedToMe = false, bool reportedByMe = false, CancellationTokenSource tokenSource = null)
         {
             var fields = new List<string> { "summary", "status", "assignee", "reporter", "description", "issuetype", "priority", "comment" };
-            var expands = new List<string> { "changelog"};
+            var expands = new List<string> { "changelog" };
             var url = string.Format("{0}{1}", App.BaseUrl, JiraRequestType.Search.ToString().ToLower());
             var jql = string.Empty;
 
@@ -218,7 +218,7 @@ namespace Jirabox.Services
                 }
             }
 
-            var maxSearchResultSetting = new IsolatedStorageProperty<int>(Settings.MaxSearchResult, 50);            
+            var maxSearchResultSetting = new IsolatedStorageProperty<int>(Settings.MaxSearchResult, 50);
             var request = new SearchRequest();
             request.Fields = fields;
             request.Expands = expands;
@@ -245,7 +245,7 @@ namespace Jirabox.Services
                     Key = "Post Data",
                     Value = data
                 });
-                
+
                 var result = await httpManager.PostAsync(url, data, true, App.UserName, App.Password, tokenSource);
                 if (result == null) return null;
                 result.EnsureSuccessStatusCode();
@@ -257,11 +257,11 @@ namespace Jirabox.Services
                 });
                 var response = JsonConvert.DeserializeObject<SearchResponse>(responseString);
                 return new ObservableCollection<Issue>(response.Issues);
-            }          
+            }
             catch (Exception exception)
-            {                
+            {
                 BugSenseHandler.Instance.LogException(exception, extras);
-            }            
+            }
             return null;
         }
 
@@ -274,10 +274,10 @@ namespace Jirabox.Services
                 var issuesFile = await cacheDataService.Get(cacheFileName);
                 return JsonConvert.DeserializeObject<ObservableCollection<Issue>>(issuesFile);
             }
-            
+
             var requestUrl = string.Format("{0}{1}/{2}", App.BaseUrl, JiraRequestType.Issue.ToString().ToLower(CultureInfo.InvariantCulture), key);
             string jql = "project = " + key;
-            var issues = await GetIssues(jql);            
+            var issues = await GetIssues(jql);
 
             //Save issues to the cache
             cacheDataService.Save(cacheFileName, JsonConvert.SerializeObject(issues));
@@ -319,7 +319,7 @@ namespace Jirabox.Services
                     Value = "JiraService.GetIssues"
                 });
 
-                BugSenseHandler.Instance.LogException(exception, extras); 
+                BugSenseHandler.Instance.LogException(exception, extras);
             }
             return null;
         }
@@ -376,7 +376,7 @@ namespace Jirabox.Services
             var url = string.Format("{0}{1}/", App.BaseUrl, JiraRequestType.Issue.ToString().ToLower(CultureInfo.InvariantCulture));
             var data = JsonConvert.SerializeObject(request);
             CreateIssueResponse createIssueResponse = null;
-           
+
             try
             {
                 var result = await httpManager.PostAsync(url, data, true, App.UserName, App.Password);
@@ -466,7 +466,7 @@ namespace Jirabox.Services
                 App.User = user;
 
                 //Save new data to the cache
-                cacheDataService.Save(cacheFileName, responseStr);                
+                cacheDataService.Save(cacheFileName, responseStr);
 
             }
             catch (Exception exception)
@@ -582,7 +582,7 @@ namespace Jirabox.Services
                     }
                 }
             }
-            catch(IsolatedStorageException storageException)
+            catch (IsolatedStorageException storageException)
             {
                 var extras = BugSenseHandler.Instance.CrashExtraData;
                 extras.Add(new CrashExtraData
@@ -591,7 +591,7 @@ namespace Jirabox.Services
                     Value = "JiraService.DownloadImage.IsolatedStorageException"
                 });
 
-                BugSenseHandler.Instance.LogException(storageException, extras);                
+                BugSenseHandler.Instance.LogException(storageException, extras);
 
             }
             catch (Exception exception)
@@ -601,10 +601,72 @@ namespace Jirabox.Services
                 {
                     Key = "Method",
                     Value = "JiraService.DownloadImage"
-                });              
+                });
 
-                BugSenseHandler.Instance.LogException(exception, extras);                
+                BugSenseHandler.Instance.LogException(exception, extras);
             }
-        }       
+        }
+        public async Task<ObservableCollection<Transition>> GetTransitions(string issueKey)
+        {
+            var url = string.Format("{0}issue/{1}/transitions", App.BaseUrl, issueKey);
+            ObservableCollection<Transition> transitions = new ObservableCollection<Transition>();
+            try
+            {
+                var result = await httpManager.GetAsync(url, true, App.UserName, App.Password);
+                result.EnsureSuccessStatusCode();
+                var responseString = await result.Content.ReadAsStringAsync();
+                var transitionObject = JsonConvert.DeserializeObject<TransitionObject>(responseString);
+
+                if (transitionObject != null)
+                    transitions = new ObservableCollection<Transition>(transitionObject.Transitions);
+
+                return transitions;
+            }
+            catch (Exception exception)
+            {
+                var extras = BugSenseHandler.Instance.CrashExtraData;
+                extras.Add(new CrashExtraData
+                {
+                    Key = "Method",
+                    Value = "JiraService.GetTransitions"
+                });
+
+                BugSenseHandler.Instance.LogException(exception, extras);
+            }
+            return transitions;
+        }
+
+        public async Task<bool> PerformTransition(string issueKey, string transitionId)
+        {
+            HttpResponseMessage response = null;
+            var requestUrl = string.Format("{0}issue/{1}/transitions", App.BaseUrl, issueKey);
+
+            var transitionRequest = new TransitionRequest
+            {
+                Transition = new Transition { Id = transitionId }                
+            };
+
+            var data = JsonConvert.SerializeObject(transitionRequest);
+            try
+            {
+                response = await httpManager.PostAsync(requestUrl, data, true, App.UserName, App.Password);
+                response.EnsureSuccessStatusCode();
+            }
+            catch (Exception exception)
+            {
+                var extras = BugSenseHandler.Instance.CrashExtraData;
+                extras.Add(new CrashExtraData
+                {
+                    Key = "Method",
+                    Value = "JiraService.PerformTransition"
+                });
+
+                BugSenseHandler.Instance.LogException(exception, extras);
+            }
+
+            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+                return true;
+            return false;
+        }
     }
 }
