@@ -34,7 +34,7 @@ namespace Jirabox.Core.Contracts
        
         Task<ObservableCollection<Transition>> GetTransitions(string issueKey);
 
-        Task<bool> PerformTransition(string issueKey, string transitionId, string comment);
+        Task<bool> PerformTransition(string issueKey, string transitionId);
         
     }
 }

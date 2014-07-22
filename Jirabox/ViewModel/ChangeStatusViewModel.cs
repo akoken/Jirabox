@@ -110,7 +110,7 @@ namespace Jirabox.ViewModel
         private async Task ChangeStatus()
         {           
             IsDataLoaded = false;
-            var isSuccess = await jiraService.PerformTransition(SelectedIssue.ProxyKey, Transitions[SelectedTransitionIndex].Id, "");
+            var isSuccess = await jiraService.PerformTransition(SelectedIssue.ProxyKey, Transitions[SelectedTransitionIndex].Id);
             if (isSuccess)
             {
                 dialogService.ShowDialog(AppResources.StatusUpdatedMessage, AppResources.Done);

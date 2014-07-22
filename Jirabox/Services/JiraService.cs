@@ -636,7 +636,7 @@ namespace Jirabox.Services
             return transitions;
         }
 
-        public async Task<bool> PerformTransition(string issueKey, string transitionId, string comment)
+        public async Task<bool> PerformTransition(string issueKey, string transitionId)
         {
             HttpResponseMessage response = null;
             var requestUrl = string.Format("{0}issue/{1}/transitions", App.BaseUrl, issueKey);
