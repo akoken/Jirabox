@@ -41,7 +41,12 @@
             <controls:WatermarkTextBox Text="{Binding CommentText, Mode=TwoWay}" WatermarkText="Type your comment here" TextWrapping="Wrap" Height="Auto"/>
             </ScrollViewer>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2">
-            <Button Command="{Binding SendCommand}" Content="Send" Width="220" Height="80" FontSize="24" Background="#1199CC"/>
+            <Button Command="{Binding SendCommand}" 
+                    Content="Send" 
+                    Width="220" 
+                    Height="80" 
+                    FontSize="24" 
+                    Background="#1199CC"/>
             <Button Command="{Binding CancelCommand}"
                     Content="Cancel"
                     Width="220"

@@ -643,8 +643,7 @@ namespace Jirabox.Services
 
             var transitionRequest = new TransitionRequest
             {
-                Transition = new Transition { Id = transitionId },
-                Update = new Update { Comments = new List<TransitionComment> { new TransitionComment { Add = new Add { Body = comment } } } }
+                Transition = new Transition { Id = transitionId }                
             };
 
             var data = JsonConvert.SerializeObject(transitionRequest);

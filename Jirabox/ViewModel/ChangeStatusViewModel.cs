@@ -17,28 +17,10 @@ namespace Jirabox.ViewModel
         private ObservableCollection<Transition> transitions;
         private int selectedTransitionIndex;
         private Issue selectedIssue;
-        private bool isDataLoaded;
-        private string comment;
+        private bool isDataLoaded;        
 
         public RelayCommand ChangeStatusCommand { get; private set; }
-        public RelayCommand CancelCommand { get; private set; }
-
-
-        public string Comment
-        {
-            get
-            {
-                return comment;
-            }
-            set
-            {
-                if (comment != value)
-                {
-                    comment = value;                    
-                    RaisePropertyChanged(() => Comment);
-                }
-            }
-        }
+        public RelayCommand CancelCommand { get; private set; }      
 
         public Issue SelectedIssue
         {
@@ -121,21 +103,14 @@ namespace Jirabox.ViewModel
         public void GoBack()
         {
             navigationService.NavigationParameter = ((StatusPackage)navigationService.GetNavigationParameter()).SearchParameter;
-            SelectedTransitionIndex = 0;
-            Comment = string.Empty;    
+            SelectedTransitionIndex = 0;            
             navigationService.GoBack();
         }
 
         private async Task ChangeStatus()
-        {
-            if (string.IsNullOrEmpty(Comment))
-            {
-                dialogService.ShowDialog(AppResources.AddCommentMessage, AppResources.Warning);
-                return;
-            }
-
+        {           
             IsDataLoaded = false;
-            var isSuccess = await jiraService.PerformTransition(SelectedIssue.ProxyKey, Transitions[SelectedTransitionIndex].Id, Comment??string.Empty);
+            var isSuccess = await jiraService.PerformTransition(SelectedIssue.ProxyKey, Transitions[SelectedTransitionIndex].Id, "");
             if (isSuccess)
             {
                 dialogService.ShowDialog(AppResources.StatusUpdatedMessage, AppResources.Done);
