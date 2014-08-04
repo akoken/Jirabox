@@ -87,5 +87,11 @@ namespace Jirabox.Tests.Mocks
         {
             throw new NotImplementedException();
         }
+
+
+        public Task<bool> PerformTransition(string issueKey, string transitionId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

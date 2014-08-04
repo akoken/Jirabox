@@ -9,8 +9,9 @@ namespace Jirabox.ViewModel
 {
     public class IssueDetailViewModel : ViewModelBase
     {
-        IJiraService jiraService;
-        INavigationService navigationService;
+        private readonly INavigationService navigationService;
+        private readonly IDialogService dialogService;
+        private readonly IJiraService jiraService;
 
         private bool isDataLoaded;
         private Issue issue;
@@ -110,10 +111,11 @@ namespace Jirabox.ViewModel
             }
         }
 
-        public IssueDetailViewModel(IJiraService jiraService, INavigationService navigationService)
+        public IssueDetailViewModel(IJiraService jiraService, INavigationService navigationService, IDialogService dialogService)
         {
-            this.jiraService = jiraService;
             this.navigationService = navigationService;
+            this.dialogService = dialogService;
+            this.jiraService = jiraService;
 
             ShowCommentDetailCommand = new RelayCommand<Comment>(comment => ShowCommentDetail(comment), comment => comment != null);
             AddCommentCommand = new RelayCommand(AddComment);
@@ -143,10 +145,8 @@ namespace Jirabox.ViewModel
         }
 
         private void ShowCommentDetail(Comment comment)
-        {
-            SelectedComment = comment;
-            IsOpen = true;
-            MessengerInstance.Send<Comment>(comment);
+        {         
+            dialogService.ShowCommentDialog(comment, "");
         }
         private void AddComment()
         {

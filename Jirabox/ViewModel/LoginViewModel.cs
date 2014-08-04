@@ -153,7 +153,7 @@ namespace Jirabox.ViewModel
             }
             catch (Exception ex)
             {
-                dialogService.ShowDialog(string.Format(AppResources.FormattedErrorMessage, ex.Message), "Login failed");
+                dialogService.ShowDialog(string.Format(AppResources.FormattedErrorMessage, ex.Message), AppResources.LoginFailedMessage);
             }
          
            IsDataLoaded = true;

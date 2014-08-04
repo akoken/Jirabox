@@ -20,8 +20,7 @@ namespace Jirabox.ViewModel
             SimpleIoc.Default.Register<LoginViewModel>();
             SimpleIoc.Default.Register<ProjectListViewModel>();
             SimpleIoc.Default.Register<ProjectDetailViewModel>();            
-            SimpleIoc.Default.Register<IssueDetailViewModel>();
-            SimpleIoc.Default.Register<CommentDetailViewModel>();
+            SimpleIoc.Default.Register<IssueDetailViewModel>();    
             SimpleIoc.Default.Register<AddCommentViewModel>();
             SimpleIoc.Default.Register<CreateIssueViewModel>();
             SimpleIoc.Default.Register<SearchResultViewModel>();
@@ -62,15 +61,7 @@ namespace Jirabox.ViewModel
                 return ServiceLocator.Current.GetInstance<IssueDetailViewModel>();
             }
         }
-
-        public CommentDetailViewModel CommentDetailViewModel
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<CommentDetailViewModel>();
-            }
-        }
-
+       
         public AddCommentViewModel AddCommentViewModel
         {
             get

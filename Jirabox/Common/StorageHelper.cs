@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 using Windows.Storage;
 
 namespace Jirabox.Common
@@ -106,6 +107,37 @@ namespace Jirabox.Common
                     isf.DeleteFile(path);
                 }
             }
+        }
+
+        public static BitmapImage GetDisplayPicture(string fileName)
+        {
+            var sync = new object();
+            if (fileName == null) return null;
+
+            var filename = fileName.ToString().Replace(":", ".").Replace(" ", "");
+            byte[] data;
+            var displayPicture = new BitmapImage();
+
+            lock (sync)
+            {
+                using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    var path = Path.Combine("Images", filename + ".png");
+                    if (!isf.FileExists(path)) return null;
+
+                    using (var fs = isf.OpenFile(path, System.IO.FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    {
+                        data = new byte[fs.Length];
+                        if (data.Length == 0) return null;
+                        fs.Read(data, 0, data.Length);
+                        using (var ms = new MemoryStream(data))
+                        {
+                            displayPicture.SetSource(ms);
+                        }
+                    }
+                }
+            }
+            return displayPicture;
         }
     }
 }
