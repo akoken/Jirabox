@@ -23,7 +23,7 @@
     <Grid x:Name="LayoutRoot" Background="#FFECECEC">
         <Grid.RowDefinitions>
             <RowDefinition Height="10" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <ProgressBar x:Name="progressBar"
                      IsIndeterminate="True"
@@ -31,23 +31,25 @@
                      VerticalAlignment="Top"
                      Visibility="{Binding IsDataLoaded, Converter={StaticResource IsDataLoadedToVisibilityConverter}}"
                      Margin="0,4,0,0" />
-        <phone:Panorama Grid.Row="1">
-            <phone:Panorama.TitleTemplate>
+        <phone:Pivot Grid.Row="1">
+            <phone:Pivot.TitleTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal"
-                                Margin="0,35,0,0">
+                                Margin="-10,-15,0,0">
                         <Image Source="/Jirabox;component/Assets/logo.png"
                                Width="80"
-                               Height="80"
-                               Margin="10,0,0,0" />
+                               Height="80" />
                         <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}"
                                    Style="{StaticResource PhoneTextTitle1Style}"
                                    Foreground="{StaticResource BlackForeground}"
                                    VerticalAlignment="Center" />
                     </StackPanel>
                 </DataTemplate>
-            </phone:Panorama.TitleTemplate>
-            <phone:PanoramaItem Header="Project" Orientation="Horizontal" Foreground="Black">
+            </phone:Pivot.TitleTemplate>
+            <phone:PivotItem Foreground="Black">
+                <phone:PivotItem.Header>
+                    <TextBlock Text="Project" Foreground="Black"/>
+                </phone:PivotItem.Header>
                 <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="75"/>
@@ -83,8 +85,11 @@
                         <TextBlock Text="{Binding Project.Description}" Margin="5,0,0,0" TextWrapping="Wrap"/>
                     </StackPanel>
                 </Grid>
-            </phone:PanoramaItem>
-            <phone:PanoramaItem Header="Issue Types" Foreground="Black">
+            </phone:PivotItem>
+            <phone:PivotItem Foreground="Black">
+                <phone:PivotItem.Header>
+                    <TextBlock Text="Issue Types" Foreground="Black" />
+                </phone:PivotItem.Header>
                 <phone:LongListSelector ItemsSource="{Binding Project.IssueTypes}">
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
@@ -95,12 +100,16 @@
                         </DataTemplate>
                     </phone:LongListSelector.ItemTemplate>
                 </phone:LongListSelector>
-            </phone:PanoramaItem>
-            <phone:PanoramaItem Header="Issues" Foreground="Black">
+            </phone:PivotItem>
+            <phone:PivotItem Foreground="Black">
+                <phone:PivotItem.Header>
+                    <TextBlock Text="Issues" Foreground="Black" />
+                </phone:PivotItem.Header>
+                <ScrollViewer>
                 <phone:LongListSelector Name="IssueList" ItemsSource="{Binding Issues}" toolkit:TiltEffect.IsTiltEnabled="True">
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="5,5,0,0">
+                            <Grid Margin="5">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                     <RowDefinition/>
@@ -124,8 +133,9 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </phone:LongListSelector>
-            </phone:PanoramaItem>
-        </phone:Panorama>
+                </ScrollViewer>
+            </phone:PivotItem>
+        </phone:Pivot>
     </Grid>    
 
     <toolkit:TransitionService.NavigationInTransition>
@@ -150,7 +160,7 @@
     </toolkit:TransitionService.NavigationOutTransition>
 
     <bar:Bindable.ApplicationBar>
-        <bar:BindableApplicationBar IsVisible="True" BackgroundColor="#1199CC" Mode="Minimized">
+        <bar:BindableApplicationBar IsVisible="True" BackgroundColor="#1199CC" Mode="Default">
             <bar:BindableApplicationBarButton Text="create issue" Command="{Binding CreateIssueCommand}" IconUri="/Assets/add.png"/>
         </bar:BindableApplicationBar>
     </bar:Bindable.ApplicationBar>

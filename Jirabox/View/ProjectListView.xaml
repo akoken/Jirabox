@@ -104,7 +104,7 @@
                                         IsGroupingEnabled="{Binding IsGroupingEnabled}"
                                         HideEmptyGroups ="True"
                                         ItemsSource="{Binding GroupedProjects}"
-                                        Margin="0,0,-22,0"                                                                                                                                                                                                    
+                                        Margin="0,0,-22,75"                                                                                                                                                                                                    
                                         toolkit:TiltEffect.IsTiltEnabled="True">                   
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Tap">

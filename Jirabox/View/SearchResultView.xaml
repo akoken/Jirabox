@@ -47,10 +47,11 @@
                 </DataTemplate>
             </phone:Panorama.TitleTemplate>
             <phone:PanoramaItem Header="Issues" Foreground="Black">
+                <ScrollViewer>
                 <phone:LongListSelector Name="IssueList" ItemsSource="{Binding Issues}" toolkit:TiltEffect.IsTiltEnabled="True">
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="5,5,0,0">
+                            <Grid Margin="5">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                     <RowDefinition/>
@@ -74,6 +75,7 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </phone:LongListSelector>
+                </ScrollViewer>
             </phone:PanoramaItem>
         </phone:Panorama>
     </Grid>

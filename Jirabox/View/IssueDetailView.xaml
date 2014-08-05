@@ -154,7 +154,7 @@
             </phone:PivotItem>
 
             <phone:PivotItem Header="Comments">
-                <Grid>
+                <ScrollViewer>
                     <phone:LongListSelector Name="CommentList"                                           
                                             ItemsSource="{Binding Issue.Fields.Comment.Comments}"
                                             toolkit:TiltEffect.IsTiltEnabled="True">
@@ -187,7 +187,7 @@
                             </DataTemplate>
                         </phone:LongListSelector.ItemTemplate>                       
                     </phone:LongListSelector>
-                </Grid>
+                </ScrollViewer>
             </phone:PivotItem>
         </phone:Pivot>
     </Grid>    
