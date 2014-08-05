@@ -11,7 +11,8 @@
     xmlns:control="clr-namespace:Jirabox.Common.LiveTiles"    
     xmlns:extension="clr-namespace:Jirabox.Common.Extensions"
     xmlns:converter="clr-namespace:Jirabox.Converters"   
-    xmlns:behavior="clr-namespace:Jirabox.Common.Behaviors"    
+    xmlns:behavior="clr-namespace:Jirabox.Common.Behaviors"
+    xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
     xmlns:command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WP8"
     xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions" 
     DataContext="{Binding Source={StaticResource Locator}, Path=ProjectListViewModel}"    
@@ -22,9 +23,7 @@
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="False">
 
-    <phone:PhoneApplicationPage.Resources>
-        <converter:DataLoadedToVisibilityConverter x:Key="IsDataLoadedToVisibilityConverter"/>        
-        <converter:NameToImageConverter x:Key="NameToImageConverter"/>        
+    <phone:PhoneApplicationPage.Resources>         
         <phone:JumpListItemBackgroundConverter x:Key="BackgroundConverter"/>
         <phone:JumpListItemForegroundConverter x:Key="ForegroundConverter"/>
         
@@ -254,5 +253,21 @@
             </toolkit:NavigationOutTransition.Forward>
         </toolkit:NavigationOutTransition>
     </toolkit:TransitionService.NavigationOutTransition>
-       
+
+    <bar:Bindable.ApplicationBar>
+        <bar:BindableApplicationBar IsVisible="True"
+                                    BackgroundColor="#1199CC"
+                                    Mode="Default">
+            <bar:BindableApplicationBarButton Text="refresh"
+                                              Command="{Binding RefreshCommand}"
+                                              IconUri="/Assets/refresh.png" />
+            <bar:BindableApplicationBarButton Text="about"
+                                              Command="{Binding ShowAboutViewCommand}"
+                                              IconUri="/Assets/about.png" />
+            <bar:BindableApplicationBar.MenuItems>
+                <bar:BindableApplicationBarMenuItem Text="logout" Command="{Binding LogoutCommand}" />
+            </bar:BindableApplicationBar.MenuItems>
+        </bar:BindableApplicationBar>
+    </bar:Bindable.ApplicationBar>
+
 </phone:PhoneApplicationPage>

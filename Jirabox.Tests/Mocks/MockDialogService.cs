@@ -20,8 +20,7 @@ namespace Jirabox.Tests.Mocks
             throw new NotImplementedException();
         }
 
-
-        public Microsoft.Phone.Controls.CustomMessageBox ShowCommentDialog(Model.Comment comment, string caption)
+        public Microsoft.Phone.Controls.CustomMessageBox ShowCommentDialog(Model.Comment comment)
         {
             throw new NotImplementedException();
         }

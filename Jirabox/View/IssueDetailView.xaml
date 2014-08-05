@@ -24,14 +24,6 @@
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="False">
 
-    <phone:PhoneApplicationPage.Resources>
-        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-        <converter:DataLoadedToVisibilityConverter x:Key="IsDataLoadedToVisibilityConverter"/>
-        <converter:HistoryToCreateDateConverter x:Key="HistoryToCreateDateConverter" />
-        <converter:NameToImageConverter x:Key="NameToImageConverter"/>
-        <converter:CheckIssueSummaryLengthConverter x:Key="CheckIssueSummaryLengthConverter" />
-        <converter:DateTimeConverter x:Key="DateTimeConverter" />
-    </phone:PhoneApplicationPage.Resources>
     
     <Grid x:Name="LayoutRoot" Background="#FFECECEC">
         <Grid.RowDefinitions>
@@ -163,7 +155,7 @@
 
             <phone:PivotItem Header="Comments">
                 <Grid>
-                    <phone:LongListSelector Name="CommentList"
+                    <phone:LongListSelector Name="CommentList"                                           
                                             ItemsSource="{Binding Issue.Fields.Comment.Comments}"
                                             toolkit:TiltEffect.IsTiltEnabled="True">
                         <phone:LongListSelector.ItemTemplate>
@@ -193,14 +185,7 @@
                                     </StackPanel>
                                 </StackPanel>
                             </DataTemplate>
-                        </phone:LongListSelector.ItemTemplate>
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="Tap">
-                                <command:EventToCommand PassEventArgsToCommand="False"
-                                                        CommandParameter="{Binding Path=SelectedItem, ElementName=CommentList}"
-                                                        Command="{Binding ShowCommentDetailCommand}" />
-                            </i:EventTrigger>                          
-                        </i:Interaction.Triggers>
+                        </phone:LongListSelector.ItemTemplate>                       
                     </phone:LongListSelector>
                 </Grid>
             </phone:PivotItem>

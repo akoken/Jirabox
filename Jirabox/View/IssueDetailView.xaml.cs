@@ -1,4 +1,6 @@
-﻿using Jirabox.ViewModel;
+﻿using Jirabox.Model;
+using Jirabox.Services;
+using Jirabox.ViewModel;
 using Microsoft.Phone.Controls;
 using System.Windows;
 using System.Windows.Navigation;
@@ -10,6 +12,19 @@ namespace Jirabox.View
         public IssueDetailView()
         {
             InitializeComponent();
+            CommentList.SelectionChanged += CommentList_SelectionChanged;
+        }
+
+        void CommentList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            var selectedComment = CommentList.SelectedItem as Comment;
+            if (selectedComment == null)
+                return;
+
+            var dialogService = new DialogService();
+            dialogService.ShowCommentDialog(selectedComment);
+
+            CommentList.SelectedItem = null;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -19,8 +34,7 @@ namespace Jirabox.View
             {
                 var issueKey = NavigationContext.QueryString["param"];
                 vm.CleanUp();
-                vm.Initialize(issueKey);
-                vm.DynamicMargin = new Thickness(0, Application.Current.Host.Content.ActualHeight, 0, 0);
+                vm.Initialize(issueKey);           
             }
         }
     }

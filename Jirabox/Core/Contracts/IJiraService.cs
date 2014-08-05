@@ -10,7 +10,7 @@ namespace Jirabox.Core.Contracts
     {        
         Task<bool> LoginAsync(string serverUrl, string username, string password, CancellationTokenSource cancellationTokenSource);
 
-        Task<ObservableCollection<Project>> GetProjects(string serverUrl, string username, string password);
+        Task<ObservableCollection<Project>> GetProjects(string serverUrl, string username, string password, bool withoutCache = false);
 
         Task<User> GetUserProfileAsync(string username);
 

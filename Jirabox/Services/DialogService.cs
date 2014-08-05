@@ -1,15 +1,12 @@
 ﻿using Jirabox.Common;
 using Jirabox.Core.Contracts;
 using Jirabox.Resources;
-using Microsoft.Devices;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
 using System;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace Jirabox.Services
 {
@@ -42,8 +39,7 @@ namespace Jirabox.Services
             errorMessageBox.Show();            
         }
 
-
-        public CustomMessageBox ShowCommentDialog(Model.Comment comment, string caption)
+        public CustomMessageBox ShowCommentDialog(Model.Comment comment)
         {
             var messageBox = new CustomMessageBox();
             var imageBrush = new ImageBrush();
@@ -79,8 +75,7 @@ namespace Jirabox.Services
             rootPanel.Margin = new Thickness(10, 30, 0, 0);
             rootPanel.Children.Add(userInfoPanel);
             rootPanel.Children.Add(scrollViewer);
-
-            messageBox.Caption = caption;
+            
             messageBox.Content = rootPanel;
             messageBox.LeftButtonContent = "OK";
             messageBox.Show();

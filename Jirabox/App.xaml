@@ -2,7 +2,15 @@
   <Application.Resources>
     <local:LocalizedStrings xmlns:local="clr-namespace:Jirabox" x:Key="LocalizedStrings" />
     <vm:ViewModelLocator xmlns:vm="clr-namespace:Jirabox.ViewModel" x:Key="Locator" />
-    <SolidColorBrush x:Key="BlackForeground" Color="Black" />
+        <converter:DataLoadedToVisibilityConverter x:Key="IsDataLoadedToVisibilityConverter" xmlns:converter="clr-namespace:Jirabox.Converters" />
+        <converter:NameToImageConverter x:Key="NameToImageConverter" xmlns:converter="clr-namespace:Jirabox.Converters" />
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" xmlns:converter="clr-namespace:Jirabox.Converters" />
+        <converter:HistoryToCreateDateConverter x:Key="HistoryToCreateDateConverter" xmlns:converter="clr-namespace:Jirabox.Converters" />
+        <converter:CheckIssueSummaryLengthConverter x:Key="CheckIssueSummaryLengthConverter" xmlns:converter="clr-namespace:Jirabox.Converters" />
+        <converter:DateTimeConverter x:Key="DateTimeConverter" xmlns:converter="clr-namespace:Jirabox.Converters" />
+        <converter:DoubleToIntConverter x:Key="DoubleToIntConverter" xmlns:converter="clr-namespace:Jirabox.Converters" />
+        <converter:UserStatusToString x:Key="UserStatusToStringConverter" xmlns:converter="clr-namespace:Jirabox.Converters" />
+        <SolidColorBrush x:Key="BlackForeground" Color="Black" />
         <SolidColorBrush x:Key="JiraboxSolidColorBrush"
                          Color="#1199CC" />
         <Style x:Key="PanoramaItemHeaderTextStyle" TargetType="TextBlock">

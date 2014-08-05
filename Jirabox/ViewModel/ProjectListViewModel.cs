@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Ioc;
 using Jirabox.Common;
 using Jirabox.Core.Contracts;
 using Jirabox.Model;
@@ -11,9 +12,9 @@ namespace Jirabox.ViewModel
 {
     public class ProjectListViewModel : ViewModelBase
     {
-        private INavigationService navigationService;
-        private IDialogService dialogService;
-        private IJiraService jiraService;
+        private readonly INavigationService navigationService;
+        private readonly IDialogService dialogService;
+        private readonly IJiraService jiraService;
         private bool isDataLoaded;
         private bool isGroupingEnabled;
         private BitmapImage displayPicture;
@@ -25,7 +26,10 @@ namespace Jirabox.ViewModel
         public RelayCommand ShowAssignedIssuesCommand { get; private set; }
         public RelayCommand ShowIssuesReportedByMeCommand { get; private set; }
         public RelayCommand ShowSettingsCommand { get; private set; }
-        public RelayCommand ShowAboutPageCommand { get; private set; }
+        public RelayCommand ShowAboutViewCommand { get; private set; }
+        public RelayCommand RefreshCommand { get; private set; }
+        public RelayCommand LogoutCommand { get; private set; }
+        public RelayCommand AboutCommand { get; private set; }
         public RelayCommand<string> SearchCommand { get; private set; }
 
         public bool IsDataLoaded
@@ -33,11 +37,8 @@ namespace Jirabox.ViewModel
             get { return isDataLoaded; }
             set
             {
-                if (isDataLoaded != value)
-                {
-                    isDataLoaded = value;
-                    RaisePropertyChanged(() => IsDataLoaded);
-                }
+                isDataLoaded = value;
+                RaisePropertyChanged(() => IsDataLoaded);
             }
         }
 
@@ -105,8 +106,10 @@ namespace Jirabox.ViewModel
             ShowAssignedIssuesCommand = new RelayCommand(NavigateToAssignedIssues);
             ShowIssuesReportedByMeCommand = new RelayCommand(NavigateToIssuesReportedByMe);
             ShowSettingsCommand = new RelayCommand(NavigateToSettingsView);
-            ShowAboutPageCommand = new RelayCommand(NavigateToAboutView);
+            ShowAboutViewCommand = new RelayCommand(NavigateToAboutView);
             SearchCommand = new RelayCommand<string>(searchText => NavigateToSearchResults(searchText));
+            RefreshCommand = new RelayCommand(Refresh);
+            LogoutCommand = new RelayCommand(Logout);            
 
             if (!IsInDesignMode)
             {
@@ -122,11 +125,24 @@ namespace Jirabox.ViewModel
             });
         }
 
-        private async void InitializeData()
+        private void Logout()
+        {
+            StorageHelper.ClearUserCredential();
+            SimpleIoc.Default.GetInstance<LoginViewModel>().ClearFields();
+            navigationService.Navigate<LoginViewModel>();            
+            navigationService.RemoveBackEntry();
+        }
+
+        private void Refresh()
+        {
+             InitializeData(true);
+        }
+
+        private async void InitializeData(bool withoutCache = false)
         {
             IsDataLoaded = false;
             await jiraService.GetUserProfileAsync(App.UserName);
-            var projects = await jiraService.GetProjects(App.ServerUrl, App.UserName, App.Password);
+            var projects = await jiraService.GetProjects(App.ServerUrl, App.UserName, App.Password, withoutCache);
 
             GroupedProjects = AlphaKeyGroup<Project>.CreateGroups(projects, System.Threading.Thread.CurrentThread.CurrentUICulture, (Project s) => { return s.Name; }, true);
             FlatProjects = projects;

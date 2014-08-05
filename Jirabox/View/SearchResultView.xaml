@@ -18,9 +18,6 @@
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="False">
 
-    <phone:PhoneApplicationPage.Resources>
-        <converter:DataLoadedToVisibilityConverter x:Key="IsDataLoadedToVisibilityConverter"/>
-    </phone:PhoneApplicationPage.Resources>
 
     <Grid x:Name="LayoutRoot" Background="#FFECECEC">
         <Grid.RowDefinitions>

@@ -10,6 +10,6 @@ namespace Jirabox.Core.Contracts
 
         void SendErrorReportDialog(Exception e);
 
-        CustomMessageBox ShowCommentDialog(Comment comment, string caption);
+        CustomMessageBox ShowCommentDialog(Comment comment);
     }
 }
