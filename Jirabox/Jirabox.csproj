@@ -300,6 +300,7 @@
     <Content Include="Assets\refresh.png" />
     <Content Include="Assets\reported.png" />
     <Content Include="Assets\search.png" />
+    <Content Include="Assets\send.png" />
     <Content Include="Assets\setting.png" />
     <Content Include="Assets\status.png" />
     <Content Include="Assets\Tiles\LiveTileM.png" />
@@ -328,8 +329,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BugSense.WP8.3.6.8.0\lib\wp8\BugSense-WP8.dll</HintPath>
     </Reference>
-    <Reference Include="CS.Windows.Controls">
-      <HintPath>..\packages\WindowsPhoneControls.0.3.0\lib\sl4-windowsphone71\CS.Windows.Controls.dll</HintPath>
+    <Reference Include="CS.Windows.Controls, Version=0.3.0.26859, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Bin\Debug\CS.Windows.Controls.dll</HintPath>
     </Reference>
     <Reference Include="GalaSoft.MvvmLight.Extras.WP8">
       <HintPath>..\packages\MvvmLightLibs.4.3.31.0\lib\wp8\GalaSoft.MvvmLight.Extras.WP8.dll</HintPath>
