@@ -161,7 +161,12 @@
 
     <bar:Bindable.ApplicationBar>
         <bar:BindableApplicationBar IsVisible="True" BackgroundColor="#1199CC" Mode="Default">
-            <bar:BindableApplicationBarButton Text="create issue" Command="{Binding CreateIssueCommand}" IconUri="/Assets/add.png"/>
+            <bar:BindableApplicationBarButton Text="create issue" 
+                                              Command="{Binding CreateIssueCommand}" 
+                                              IconUri="/Assets/add.png"/>
+            <bar:BindableApplicationBarButton Text="refresh"
+                                              Command="{Binding RefreshCommand}"
+                                              IconUri="/Assets/refresh.png" />
         </bar:BindableApplicationBar>
     </bar:Bindable.ApplicationBar>
 </phone:PhoneApplicationPage>

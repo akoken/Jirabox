@@ -133,6 +133,15 @@ namespace Jirabox.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Opps! Something went wrong. Unable to get project detail.
+        /// </summary>
+        public static string CreateIssueNullProjectMessage {
+            get {
+                return ResourceManager.GetString("CreateIssueNullProjectMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Done.
         /// </summary>
         public static string Done {

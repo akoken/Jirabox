@@ -61,7 +61,10 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="1">
                 <TextBlock Text="Issue Type" VerticalAlignment="Center"/>
-                <toolkit:ListPicker ExpansionMode="FullScreenOnly" ItemsSource="{Binding IssueTypes}" SelectedItem="{Binding SelectedIssueType, Mode=TwoWay}" Foreground="Black" VerticalAlignment="Center" Width="323">
+                <toolkit:ListPicker Name="ListPickerIssueTypes"
+                                    ExpansionMode="FullScreenOnly"
+                                    ItemsSource="{Binding IssueTypes}"
+                                    SelectionChanged="ListPickerIssueTypes_SelectionChanged" Foreground="Black" VerticalAlignment="Center" Width="323">
                     <toolkit:ListPicker.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="15,0,0,0" Orientation="Horizontal">
@@ -86,7 +89,7 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="3">
                 <TextBlock Text="Priority" VerticalAlignment="Center"/>
-                <toolkit:ListPicker ItemsSource="{Binding PriorityList}" SelectedItem="{Binding SelectedPriority, Mode=TwoWay}" Foreground="Black" VerticalAlignment="Center" Width="323" Margin="40,0,0,0">
+                <toolkit:ListPicker Name="ListPickerPriorities" ItemsSource="{Binding PriorityList}" SelectionChanged="ListPickerPriorities_SelectionChanged" Foreground="Black" VerticalAlignment="Center" Width="323" Margin="40,0,0,0">
                     <toolkit:ListPicker.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="15,0,0,0" Orientation="Horizontal">

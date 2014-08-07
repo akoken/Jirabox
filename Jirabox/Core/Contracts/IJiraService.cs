@@ -16,9 +16,9 @@ namespace Jirabox.Core.Contracts
 
         BitmapImage GetDisplayPicture(string username);
 
-        Task<Project> GetProjectByKey(string serverUrl, string username, string password, string key);
+        Task<Project> GetProjectByKey(string serverUrl, string username, string password, string key, bool withoutCache = false);
 
-        Task<ObservableCollection<Issue>> GetIssuesByProjectKey(string serverUrl, string username, string password, string key);
+        Task<ObservableCollection<Issue>> GetIssuesByProjectKey(string serverUrl, string username, string password, string key, bool withoutCache = false);
 
         Task<Issue> GetIssueByKey(string serverUrl, string username, string password, string key);
 

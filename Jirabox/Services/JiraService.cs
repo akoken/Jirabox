@@ -91,12 +91,13 @@ namespace Jirabox.Services
             return projects;
         }
 
-        public async Task<Project> GetProjectByKey(string serverUrl, string username, string password, string key)
+        public async Task<Project> GetProjectByKey(string serverUrl, string username, string password, string key, bool withoutCache = false)
         {
             var cacheFileName = string.Format("ProjectByKey.{0}.cache", key);
+            
             //Check cache file is exist            
             var isCacheExist = await cacheDataService.DoesFileExist(cacheFileName);
-            if (isCacheExist)
+            if (!withoutCache && isCacheExist)
             {
                 var projectFile = await cacheDataService.Get(cacheFileName);
                 return JsonConvert.DeserializeObject<Project>(projectFile);
@@ -265,11 +266,11 @@ namespace Jirabox.Services
             return null;
         }
 
-        public async Task<ObservableCollection<Issue>> GetIssuesByProjectKey(string serverUrl, string username, string password, string key)
+        public async Task<ObservableCollection<Issue>> GetIssuesByProjectKey(string serverUrl, string username, string password, string key, bool withoutCache = false)
         {
             var cacheFileName = string.Format("IssuesByProjectKey.{0}.cache", key);
             var isCacheExist = await cacheDataService.DoesFileExist(cacheFileName);
-            if (isCacheExist)
+            if (!withoutCache && isCacheExist)
             {
                 var issuesFile = await cacheDataService.Get(cacheFileName);
                 return JsonConvert.DeserializeObject<ObservableCollection<Issue>>(issuesFile);

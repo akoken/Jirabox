@@ -129,8 +129,7 @@ namespace Jirabox.ViewModel
         {
             StorageHelper.ClearUserCredential();
             SimpleIoc.Default.GetInstance<LoginViewModel>().ClearFields();
-            navigationService.Navigate<LoginViewModel>();            
-            navigationService.RemoveBackEntry();
+            navigationService.Navigate<LoginViewModel>();                        
         }
 
         private void Refresh()

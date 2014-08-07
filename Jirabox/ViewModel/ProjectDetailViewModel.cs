@@ -18,6 +18,7 @@ namespace Jirabox.ViewModel
 
         public RelayCommand<Issue> ShowIssueDetailCommand { get; private set; }
         public RelayCommand CreateIssueCommand { get; private set; }
+        public RelayCommand RefreshCommand { get; private set; }
         
 
         public bool IsDataLoaded
@@ -83,6 +84,12 @@ namespace Jirabox.ViewModel
 
             ShowIssueDetailCommand = new RelayCommand<Issue>(issue => NavigateToIssueDetailView(issue), issue => issue != null);
             CreateIssueCommand = new RelayCommand(NavigateToCreateIssueView);
+            RefreshCommand = new RelayCommand(RefreshIssues);
+        }
+
+        private void RefreshIssues()
+        {            
+            Initialize(Key, true);
         }  
  
         private void NavigateToIssueDetailView(Issue selectedIssue)
@@ -93,12 +100,12 @@ namespace Jirabox.ViewModel
         {
             navigationService.Navigate<CreateIssueViewModel>(Project);
         }
-     
-        public async void Initialize(string projectKey)
+
+        public async void Initialize(string projectKey, bool withoutCache = false)
         {
             IsDataLoaded = false;
             Project = await jiraService.GetProjectByKey(App.ServerUrl, App.UserName, App.Password, projectKey);
-            Issues = await jiraService.GetIssuesByProjectKey(App.ServerUrl, App.UserName, App.Password, projectKey);
+            Issues = await jiraService.GetIssuesByProjectKey(App.ServerUrl, App.UserName, App.Password, projectKey, withoutCache);
             Key = projectKey;
             IsDataLoaded = true;
         }      

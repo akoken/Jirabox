@@ -200,4 +200,7 @@
   <data name="AddCommentMessage" xml:space="preserve">
     <value>Please type a comment.</value>
   </data>
+  <data name="CreateIssueNullProjectMessage" xml:space="preserve">
+    <value>Opps! Something went wrong. Unable to get project detail</value>
+  </data>
 </root>

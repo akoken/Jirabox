@@ -228,5 +228,10 @@ namespace Jirabox.ViewModel
             Password = string.Empty;
             IsRememberMe = false;
         }
+
+        public void RemoveBackEntry()
+        {
+            navigationService.RemoveBackEntry();
+        }
     }
 }
