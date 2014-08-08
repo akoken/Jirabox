@@ -110,7 +110,7 @@
             </StackPanel>
             <StackPanel  Grid.Row="4" Margin="0,20,0,0">
                 <TextBlock Text="Description"/>
-                <TextBox Text="{Binding Description, Mode=TwoWay}" TextWrapping="Wrap" Height="210" Margin="-10,0,0,0"/>
+                <TextBox Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="Description_TextChanged" TextWrapping="Wrap" AcceptsReturn="True" Height="210" Margin="-10,0,0,0"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="5" HorizontalAlignment="Center">
                 <Button  Width="220" Content="Create" Command="{Binding CreateIssueCommand}" Background="#1199CC"/>

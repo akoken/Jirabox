@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using Jirabox.Common;
 using Jirabox.Core.Contracts;
 using Jirabox.Core.ExceptionExtension;
+using Jirabox.Model;
 using Jirabox.Resources;
 using System;
 using System.Threading;
@@ -153,7 +154,7 @@ namespace Jirabox.ViewModel
                     else
                         StorageHelper.ClearUserCredential();
 
-                    navigationService.Navigate<ProjectListViewModel>();
+                    navigationService.Navigate<ProjectListViewModel>();                    
                 }
             }         
             catch (HttpRequestStatusCodeException exception)

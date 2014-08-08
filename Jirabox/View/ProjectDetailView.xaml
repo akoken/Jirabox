@@ -103,37 +103,45 @@
             </phone:PivotItem>
             <phone:PivotItem Foreground="Black">
                 <phone:PivotItem.Header>
-                    <TextBlock Text="Issues" Foreground="Black" />
+                    <TextBlock Text="Issues"
+                               Foreground="Black" />
                 </phone:PivotItem.Header>
-                <ScrollViewer>
-                <phone:LongListSelector Name="IssueList" ItemsSource="{Binding Issues}" toolkit:TiltEffect.IsTiltEnabled="True">
+                <phone:LongListSelector Name="IssueList"
+                                        ItemsSource="{Binding Issues}"
+                                        toolkit:TiltEffect.IsTiltEnabled="True">
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="5">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
+                                    <RowDefinition />
+                                    <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="29"/>
-                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="29" />
+                                    <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Image Source="{Binding Fields.IssueType.IconUrl}" Width="25" Height="25"/>
-                                <TextBlock Text="{Binding Key}" Grid.Column="1" Foreground="Black"/>
-                                <TextBlock Text="{Binding Fields.Summary}" Grid.Row="1" Grid.ColumnSpan="2" Margin="4,0,0,0" Foreground="Black"/>
+                                <Image Source="{Binding Fields.IssueType.IconUrl}"
+                                       Width="25"
+                                       Height="25" />
+                                <TextBlock Text="{Binding Key}"
+                                           Grid.Column="1"
+                                           Foreground="Black" />
+                                <TextBlock Text="{Binding Fields.Summary}"
+                                           Grid.Row="1"
+                                           Grid.ColumnSpan="2"
+                                           Margin="4,0,0,0"
+                                           Foreground="Black" />
                             </Grid>
                         </DataTemplate>
                     </phone:LongListSelector.ItemTemplate>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Tap">
-                            <command:EventToCommand 
-                                    PassEventArgsToCommand="False" 
-                                    CommandParameter="{Binding Path=SelectedItem, ElementName=IssueList}"
-                                    Command="{Binding ShowIssueDetailCommand}"/>
+                            <command:EventToCommand PassEventArgsToCommand="False"
+                                                    CommandParameter="{Binding Path=SelectedItem, ElementName=IssueList}"
+                                                    Command="{Binding ShowIssueDetailCommand}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </phone:LongListSelector>
-                </ScrollViewer>
             </phone:PivotItem>
         </phone:Pivot>
     </Grid>    

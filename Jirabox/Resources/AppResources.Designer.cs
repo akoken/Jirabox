@@ -133,11 +133,38 @@ namespace Jirabox.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Opps! Something went wrong while creating issue..
+        /// </summary>
+        public static string CreateIssueErrorMessage {
+            get {
+                return ResourceManager.GetString("CreateIssueErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Opps! Something went wrong. Unable to get project detail.
         /// </summary>
         public static string CreateIssueNullProjectMessage {
             get {
                 return ResourceManager.GetString("CreateIssueNullProjectMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You must specify a summary of the issue..
+        /// </summary>
+        public static string CreateIssueSummaryValidationErrorMessage {
+            get {
+                return ResourceManager.GetString("CreateIssueSummaryValidationErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IssueCreatedCallback.
+        /// </summary>
+        public static string CreateIssueToken {
+            get {
+                return ResourceManager.GetString("CreateIssueToken", resourceCulture);
             }
         }
         
@@ -246,6 +273,15 @@ namespace Jirabox.Resources {
         public static string LoginFailedMessage {
             get {
                 return ResourceManager.GetString("LoginFailedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoginSuccessCallback.
+        /// </summary>
+        public static string LoginSuccessToken {
+            get {
+                return ResourceManager.GetString("LoginSuccessToken", resourceCulture);
             }
         }
         

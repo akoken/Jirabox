@@ -203,4 +203,16 @@
   <data name="CreateIssueNullProjectMessage" xml:space="preserve">
     <value>Opps! Something went wrong. Unable to get project detail</value>
   </data>
+  <data name="CreateIssueErrorMessage" xml:space="preserve">
+    <value>Opps! Something went wrong while creating issue.</value>
+  </data>
+  <data name="CreateIssueSummaryValidationErrorMessage" xml:space="preserve">
+    <value>You must specify a summary of the issue.</value>
+  </data>
+  <data name="CreateIssueToken" xml:space="preserve">
+    <value>IssueCreatedCallback</value>
+  </data>
+  <data name="LoginSuccessToken" xml:space="preserve">
+    <value>LoginSuccessCallback</value>
+  </data>
 </root>

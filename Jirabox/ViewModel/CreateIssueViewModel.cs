@@ -174,8 +174,9 @@ namespace Jirabox.ViewModel
         }
 
         private async void CreateIssue()
-        {           
-            IsDataLoaded = false;
+        {
+            if (!IsParametersValid()) return;           
+
             var request = new CreateIssueRequest();
             request.Fields.CreateIssueProject.Key = Project.Key;
             request.Fields.Description = Description;
@@ -183,16 +184,36 @@ namespace Jirabox.ViewModel
             request.Fields.Priority.Id = PriorityList[SelectedPriorityIndex].Id;
             request.Fields.Summary = Summary;
 
+            IsDataLoaded = false;
             var createdIssue = await jiraService.CreateIssue(request);
-            dialogService.ShowDialog(string.Format(AppResources.IssueCreatedMessage, createdIssue.Key), AppResources.Done);
+            if (createdIssue == null)
+            {
+                dialogService.ShowDialog(AppResources.CreateIssueErrorMessage, AppResources.Error);
+            }
+            else
+            {
+                dialogService.ShowDialog(string.Format(AppResources.IssueCreatedMessage, createdIssue.Key), AppResources.Done);
+                MessengerInstance.Send<bool>(true, AppResources.CreateIssueToken);
+                navigationService.GoBack();
+            }
+
             IsDataLoaded = true;
-            navigationService.GoBack();
         }
 
         private void NavigateToBack()
         {
             CleanUp();
             navigationService.GoBack();
+        }
+
+        private bool IsParametersValid()
+        {
+            if (string.IsNullOrEmpty(Summary))
+            {
+                dialogService.ShowDialog(AppResources.CreateIssueSummaryValidationErrorMessage, AppResources.Warning);
+                return false;
+            }
+            return true;
         }
     }
 }

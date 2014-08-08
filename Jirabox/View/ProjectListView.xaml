@@ -103,7 +103,7 @@
                                         LayoutMode="List"
                                         IsGroupingEnabled="{Binding IsGroupingEnabled}"
                                         HideEmptyGroups ="True"
-                                        ItemsSource="{Binding GroupedProjects}"
+                                        ItemsSource="{Binding GroupedProjects, Mode=TwoWay}"
                                         Margin="0,0,-22,75"                                                                                                                                                                                                    
                                         toolkit:TiltEffect.IsTiltEnabled="True">                   
                     <i:Interaction.Triggers>
@@ -212,8 +212,8 @@
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Tap">
                                 <command:EventToCommand 
-                                    PassEventArgsToCommand="False"                              
-                                    Command="{Binding ShowAboutPageCommand}"/>
+                                    PassEventArgsToCommand="False"
+                                                        Command="{Binding ShowAboutViewCommand}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </control:StandartTile>

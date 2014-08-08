@@ -1,5 +1,7 @@
 ﻿using Jirabox.ViewModel;
 using Microsoft.Phone.Controls;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Navigation;
 
 namespace Jirabox.View
@@ -33,6 +35,14 @@ namespace Jirabox.View
         private void ListPickerPriorities_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {            
             vm.SelectedPriorityIndex = ListPickerPriorities.SelectedIndex;
+        }
+
+        private void Description_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            // Update the binding source
+            BindingExpression bindingExpr = textBox.GetBindingExpression(TextBox.TextProperty);
+            bindingExpr.UpdateSource();
         }
     }
 }

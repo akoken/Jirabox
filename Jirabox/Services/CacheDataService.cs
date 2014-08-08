@@ -62,7 +62,7 @@ namespace Jirabox.Services
             return false;            
         } 
 
-        public async void ClearCacheData()
+        public async Task ClearCacheData()
         {
             var folder = ApplicationData.Current.LocalFolder;
             if (Directory.Exists(string.Format(@"{0}\{1}", folder.Path, cacheFolderName)))
@@ -74,7 +74,7 @@ namespace Jirabox.Services
                 {
                     await file.DeleteAsync();
                 }
-            }
+            }        
         }
     }
 }

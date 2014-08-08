@@ -58,11 +58,11 @@ namespace Jirabox
 
         }
      
-        private void Application_Launching(object sender, LaunchingEventArgs e)
+        private async void Application_Launching(object sender, LaunchingEventArgs e)
         {
             //Clear cache data
             var cacheDataService = new CacheDataService();
-            cacheDataService.ClearCacheData();
+            await cacheDataService.ClearCacheData();
 
             //Clear image data
             var cacheSetting = new IsolatedStorageProperty<bool>("ClearImageCache", false);

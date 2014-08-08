@@ -99,5 +99,16 @@ namespace Jirabox.Tests.Mocks
         {
             throw new NotImplementedException();
         }
+
+
+        public Task<Model.Project> GetProjectByKey(string serverUrl, string username, string password, string key, bool withoutCache = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<System.Collections.ObjectModel.ObservableCollection<Model.Issue>> GetIssuesByProjectKey(string serverUrl, string username, string password, string key, bool withoutCache = false)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

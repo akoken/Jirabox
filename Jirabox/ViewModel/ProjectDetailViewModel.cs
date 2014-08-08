@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using Jirabox.Core.Contracts;
 using Jirabox.Model;
+using Jirabox.Resources;
 using System.Collections.ObjectModel;
 
 namespace Jirabox.ViewModel
@@ -103,8 +104,16 @@ namespace Jirabox.ViewModel
 
         public async void Initialize(string projectKey, bool withoutCache = false)
         {
+            MessengerInstance.Register<bool>(this, AppResources.CreateIssueToken, isIssueCreated =>
+            {
+                if (isIssueCreated)
+                {
+                    RefreshIssues();
+                }
+            });
+
             IsDataLoaded = false;
-            Project = await jiraService.GetProjectByKey(App.ServerUrl, App.UserName, App.Password, projectKey);
+            Project = await jiraService.GetProjectByKey(App.ServerUrl, App.UserName, App.Password, projectKey, withoutCache);
             Issues = await jiraService.GetIssuesByProjectKey(App.ServerUrl, App.UserName, App.Password, projectKey, withoutCache);
             Key = projectKey;
             IsDataLoaded = true;
