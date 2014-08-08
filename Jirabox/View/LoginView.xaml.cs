@@ -15,5 +15,11 @@ namespace Jirabox.View
             var vm = DataContext as LoginViewModel;
             vm.CancelLogin();
         }
+
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            var vm = DataContext as LoginViewModel;
+            vm.RemoveBackEntry();
+        }
     }
 }

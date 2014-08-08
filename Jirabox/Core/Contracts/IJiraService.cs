@@ -10,15 +10,15 @@ namespace Jirabox.Core.Contracts
     {        
         Task<bool> LoginAsync(string serverUrl, string username, string password, CancellationTokenSource cancellationTokenSource);
 
-        Task<ObservableCollection<Project>> GetProjects(string serverUrl, string username, string password);
+        Task<ObservableCollection<Project>> GetProjects(string serverUrl, string username, string password, bool withoutCache = false);
 
         Task<User> GetUserProfileAsync(string username);
 
         BitmapImage GetDisplayPicture(string username);
 
-        Task<Project> GetProjectByKey(string serverUrl, string username, string password, string key);
+        Task<Project> GetProjectByKey(string serverUrl, string username, string password, string key, bool withoutCache = false);
 
-        Task<ObservableCollection<Issue>> GetIssuesByProjectKey(string serverUrl, string username, string password, string key);
+        Task<ObservableCollection<Issue>> GetIssuesByProjectKey(string serverUrl, string username, string password, string key, bool withoutCache = false);
 
         Task<Issue> GetIssueByKey(string serverUrl, string username, string password, string key);
 

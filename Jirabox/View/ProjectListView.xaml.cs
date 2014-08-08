@@ -1,4 +1,5 @@
-﻿using Microsoft.Phone.Controls;
+﻿using Jirabox.ViewModel;
+using Microsoft.Phone.Controls;
 
 namespace Jirabox.Views
 {
@@ -11,6 +12,13 @@ namespace Jirabox.Views
         protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
         {
             projectList.SelectedItem = null;           
+        }
+
+        protected async override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            var vm = this.DataContext as ProjectListViewModel;
+            await vm.InitializeData(true);
+            vm.RemoveBackEntry();        
         }
     }
 }

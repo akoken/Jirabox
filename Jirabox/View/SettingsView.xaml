@@ -17,9 +17,6 @@
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="False">
     
-    <phone:PhoneApplicationPage.Resources>
-        <converter:DoubleToIntConverter x:Key="DoubleToIntConverter" />
-    </phone:PhoneApplicationPage.Resources>
 
     <Grid x:Name="LayoutRoot" Background="#FFECECEC">
         <Grid.RowDefinitions>

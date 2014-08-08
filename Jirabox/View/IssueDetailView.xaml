@@ -24,35 +24,11 @@
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="False">
 
-    <phone:PhoneApplicationPage.Resources>
-        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-        <converter:DataLoadedToVisibilityConverter x:Key="IsDataLoadedToVisibilityConverter"/>
-        <converter:HistoryToCreateDateConverter x:Key="HistoryToCreateDateConverter" />
-        <converter:NameToImageConverter x:Key="NameToImageConverter"/>
-        <converter:CheckIssueSummaryLengthConverter x:Key="CheckIssueSummaryLengthConverter" />
-        <converter:DateTimeConverter x:Key="DateTimeConverter"/>
-        <Storyboard x:Name="popupAnimationOpen">
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" Storyboard.TargetName="popup">
-                <DiscreteObjectKeyFrame KeyTime="0" Value="{Binding DynamicMargin}">
-                </DiscreteObjectKeyFrame>
-        		<DiscreteObjectKeyFrame KeyTime="0:0:1">
-        			<DiscreteObjectKeyFrame.Value>
-        				<Thickness>0</Thickness>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        	</ObjectAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Name="popupAnimationClose">
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" Storyboard.TargetName="popup">                             
-                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{Binding DynamicMargin}"/>                                                    
-            </ObjectAnimationUsingKeyFrames>
-        </Storyboard>
-    </phone:PhoneApplicationPage.Resources>
     
     <Grid x:Name="LayoutRoot" Background="#FFECECEC">
         <Grid.RowDefinitions>
             <RowDefinition Height="10" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <ProgressBar x:Name="progressBar"
                      IsIndeterminate="True"
@@ -60,44 +36,61 @@
                      VerticalAlignment="Top"
                      Visibility="{Binding IsDataLoaded, Converter={StaticResource IsDataLoadedToVisibilityConverter}}"
                      Margin="0,4,0,0" />
-        <phone:Panorama Foreground="Black" Grid.Row="1">
-            <phone:Panorama.TitleTemplate>
+        <phone:Pivot Foreground="Black"
+                     Grid.Row="1">
+            <phone:Pivot.TitleTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal"
-                                Margin="0,35,0,0">
+                                Margin="-10,-15,0,0">
                         <Image Source="/Jirabox;component/Assets/logo.png"
                                Width="80"
-                               Height="80"
-                               Margin="10,0,0,0" />
+                               Height="80" />
                         <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}"
                                    Style="{StaticResource PhoneTextTitle1Style}"
                                    Foreground="{StaticResource BlackForeground}"
                                    VerticalAlignment="Center" />
                     </StackPanel>
                 </DataTemplate>
-            </phone:Panorama.TitleTemplate>
-            <phone:PanoramaItem Header="Issue" Orientation="Horizontal">
-                <StackPanel Margin="5,0,0,0">
-                    <TextBlock Text="{Binding Issue.Fields.Summary,Converter={StaticResource CheckIssueSummaryLengthConverter}}" TextAlignment="Left" FontWeight="SemiBold" TextWrapping="Wrap" FontSize="25" Width="432" Height="Auto"/>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Type: " Width="123"/>
-                        <StackPanel Orientation="Horizontal" Margin="55,0,0,0">
-                            <Image Source="{Binding Issue.Fields.IssueType.IconUrl}"/>
-                            <TextBlock Text="{Binding Issue.Fields.IssueType.Name}" Margin="10,0,0,0"/>
+            </phone:Pivot.TitleTemplate>
+            <phone:PivotItem Header="Issue">
+                <StackPanel Margin="12,-20,0,0">
+                    <TextBlock Text="{Binding Issue.Fields.Summary,Converter={StaticResource CheckIssueSummaryLengthConverter}}"
+                               TextAlignment="Left"
+                               FontWeight="SemiBold"
+                               TextWrapping="Wrap"
+                               FontSize="25"
+                               Height="Auto" />
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0,0,0,0">
+                        <TextBlock Text="Type: "
+                                   Width="123" />
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="55,0,0,0">
+                            <Image Source="{Binding Issue.Fields.IssueType.IconUrl}" />
+                            <TextBlock Text="{Binding Issue.Fields.IssueType.Name}"
+                                       Margin="10,0,0,0" />
                         </StackPanel>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                        <TextBlock Text="Status:" Width="123"/>
-                        <StackPanel Orientation="Horizontal" Margin="55,0,0,0">
-                            <Image Source="{Binding Issue.Fields.Status.IconUrl}"/>
-                            <TextBlock Text="{Binding Issue.Fields.Status.Name}" Margin="10,0,0,0"/>
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0,5,0,0">
+                        <TextBlock Text="Status:"
+                                   Width="123" />
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="55,0,0,0">
+                            <Image Source="{Binding Issue.Fields.Status.IconUrl}" />
+                            <TextBlock Text="{Binding Issue.Fields.Status.Name}"
+                                       Margin="10,0,0,0" />
                         </StackPanel>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                        <TextBlock Text="Priority:" Width="123"/>
-                        <StackPanel Orientation="Horizontal" Margin="55,0,0,0">
-                            <Image Source="{Binding Issue.Fields.Priority.IconUrl}"/>
-                            <TextBlock Text="{Binding Issue.Fields.Priority.Name}" Margin="10,0,0,0"/>
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0,5,0,0">
+                        <TextBlock Text="Priority:"
+                                   Width="123" />
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="55,0,0,0">
+                            <Image Source="{Binding Issue.Fields.Priority.IconUrl}" />
+                            <TextBlock Text="{Binding Issue.Fields.Priority.Name}"
+                                       Margin="10,0,0,0" />
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"
@@ -105,89 +98,98 @@
                         <TextBlock Text="Created:"
                                    Width="123" />
                         <StackPanel Orientation="Horizontal"
-                                    Margin="50,0,0,0">                           
+                                    Margin="50,0,0,0">
                             <TextBlock Text="{Binding Issue.ChangeLog.Histories, Converter={StaticResource HistoryToCreateDateConverter}}"
                                        Margin="10,0,0,0" />
                         </StackPanel>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                        <TextBlock Text="Assignee:" Width="123" Margin="0,10,0,0"/>
-                        <StackPanel Orientation="Horizontal" Margin="55,0,0,0">
-                            <Border Height="48" Width="48" CornerRadius="5">
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0,10,0,0">
+                        <TextBlock Text="Assignee:"
+                                   Width="123"
+                                   Margin="0,10,0,0" />
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="55,0,0,0">
+                            <Border Height="48"
+                                    Width="48"
+                                    CornerRadius="5">
                                 <Border.Background>
-                                    <ImageBrush ImageSource="{Binding Issue.Fields.Assignee.UserName, Converter={StaticResource NameToImageConverter}}"/>
+                                    <ImageBrush ImageSource="{Binding Issue.Fields.Assignee.UserName, Converter={StaticResource NameToImageConverter}}" />
                                 </Border.Background>
                             </Border>
                         </StackPanel>
-                        <TextBlock Text="{Binding Issue.Fields.Assignee.DisplayName}" Margin="10,10,0,0"/>
+                        <TextBlock Text="{Binding Issue.Fields.Assignee.DisplayName}"
+                                   Margin="10,10,0,0" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
-                        <TextBlock Text="Reporter:" Width="123" Margin="0,5,0,0"/>
-                        <StackPanel Orientation="Horizontal" Margin="55,0,0,0">
-                            <Border Height="48" Width="48" CornerRadius="5">
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0,15,0,0">
+                        <TextBlock Text="Reporter:"
+                                   Width="123"
+                                   Margin="0,5,0,0" />
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="55,0,0,0">
+                            <Border Height="48"
+                                    Width="48"
+                                    CornerRadius="5">
                                 <Border.Background>
-                                    <ImageBrush ImageSource="{Binding Issue.Fields.Reporter.UserName, Converter={StaticResource NameToImageConverter}}"/>
+                                    <ImageBrush ImageSource="{Binding Issue.Fields.Reporter.UserName, Converter={StaticResource NameToImageConverter}}" />
                                 </Border.Background>
                             </Border>
                         </StackPanel>
-                        <TextBlock Text="{Binding Issue.Fields.Reporter.DisplayName}" Margin="10,10,0,0"/>
+                        <TextBlock Text="{Binding Issue.Fields.Reporter.DisplayName}"
+                                   Margin="10,10,0,0" />
                     </StackPanel>
-                    <StackPanel Orientation="Vertical" Margin="0,5,0,0">
-                        <TextBlock Text="Description:" Height="40"/>
-                        <ScrollViewer Height="309">
-                            <TextBlock Text="{Binding Issue.Fields.Description}" TextWrapping="Wrap" Width="432" Height="Auto"/>
+                    <StackPanel Orientation="Vertical"
+                                Margin="0,5,0,0">
+                        <TextBlock Text="Description:"
+                                   Height="40" />
+                        <ScrollViewer Height="175">
+                            <TextBlock Text="{Binding Issue.Fields.Description}"
+                                       TextWrapping="Wrap"
+                                       Width="432"
+                                       Height="Auto" />
                         </ScrollViewer>
                     </StackPanel>
                 </StackPanel>
-            </phone:PanoramaItem>
-            <phone:PanoramaItem Header="Comments">
-                <phone:LongListSelector Name="CommentList" ItemsSource="{Binding Issue.Fields.Comment.Comments}" toolkit:TiltEffect.IsTiltEnabled="True">
-                    <phone:LongListSelector.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel x:Name="panel" Orientation="Horizontal">
-                                <Border Height="48" Width="48" CornerRadius="5" Margin="3">
-                                    <Border.Background>
-                                        <ImageBrush ImageSource="{Binding Author.UserName, Converter={StaticResource NameToImageConverter}}"/>
-                                    </Border.Background>
-                                </Border>
-                                <StackPanel>
-                                    <TextBlock Margin="10,1,0,0" VerticalAlignment="Top" TextWrapping="Wrap" MaxWidth="349" Foreground="Black">
-                                    <Run Text="{Binding Author.DisplayName}"/>
-                                    <Run Text=" added a comment." FontSize="22"/>                                    
-                                    <Run Text="{Binding Created, Converter={StaticResource DateTimeConverter}}" FontSize="15" Foreground="Black"/>
-                                    </TextBlock>
+            </phone:PivotItem>
+
+            <phone:PivotItem Header="Comments">
+                <ScrollViewer>
+                    <phone:LongListSelector Name="CommentList"                                           
+                                            ItemsSource="{Binding Issue.Fields.Comment.Comments}"
+                                            toolkit:TiltEffect.IsTiltEnabled="True">
+                        <phone:LongListSelector.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Height="48"
+                                            Width="48"
+                                            CornerRadius="5"
+                                            Margin="3">
+                                        <Border.Background>
+                                            <ImageBrush ImageSource="{Binding Author.UserName, Converter={StaticResource NameToImageConverter}}" />
+                                        </Border.Background>
+                                    </Border>
+                                    <StackPanel>
+                                        <TextBlock Margin="10,1,0,0"
+                                                   VerticalAlignment="Top"
+                                                   TextWrapping="Wrap"
+                                                   MaxWidth="349"
+                                                   Foreground="Black">
+                                    <Run Text="{Binding Author.DisplayName}" />
+                                    <Run Text=" added a comment."
+                                            FontSize="22" />                                    
+                                    <Run Text="{Binding Created, Converter={StaticResource DateTimeConverter}}"
+                                            FontSize="15"
+                                            Foreground="Black" />
+                                        </TextBlock>
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
-                        </DataTemplate>
-                    </phone:LongListSelector.ItemTemplate>
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Tap">
-                            <command:EventToCommand 
-                                    PassEventArgsToCommand="False"        
-                                    CommandParameter="{Binding Path=SelectedItem, ElementName=CommentList}"
-                                    Command="{Binding ShowCommentDetailCommand}"/>                            
-                        </i:EventTrigger>                        
-                            <i:EventTrigger EventName="Tap">
-                                <eim:ControlStoryboardAction Storyboard="{StaticResource popupAnimationOpen}"/>
-                            </i:EventTrigger>                        
-                    </i:Interaction.Triggers>
-                </phone:LongListSelector>
-            </phone:PanoramaItem>
-        </phone:Panorama>
-        <view:CommentDetailView Grid.RowSpan="2" Margin="{Binding Path=DataContext.DynamicMargin, ElementName=LayoutRoot}" Visibility="{Binding Path=DataContext.IsOpen, ElementName=LayoutRoot, Converter={StaticResource BoolToVisibilityConverter}}" x:Name="popup">
-            <i:Interaction.Behaviors>
-                <el:FluidMoveBehavior>
-                    <el:FluidMoveBehavior.EaseY>
-                        <SineEase EasingMode="EaseInOut"/>
-                    </el:FluidMoveBehavior.EaseY>
-                </el:FluidMoveBehavior>
-            </i:Interaction.Behaviors>
-            <i:Interaction.Triggers>
-                <ec:DataTrigger Binding="{Binding Path=DataContext.IsOpen, ElementName=LayoutRoot}" Value="False">
-                    <eim:ControlStoryboardAction Storyboard="{StaticResource popupAnimationClose}"/>
-                </ec:DataTrigger>
-            </i:Interaction.Triggers>            
-        </view:CommentDetailView>        
+                            </DataTemplate>
+                        </phone:LongListSelector.ItemTemplate>                       
+                    </phone:LongListSelector>
+                </ScrollViewer>
+            </phone:PivotItem>
+        </phone:Pivot>
     </Grid>    
     
     <toolkit:TransitionService.NavigationInTransition>

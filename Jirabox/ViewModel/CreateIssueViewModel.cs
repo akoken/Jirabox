@@ -17,8 +17,8 @@ namespace Jirabox.ViewModel
         private string description;        
         private ObservableCollection<IssueType> issueTypes;
         private ObservableCollection<Priority> priorityList;
-        private IssueType selectedIssueType;
-        private Priority selectedPriority;
+        private int selectedIssueTypeIndex = -1;
+        private int selectedPriorityIndex = -1;
         private Project project;
 
         public RelayCommand CreateIssueCommand { get; private set; }
@@ -90,33 +90,33 @@ namespace Jirabox.ViewModel
                 }
             }
         }
-        public IssueType SelectedIssueType
+        public int SelectedIssueTypeIndex
         {
             get
             {
-                return selectedIssueType;
+                return selectedIssueTypeIndex;
             }
             set
             {
-                if (selectedIssueType != value)
+                if (selectedIssueTypeIndex != value)
                 {
-                    selectedIssueType = value;
-                    RaisePropertyChanged(() => SelectedIssueType);
+                    selectedIssueTypeIndex = value;
+                    RaisePropertyChanged(() => SelectedIssueTypeIndex);
                 }
             }
         }
-        public Priority SelectedPriority
+        public int SelectedPriorityIndex
         {
             get
             {
-                return selectedPriority;
+                return selectedPriorityIndex;
             }
             set
             {
-                if (selectedPriority != value)
+                if (selectedPriorityIndex != value)
                 {
-                    selectedPriority = value;
-                    RaisePropertyChanged(() => SelectedPriority);
+                    selectedPriorityIndex = value;
+                    RaisePropertyChanged(() => SelectedPriorityIndex);
                 }
             }
         }
@@ -142,13 +142,25 @@ namespace Jirabox.ViewModel
             this.jiraService = jiraService;
             this.dialogService = dialogService;
             this.navigationService = navigationService;
-            CreateIssueCommand = new RelayCommand(CreateIssue);
+            CreateIssueCommand = new RelayCommand(CreateIssue, CanCreateIssue);
             CancelCommand = new RelayCommand(NavigateToBack);                        
+        }
+
+        private bool CanCreateIssue()
+        {
+            return Project != null;
         }
 
         public async void Initialize()
         {
             Project = navigationService.GetNavigationParameter() as Project;
+            if (Project == null)
+            {
+                dialogService.ShowDialog(AppResources.CreateIssueNullProjectMessage, AppResources.Error);
+                IsDataLoaded = true;
+                return;
+            }
+            CreateIssueCommand.RaiseCanExecuteChanged();
             IssueTypes = await jiraService.GetIssueTypesOfProject(Project.Key);
             PriorityList = await jiraService.GetPriorities();
             IsDataLoaded = true;
@@ -163,24 +175,45 @@ namespace Jirabox.ViewModel
 
         private async void CreateIssue()
         {
-            IsDataLoaded = false;
+            if (!IsParametersValid()) return;           
+
             var request = new CreateIssueRequest();
             request.Fields.CreateIssueProject.Key = Project.Key;
             request.Fields.Description = Description;
-            request.Fields.IssueType.Name = SelectedIssueType.Name;
-            request.Fields.Priority.Id = SelectedPriority.Id;
+            request.Fields.IssueType.Name = IssueTypes[SelectedIssueTypeIndex].Name;
+            request.Fields.Priority.Id = PriorityList[SelectedPriorityIndex].Id;
             request.Fields.Summary = Summary;
 
+            IsDataLoaded = false;
             var createdIssue = await jiraService.CreateIssue(request);
-            dialogService.ShowDialog(string.Format(AppResources.IssueCreatedMessage, createdIssue.Key), AppResources.Done);
+            if (createdIssue == null)
+            {
+                dialogService.ShowDialog(AppResources.CreateIssueErrorMessage, AppResources.Error);
+            }
+            else
+            {
+                dialogService.ShowDialog(string.Format(AppResources.IssueCreatedMessage, createdIssue.Key), AppResources.Done);
+                MessengerInstance.Send<bool>(true, AppResources.CreateIssueToken);
+                navigationService.GoBack();
+            }
+
             IsDataLoaded = true;
-            navigationService.GoBack();
         }
 
         private void NavigateToBack()
         {
             CleanUp();
             navigationService.GoBack();
+        }
+
+        private bool IsParametersValid()
+        {
+            if (string.IsNullOrEmpty(Summary))
+            {
+                dialogService.ShowDialog(AppResources.CreateIssueSummaryValidationErrorMessage, AppResources.Warning);
+                return false;
+            }
+            return true;
         }
     }
 }

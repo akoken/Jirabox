@@ -1,19 +1,23 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Ioc;
 using Jirabox.Common;
 using Jirabox.Core.Contracts;
 using Jirabox.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
 namespace Jirabox.ViewModel
 {
     public class ProjectListViewModel : ViewModelBase
     {
-        private INavigationService navigationService;
-        private IDialogService dialogService;
-        private IJiraService jiraService;
+        private readonly INavigationService navigationService;
+        private readonly ICacheDataService cacheDataService;
+        private readonly IDialogService dialogService;
+        private readonly IJiraService jiraService;
+
         private bool isDataLoaded;
         private bool isGroupingEnabled;
         private BitmapImage displayPicture;
@@ -25,7 +29,10 @@ namespace Jirabox.ViewModel
         public RelayCommand ShowAssignedIssuesCommand { get; private set; }
         public RelayCommand ShowIssuesReportedByMeCommand { get; private set; }
         public RelayCommand ShowSettingsCommand { get; private set; }
-        public RelayCommand ShowAboutPageCommand { get; private set; }
+        public RelayCommand ShowAboutViewCommand { get; private set; }
+        public RelayCommand RefreshCommand { get; private set; }
+        public RelayCommand LogoutCommand { get; private set; }
+        public RelayCommand AboutCommand { get; private set; }
         public RelayCommand<string> SearchCommand { get; private set; }
 
         public bool IsDataLoaded
@@ -33,11 +40,8 @@ namespace Jirabox.ViewModel
             get { return isDataLoaded; }
             set
             {
-                if (isDataLoaded != value)
-                {
-                    isDataLoaded = value;
-                    RaisePropertyChanged(() => IsDataLoaded);
-                }
+                isDataLoaded = value;
+                RaisePropertyChanged(() => IsDataLoaded);
             }
         }
 
@@ -73,11 +77,8 @@ namespace Jirabox.ViewModel
             get { return groupedProjects; }
             set
             {
-                if (groupedProjects != value)
-                {
-                    groupedProjects = value;
-                    RaisePropertyChanged(() => GroupedProjects);
-                }
+                groupedProjects = value;
+                RaisePropertyChanged(() => GroupedProjects);
             }
         }
 
@@ -86,17 +87,15 @@ namespace Jirabox.ViewModel
             get { return flatProjects; }
             set
             {
-                if (flatProjects != value)
-                {
-                    flatProjects = value;
-                    RaisePropertyChanged(() => FlatProjects);
-                }
+                flatProjects = value;
+                RaisePropertyChanged(() => FlatProjects);
             }
         }
 
-        public ProjectListViewModel(INavigationService navigationService, IDialogService dialogService, IJiraService jiraService)
+        public ProjectListViewModel(INavigationService navigationService, IDialogService dialogService, IJiraService jiraService, ICacheDataService cacheDataService)
         {
             this.navigationService = navigationService;
+            this.cacheDataService = cacheDataService;
             this.dialogService = dialogService;
             this.jiraService = jiraService;
 
@@ -105,28 +104,33 @@ namespace Jirabox.ViewModel
             ShowAssignedIssuesCommand = new RelayCommand(NavigateToAssignedIssues);
             ShowIssuesReportedByMeCommand = new RelayCommand(NavigateToIssuesReportedByMe);
             ShowSettingsCommand = new RelayCommand(NavigateToSettingsView);
-            ShowAboutPageCommand = new RelayCommand(NavigateToAboutView);
+            ShowAboutViewCommand = new RelayCommand(NavigateToAboutView);
             SearchCommand = new RelayCommand<string>(searchText => NavigateToSearchResults(searchText));
-
-            if (!IsInDesignMode)
-            {
-                InitializeData();
-
-                //Remove login view from navigation history
-                navigationService.RemoveBackEntry();
-            }
+            RefreshCommand = new RelayCommand(async () => await Refresh());
+            LogoutCommand = new RelayCommand(async () => await Logout());
 
             MessengerInstance.Register<bool>(this, (isEnabled) =>
             {
                 IsGroupingEnabled = isEnabled;
             });
         }
-
-        private async void InitializeData()
+        private async Task Logout()
         {
             IsDataLoaded = false;
+            StorageHelper.ClearUserCredential();
+            await cacheDataService.ClearCacheData();
+            IsDataLoaded = true;
+
+            SimpleIoc.Default.GetInstance<LoginViewModel>().ClearFields();
+            navigationService.Navigate<LoginViewModel>();                        
+        }       
+        public async Task InitializeData(bool withoutCache = false)
+        {
+            GroupedProjects = null;
+            FlatProjects = null;
+            IsDataLoaded = false;
             await jiraService.GetUserProfileAsync(App.UserName);
-            var projects = await jiraService.GetProjects(App.ServerUrl, App.UserName, App.Password);
+            var projects = await jiraService.GetProjects(App.ServerUrl, App.UserName, App.Password, withoutCache);
 
             GroupedProjects = AlphaKeyGroup<Project>.CreateGroups(projects, System.Threading.Thread.CurrentThread.CurrentUICulture, (Project s) => { return s.Name; }, true);
             FlatProjects = projects;
@@ -136,7 +140,14 @@ namespace Jirabox.ViewModel
             IsGroupingEnabled = new IsolatedStorageProperty<bool>(Settings.IsGroupingEnabled, true).Value;
             IsDataLoaded = true;
         }
-
+        public void RemoveBackEntry()
+        {
+            navigationService.RemoveBackEntry();
+        }
+        private async Task Refresh()
+        {
+            await InitializeData(true);
+        }
         private void NavigateToProjectDetail(Project project)
         {
             navigationService.Navigate<ProjectDetailViewModel>(project.Key);

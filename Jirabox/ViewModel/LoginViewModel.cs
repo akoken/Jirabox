@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using Jirabox.Common;
 using Jirabox.Core.Contracts;
 using Jirabox.Core.ExceptionExtension;
+using Jirabox.Model;
 using Jirabox.Resources;
 using System;
 using System.Threading;
@@ -11,17 +12,20 @@ namespace Jirabox.ViewModel
 {
     public class LoginViewModel : ViewModelBase
     {
-        private INavigationService navigationService;
-        private IDialogService dialogService;
-        private IJiraService jiraService;
+        private readonly INavigationService navigationService;
+        private readonly IDialogService dialogService;
+        private readonly IJiraService jiraService;
+
+        private CancellationTokenSource cancellationTokenSource = null;
         private string serverUrl;
         private string userName;        
         private string password;
         private bool isDataLoaded;
         private bool isRememberMe;
-        private CancellationTokenSource cancellationTokenSource = null;
+        private bool loginButtonEnabled;
 
-        public RelayCommand LoginCommand { get; private set; }        
+        public RelayCommand LoginCommand { get; private set; }
+        public RelayCommand AboutCommand { get; private set; }   
 
         public string ServerUrl
         {
@@ -34,6 +38,22 @@ namespace Jirabox.ViewModel
                     App.ServerUrl = serverUrl;
                     RaisePropertyChanged(() => ServerUrl);
                 }                
+            }
+        }
+
+        public bool LoginButtonEnabled
+        {
+            get
+            {
+                return loginButtonEnabled;
+            }
+            set
+            {
+                if (loginButtonEnabled != value)
+                {
+                    loginButtonEnabled = value;
+                    RaisePropertyChanged(() => LoginButtonEnabled);
+                }
             }
         }
 
@@ -97,14 +117,15 @@ namespace Jirabox.ViewModel
         {            
             this.navigationService = navigationService;
             this.dialogService = dialogService;
-            this.jiraService = jiraService;            
+            this.jiraService = jiraService;         
+   
             InitializeData();
         }
 
         public async void Login()
         {
             IsDataLoaded = false;
-
+            LoginButtonEnabled = false;
             if (!IsInputsValid())
             {
                 IsDataLoaded = true;
@@ -133,7 +154,7 @@ namespace Jirabox.ViewModel
                     else
                         StorageHelper.ClearUserCredential();
 
-                    navigationService.Navigate<ProjectListViewModel>();
+                    navigationService.Navigate<ProjectListViewModel>();                    
                 }
             }         
             catch (HttpRequestStatusCodeException exception)
@@ -153,10 +174,11 @@ namespace Jirabox.ViewModel
             }
             catch (Exception ex)
             {
-                dialogService.ShowDialog(string.Format(AppResources.FormattedErrorMessage, ex.Message), "Login failed");
+                dialogService.ShowDialog(string.Format(AppResources.FormattedErrorMessage, ex.Message), AppResources.LoginFailedMessage);
             }
          
            IsDataLoaded = true;
+           LoginButtonEnabled = true;
         }
         public bool ValidateUrl(string url)
         {
@@ -174,8 +196,10 @@ namespace Jirabox.ViewModel
         private void InitializeData()
         {
             LoginCommand = new RelayCommand(Login);
+            AboutCommand = new RelayCommand(NavigateToAboutView);
+            
             IsDataLoaded = true;
-
+            LoginButtonEnabled = true;
             var credential = StorageHelper.GetUserCredential();
             if (credential != null)
             {
@@ -183,13 +207,32 @@ namespace Jirabox.ViewModel
                 UserName = credential.UserName;
                 Password = credential.Password;
                 IsRememberMe = true;
+                Login();
             }
+        }
+
+        private void NavigateToAboutView()
+        {
+            navigationService.Navigate<AboutViewModel>();
         }
 
         public void CancelLogin()
         {
             if(cancellationTokenSource != null)
             cancellationTokenSource.Cancel();
+        }
+
+        public void ClearFields()
+        {
+            ServerUrl = string.Empty;
+            UserName = string.Empty;
+            Password = string.Empty;
+            IsRememberMe = false;
+        }
+
+        public void RemoveBackEntry()
+        {
+            navigationService.RemoveBackEntry();
         }
     }
 }

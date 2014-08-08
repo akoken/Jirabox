@@ -18,16 +18,12 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="False">
-
-    <phone:PhoneApplicationPage.Resources>
-        <converter:DataLoadedToVisibilityConverter x:Key="IsDataLoadedToVisibilityConverter"/>
-        <converter:NameToImageConverter x:Key="NameToImageConverter"/>
-    </phone:PhoneApplicationPage.Resources>
+  
     
     <Grid x:Name="LayoutRoot" Background="#FFECECEC">
         <Grid.RowDefinitions>
             <RowDefinition Height="10" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <ProgressBar x:Name="progressBar"
                      IsIndeterminate="True"
@@ -35,23 +31,25 @@
                      VerticalAlignment="Top"
                      Visibility="{Binding IsDataLoaded, Converter={StaticResource IsDataLoadedToVisibilityConverter}}"
                      Margin="0,4,0,0" />
-        <phone:Panorama Grid.Row="1">
-            <phone:Panorama.TitleTemplate>
+        <phone:Pivot Grid.Row="1">
+            <phone:Pivot.TitleTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal"
-                                Margin="0,35,0,0">
+                                Margin="-10,-15,0,0">
                         <Image Source="/Jirabox;component/Assets/logo.png"
                                Width="80"
-                               Height="80"
-                               Margin="10,0,0,0" />
+                               Height="80" />
                         <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}"
                                    Style="{StaticResource PhoneTextTitle1Style}"
                                    Foreground="{StaticResource BlackForeground}"
                                    VerticalAlignment="Center" />
                     </StackPanel>
                 </DataTemplate>
-            </phone:Panorama.TitleTemplate>
-            <phone:PanoramaItem Header="Project" Orientation="Horizontal" Foreground="Black">
+            </phone:Pivot.TitleTemplate>
+            <phone:PivotItem Foreground="Black">
+                <phone:PivotItem.Header>
+                    <TextBlock Text="Project" Foreground="Black"/>
+                </phone:PivotItem.Header>
                 <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="75"/>
@@ -87,8 +85,11 @@
                         <TextBlock Text="{Binding Project.Description}" Margin="5,0,0,0" TextWrapping="Wrap"/>
                     </StackPanel>
                 </Grid>
-            </phone:PanoramaItem>
-            <phone:PanoramaItem Header="Issue Types" Foreground="Black">
+            </phone:PivotItem>
+            <phone:PivotItem Foreground="Black">
+                <phone:PivotItem.Header>
+                    <TextBlock Text="Issue Types" Foreground="Black" />
+                </phone:PivotItem.Header>
                 <phone:LongListSelector ItemsSource="{Binding Project.IssueTypes}">
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
@@ -99,37 +100,50 @@
                         </DataTemplate>
                     </phone:LongListSelector.ItemTemplate>
                 </phone:LongListSelector>
-            </phone:PanoramaItem>
-            <phone:PanoramaItem Header="Issues" Foreground="Black">
-                <phone:LongListSelector Name="IssueList" ItemsSource="{Binding Issues}" toolkit:TiltEffect.IsTiltEnabled="True">
+            </phone:PivotItem>
+            <phone:PivotItem Foreground="Black">
+                <phone:PivotItem.Header>
+                    <TextBlock Text="Issues"
+                               Foreground="Black" />
+                </phone:PivotItem.Header>
+                <phone:LongListSelector Name="IssueList"
+                                        ItemsSource="{Binding Issues}"
+                                        toolkit:TiltEffect.IsTiltEnabled="True">
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="5,5,0,0">
+                            <Grid Margin="5">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
+                                    <RowDefinition />
+                                    <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="29"/>
-                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="29" />
+                                    <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Image Source="{Binding Fields.IssueType.IconUrl}" Width="25" Height="25"/>
-                                <TextBlock Text="{Binding Key}" Grid.Column="1" Foreground="Black"/>
-                                <TextBlock Text="{Binding Fields.Summary}" Grid.Row="1" Grid.ColumnSpan="2" Margin="4,0,0,0" Foreground="Black"/>
+                                <Image Source="{Binding Fields.IssueType.IconUrl}"
+                                       Width="25"
+                                       Height="25" />
+                                <TextBlock Text="{Binding Key}"
+                                           Grid.Column="1"
+                                           Foreground="Black" />
+                                <TextBlock Text="{Binding Fields.Summary}"
+                                           Grid.Row="1"
+                                           Grid.ColumnSpan="2"
+                                           Margin="4,0,0,0"
+                                           Foreground="Black" />
                             </Grid>
                         </DataTemplate>
                     </phone:LongListSelector.ItemTemplate>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Tap">
-                            <command:EventToCommand 
-                                    PassEventArgsToCommand="False" 
-                                    CommandParameter="{Binding Path=SelectedItem, ElementName=IssueList}"
-                                    Command="{Binding ShowIssueDetailCommand}"/>
+                            <command:EventToCommand PassEventArgsToCommand="False"
+                                                    CommandParameter="{Binding Path=SelectedItem, ElementName=IssueList}"
+                                                    Command="{Binding ShowIssueDetailCommand}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </phone:LongListSelector>
-            </phone:PanoramaItem>
-        </phone:Panorama>
+            </phone:PivotItem>
+        </phone:Pivot>
     </Grid>    
 
     <toolkit:TransitionService.NavigationInTransition>
@@ -154,8 +168,13 @@
     </toolkit:TransitionService.NavigationOutTransition>
 
     <bar:Bindable.ApplicationBar>
-        <bar:BindableApplicationBar IsVisible="True" BackgroundColor="#1199CC" Mode="Minimized">
-            <bar:BindableApplicationBarButton Text="create issue" Command="{Binding CreateIssueCommand}" IconUri="/Assets/add.png"/>
+        <bar:BindableApplicationBar IsVisible="True" BackgroundColor="#1199CC" Mode="Default">
+            <bar:BindableApplicationBarButton Text="create issue" 
+                                              Command="{Binding CreateIssueCommand}" 
+                                              IconUri="/Assets/add.png"/>
+            <bar:BindableApplicationBarButton Text="refresh"
+                                              Command="{Binding RefreshCommand}"
+                                              IconUri="/Assets/refresh.png" />
         </bar:BindableApplicationBar>
     </bar:Bindable.ApplicationBar>
 </phone:PhoneApplicationPage>
