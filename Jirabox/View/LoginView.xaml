@@ -1,21 +1,21 @@
 ﻿<phone:PhoneApplicationPage x:Class="Jirabox.View.LoginView"
-                            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                            xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
-                            xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
-                            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                            xmlns:controls="clr-namespace:CS.Windows.Controls;assembly=CS.Windows.Controls"
-                            xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
-                            xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-                            DataContext="{Binding Source={StaticResource Locator}, Path=LoginViewModel}"
-                            xmlns:converter="clr-namespace:Jirabox.Converters"
-                            FontFamily="{StaticResource PhoneFontFamilyNormal}"
-                            FontSize="{StaticResource PhoneFontSizeNormal}"
-                            SupportedOrientations="Portrait"
-                            Orientation="Portrait"
-                            mc:Ignorable="d"
-                            shell:SystemTray.IsVisible="False">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="clr-namespace:CS.Windows.Controls;assembly=CS.Windows.Controls"
+    xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    DataContext="{Binding Source={StaticResource Locator}, Path=LoginViewModel}"
+    xmlns:converter="clr-namespace:Jirabox.Converters"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    SupportedOrientations="Portrait"
+    Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="False">
 
     <Grid x:Name="LayoutRoot" Background="#FFECECEC">
         <Grid.RowDefinitions>
@@ -52,11 +52,14 @@
                 <TextBox Text="{Binding UserName, Mode=TwoWay}" Height="72" HorizontalAlignment="Left" Width="446"/>
             </StackPanel>
             <StackPanel Grid.Row="2">
-                <TextBlock Text="password" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                <PasswordBox Password="{Binding Password, Mode=TwoWay}" Width="446" Height="72" HorizontalAlignment="Left"/>
+                <TextBlock Text="password"
+                           VerticalAlignment="Center"
+                           Margin="10,0,0,0" />
+                <PasswordBox Password="{Binding Password, Mode=TwoWay}"
+                             Width="446"
+                             Height="72"
+                             HorizontalAlignment="Left" />
             </StackPanel>
-            <CheckBox IsChecked="{Binding IsRememberMe, Mode=TwoWay}" HorizontalAlignment="Left" x:Name="rememberMe" Content="remember me" Grid.Row="3" VerticalAlignment="Top"/>
-            <Button Content="LOGIN" IsEnabled="{Binding LoginButtonEnabled, Mode=TwoWay}" Grid.Row="4" Height="80" Command="{Binding LoginCommand}"  Background="#1199CC" FontSize="24" Margin="0,0,0,24"/>
         </Grid>
     </Grid>
 
@@ -84,7 +87,11 @@
     <bar:Bindable.ApplicationBar>
         <bar:BindableApplicationBar IsVisible="True"
                                     BackgroundColor="#1199CC"
-                                    Mode="Default">          
+                                    Mode="Default">
+            <bar:BindableApplicationBarButton Text="login"
+                                              IsEnabled="{Binding LoginButtonEnabled, Mode=TwoWay}"
+                                              Command="{Binding LoginCommand}"
+                                              IconUri="/Assets/login.png" />
             <bar:BindableApplicationBarButton Text="about"
                                               Command="{Binding AboutCommand}"
                                               IconUri="/Assets/about.png" />          

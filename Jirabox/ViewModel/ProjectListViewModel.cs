@@ -4,10 +4,12 @@ using GalaSoft.MvvmLight.Ioc;
 using Jirabox.Common;
 using Jirabox.Core.Contracts;
 using Jirabox.Model;
+using Microsoft.Phone.Shell;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using System.Linq;
 
 namespace Jirabox.ViewModel
 {
@@ -119,10 +121,20 @@ namespace Jirabox.ViewModel
             IsDataLoaded = false;
             StorageHelper.ClearUserCredential();
             await cacheDataService.ClearCacheData();
+            DeleteSecondaryTiles();
             IsDataLoaded = true;
 
             SimpleIoc.Default.GetInstance<LoginViewModel>().ClearFields();
             navigationService.Navigate<LoginViewModel>();                        
+        }
+
+        private void DeleteSecondaryTiles()
+        {
+            var tiles = ShellTile.ActiveTiles.Where(tile => tile.NavigationUri.ToString().Contains("/View/ProjectDetailView.xaml?Key="));
+            tiles.ToList().ForEach(tile =>
+            {
+                tile.Delete();
+            });
         }       
         public async Task InitializeData(bool withoutCache = false)
         {

@@ -3,6 +3,8 @@ using GalaSoft.MvvmLight.Command;
 using Jirabox.Core.Contracts;
 using Jirabox.Model;
 using Jirabox.Resources;
+using Microsoft.Phone.Shell;
+using System;
 using System.Collections.ObjectModel;
 
 namespace Jirabox.ViewModel
@@ -20,6 +22,7 @@ namespace Jirabox.ViewModel
         public RelayCommand<Issue> ShowIssueDetailCommand { get; private set; }
         public RelayCommand CreateIssueCommand { get; private set; }
         public RelayCommand RefreshCommand { get; private set; }
+        public RelayCommand PinToStartScreenCommand { get; private set; }
         
 
         public bool IsDataLoaded
@@ -86,6 +89,17 @@ namespace Jirabox.ViewModel
             ShowIssueDetailCommand = new RelayCommand<Issue>(issue => NavigateToIssueDetailView(issue), issue => issue != null);
             CreateIssueCommand = new RelayCommand(NavigateToCreateIssueView);
             RefreshCommand = new RelayCommand(RefreshIssues);
+            PinToStartScreenCommand = new RelayCommand(PinToStartScreen);
+        }
+
+        private void PinToStartScreen()
+        {
+            ShellTile.Create(new Uri(string.Format("/View/ProjectDetailView.xaml?Key={0}",Project.Key), UriKind.Relative), new StandardTileData()
+            {                
+                Title = Project.Key,
+                BackContent = Project.Name,
+                BackTitle = Project.Id.ToString(),                
+            });
         }
 
         private void RefreshIssues()

@@ -169,6 +169,9 @@
 
     <bar:Bindable.ApplicationBar>
         <bar:BindableApplicationBar IsVisible="True" BackgroundColor="#1199CC" Mode="Default">
+            <bar:BindableApplicationBarButton Text="pin"
+                                              Command="{Binding PinToStartScreenCommand}"
+                                              IconUri="/Assets/pin.png" />
             <bar:BindableApplicationBarButton Text="create issue" 
                                               Command="{Binding CreateIssueCommand}" 
                                               IconUri="/Assets/add.png"/>
