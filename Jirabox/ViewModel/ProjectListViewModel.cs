@@ -10,6 +10,8 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using System.Linq;
+using Jirabox.Resources;
+using System.Threading;
 
 namespace Jirabox.ViewModel
 {
@@ -109,23 +111,31 @@ namespace Jirabox.ViewModel
             ShowAboutViewCommand = new RelayCommand(NavigateToAboutView);
             SearchCommand = new RelayCommand<string>(searchText => NavigateToSearchResults(searchText));
             RefreshCommand = new RelayCommand(async () => await Refresh());
-            LogoutCommand = new RelayCommand(async () => await Logout());
+            LogoutCommand = new RelayCommand(Logout);
 
             MessengerInstance.Register<bool>(this, (isEnabled) =>
             {
                 IsGroupingEnabled = isEnabled;
-            });
+            });          
         }
-        private async Task Logout()
+        private void Logout()
         {
-            IsDataLoaded = false;
-            StorageHelper.ClearUserCredential();
-            await cacheDataService.ClearCacheData();
-            DeleteSecondaryTiles();
-            IsDataLoaded = true;
+            var messageBox = dialogService.ShowPromptDialog(AppResources.LogoutWarningMessage, AppResources.LogoutPromptMessage, AppResources.LogoutPromptCaption);
+            messageBox.Dismissed += async(s1, e1) =>
+            {
+                if (e1.Result == Microsoft.Phone.Controls.CustomMessageBoxResult.LeftButton)
+                {
+                    IsDataLoaded = false;
+                    StorageHelper.ClearUserCredential();
+                    await cacheDataService.ClearCacheData();
+                    DeleteSecondaryTiles();
+                    App.IsLoggedIn = false;
+                    IsDataLoaded = true;
 
-            SimpleIoc.Default.GetInstance<LoginViewModel>().ClearFields();
-            navigationService.Navigate<LoginViewModel>();                        
+                    SimpleIoc.Default.GetInstance<LoginViewModel>().ClearFields();
+                    navigationService.Navigate<LoginViewModel>();                        
+                }                
+            };            
         }
 
         private void DeleteSecondaryTiles()
@@ -141,13 +151,17 @@ namespace Jirabox.ViewModel
             GroupedProjects = null;
             FlatProjects = null;
             IsDataLoaded = false;
-            await jiraService.GetUserProfileAsync(App.UserName);
-            var projects = await jiraService.GetProjects(App.ServerUrl, App.UserName, App.Password, withoutCache);
+            var taskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
+            jiraService.GetUserProfileAsync(App.UserName).ContinueWith(task =>
+            {                
+                DisplayPicture = jiraService.GetDisplayPicture(App.UserName);
+            }, CancellationToken.None, TaskContinuationOptions.OnlyOnRanToCompletion, taskScheduler);
+
+            var projects = await jiraService.GetProjects(App.ServerUrl, App.UserName, App.Password, withoutCache);
             GroupedProjects = AlphaKeyGroup<Project>.CreateGroups(projects, System.Threading.Thread.CurrentThread.CurrentUICulture, (Project s) => { return s.Name; }, true);
             FlatProjects = projects;
-            DisplayPicture = jiraService.GetDisplayPicture(App.UserName);
-
+            
             IsGroupingEnabled = true;
             IsGroupingEnabled = new IsolatedStorageProperty<bool>(Settings.IsGroupingEnabled, true).Value;
             IsDataLoaded = true;
@@ -155,6 +169,10 @@ namespace Jirabox.ViewModel
         public void RemoveBackEntry()
         {
             navigationService.RemoveBackEntry();
+        }
+        public void NavigateToLoginView()
+        {
+            navigationService.Navigate<LoginViewModel>();            
         }
         private async Task Refresh()
         {

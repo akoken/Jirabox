@@ -133,6 +133,7 @@ namespace Jirabox.ViewModel
                 var isLoginSuccess = await jiraService.LoginAsync(ServerUrl, UserName, Password, cancellationTokenSource);
                 if (isLoginSuccess)
                 {
+                    App.IsLoggedIn = true;
                     StorageHelper.SaveUserCredential(ServerUrl, UserName, Password);                        
                     navigationService.Navigate<ProjectListViewModel>();                    
                 }

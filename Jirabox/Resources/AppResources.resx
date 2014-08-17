@@ -215,4 +215,13 @@
   <data name="LoginSuccessToken" xml:space="preserve">
     <value>LoginSuccessCallback</value>
   </data>
+  <data name="LogoutWarningMessage" xml:space="preserve">
+    <value>All cached data will be removed from your phone and must be loaded again next time you login.</value>
+  </data>
+  <data name="LogoutPromptCaption" xml:space="preserve">
+    <value>Confirm Logout</value>
+  </data>
+  <data name="LogoutPromptMessage" xml:space="preserve">
+    <value>Do you really want to logout?</value>
+  </data>
 </root>

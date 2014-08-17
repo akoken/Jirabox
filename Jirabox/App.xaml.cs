@@ -25,6 +25,7 @@ namespace Jirabox
         public static string DisplayName { get; set; }
         public static string BaseUrl { get; set; }
         public static User User { get; set; }
+        public static bool IsLoggedIn { get; set; }
         public static PhoneApplicationFrame RootFrame { get; private set; } 
         #endregion
 
@@ -59,7 +60,7 @@ namespace Jirabox
         }
      
         private async void Application_Launching(object sender, LaunchingEventArgs e)
-        {
+        {               
             //Clear cache data
             var cacheDataService = new CacheDataService();
             await cacheDataService.ClearCacheData();
@@ -130,6 +131,25 @@ namespace Jirabox
 
             // Ensure we don't initialize again
             phoneApplicationInitialized = true;
+
+            IsLoggedIn = false;
+
+            //Check user is authenticated
+            var credential = StorageHelper.GetUserCredential();
+            if (credential != null)
+            {
+                IsLoggedIn = true;
+                App.ServerUrl = credential.ServerUrl;
+                App.UserName = credential.UserName;
+                App.Password = credential.Password;
+                App.BaseUrl = string.Format("{0}/rest/api/latest/", App.ServerUrl);
+                RootFrame.Navigate(new Uri("/View/ProjectListView.xaml", UriKind.Relative));
+            }
+            else
+            {
+                RootFrame.Navigate(new Uri("/View/LoginView.xaml", UriKind.Relative));
+            }
+            
         }
 
 

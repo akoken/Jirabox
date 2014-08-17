@@ -15,29 +15,7 @@ namespace Jirabox.Services
         public void ShowDialog(string message, string caption)
         {
             MessageBox.Show(message, caption, MessageBoxButton.OK);
-        }
-
-        public void SendErrorReportDialog(Exception e)
-        {
-            var errorMessageBox = new CustomMessageBox();
-            errorMessageBox.Caption = "Error";
-            errorMessageBox.Message = AppResources.UnhandledErrorMessage;
-            errorMessageBox.LeftButtonContent = "Yes";
-            errorMessageBox.RightButtonContent = "No";
-            errorMessageBox.Dismissed += (s1, e1) =>
-            {
-                if (e1.Result == CustomMessageBoxResult.LeftButton)
-                {
-                    //Send error report
-                    var emailComposeTask = new EmailComposeTask();
-                    emailComposeTask.To = AppResources.ApplicationEmail;
-                    emailComposeTask.Subject = AppResources.ErrorReportMailSubject;
-                    emailComposeTask.Body = string.Format(AppResources.ErrorReportMailBody, e.Message, System.Environment.NewLine, e.StackTrace);
-                    emailComposeTask.Show();
-                }
-            };
-            errorMessageBox.Show();            
-        }
+        }     
 
         public CustomMessageBox ShowCommentDialog(Model.Comment comment)
         {
@@ -78,6 +56,27 @@ namespace Jirabox.Services
             
             messageBox.Content = rootPanel;
             messageBox.LeftButtonContent = "OK";
+            messageBox.Show();
+            return messageBox;
+        }
+
+        public CustomMessageBox ShowPromptDialog(string warningMessage, string confirmMessage, string caption)
+        {
+            var messageBox = new CustomMessageBox();
+            var warningTextBlock = new TextBlock { Text = warningMessage, TextWrapping = System.Windows.TextWrapping.Wrap };
+            warningTextBlock.Margin = new Thickness(15, 15, 0, 0);
+
+            var confirmTextBlock = new TextBlock { Text = confirmMessage, TextWrapping = System.Windows.TextWrapping.Wrap };
+            confirmTextBlock.Margin = new Thickness(15, 15, 0, 0);
+
+            var rootPanel = new StackPanel();
+            rootPanel.Children.Add(warningTextBlock);
+            rootPanel.Children.Add(confirmTextBlock);
+
+            messageBox.Caption = caption;
+            messageBox.Content = rootPanel;
+            messageBox.LeftButtonContent = "OK";
+            messageBox.RightButtonContent = "Cancel";
             messageBox.Show();
             return messageBox;
         }

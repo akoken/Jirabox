@@ -286,6 +286,33 @@ namespace Jirabox.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm Logout.
+        /// </summary>
+        public static string LogoutPromptCaption {
+            get {
+                return ResourceManager.GetString("LogoutPromptCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you really want to logout?.
+        /// </summary>
+        public static string LogoutPromptMessage {
+            get {
+                return ResourceManager.GetString("LogoutPromptMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All cached data will be removed from your phone and must be loaded again next time you login..
+        /// </summary>
+        public static string LogoutWarningMessage {
+            get {
+                return ResourceManager.GetString("LogoutWarningMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LeftToRight.
         /// </summary>
         public static string ResourceFlowDirection {
