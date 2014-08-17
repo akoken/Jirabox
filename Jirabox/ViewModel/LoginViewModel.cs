@@ -50,6 +50,7 @@ namespace Jirabox.ViewModel
             {
                 loginButtonEnabled = value;
                 RaisePropertyChanged(() => LoginButtonEnabled);
+                LoginCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -174,7 +175,7 @@ namespace Jirabox.ViewModel
 
         private void InitializeData()
         {
-            LoginCommand = new RelayCommand(Login);
+            LoginCommand = new RelayCommand(Login, CanLogin);
             AboutCommand = new RelayCommand(NavigateToAboutView);
             
             IsDataLoaded = true;
@@ -191,6 +192,11 @@ namespace Jirabox.ViewModel
             {
                 LoginButtonEnabled = true;
             }
+        }
+
+        private bool CanLogin()
+        {
+            return LoginButtonEnabled;
         }
 
         private void NavigateToAboutView()

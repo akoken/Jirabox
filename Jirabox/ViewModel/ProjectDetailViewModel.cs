@@ -6,6 +6,8 @@ using Jirabox.Resources;
 using Microsoft.Phone.Shell;
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 
 namespace Jirabox.ViewModel
 {
@@ -92,30 +94,6 @@ namespace Jirabox.ViewModel
             PinToStartScreenCommand = new RelayCommand(PinToStartScreen);
         }
 
-        private void PinToStartScreen()
-        {
-            ShellTile.Create(new Uri(string.Format("/View/ProjectDetailView.xaml?Key={0}",Project.Key), UriKind.Relative), new StandardTileData()
-            {                
-                Title = Project.Key,
-                BackContent = Project.Name,
-                BackTitle = Project.Id.ToString(),                
-            });
-        }
-
-        private void RefreshIssues()
-        {            
-            Initialize(Key, true);
-        }  
- 
-        private void NavigateToIssueDetailView(Issue selectedIssue)
-        {
-            navigationService.Navigate<IssueDetailViewModel>(selectedIssue.ProxyKey);
-        }
-        private void NavigateToCreateIssueView()
-        {
-            navigationService.Navigate<CreateIssueViewModel>(Project);
-        }
-
         public async void Initialize(string projectKey, bool withoutCache = false)
         {
             MessengerInstance.Register<bool>(this, AppResources.CreateIssueToken, isIssueCreated =>
@@ -131,13 +109,52 @@ namespace Jirabox.ViewModel
             Issues = await jiraService.GetIssuesByProjectKey(App.ServerUrl, App.UserName, App.Password, projectKey, withoutCache);
             Key = projectKey;
             IsDataLoaded = true;
-        }      
+        }
 
         public void CleanUp()
         {
             Project = null;
             Issues = null;
             Key = null;
+        }
+
+        private void PinToStartScreen()
+        {
+            var imageFolder = @"\Shared\ShellContent";
+            var projectKey = string.Format("{0}.png", Project.Key.Trim());
+            var avatarPath = Path.Combine(imageFolder, projectKey);
+            var tileUri = new Uri(string.Format("/View/ProjectDetailView.xaml?Key={0}", Project.Key), UriKind.Relative);
+
+            //Create project tile
+            if(!DoesTileAlreadyExist(tileUri.ToString()))
+            ShellTile.Create(tileUri, new StandardTileData
+            {
+                //IconImage = new Uri(@"isostore:" + avatarPath, UriKind.Absolute),
+                BackgroundImage = new Uri(@"isostore:" + avatarPath, UriKind.Absolute),
+                Title = Project.Key,
+                BackContent = Project.Name,                             
+            });
+        }
+
+        private void RefreshIssues()
+        {            
+            Initialize(Key, true);
+        }  
+ 
+        private void NavigateToIssueDetailView(Issue selectedIssue)
+        {
+            navigationService.Navigate<IssueDetailViewModel>(selectedIssue.ProxyKey);
+        }
+
+        private void NavigateToCreateIssueView()
+        {
+            navigationService.Navigate<CreateIssueViewModel>(Project);
+        }
+       
+        private bool DoesTileAlreadyExist(string path)
+        {
+           var secondaryTiles = ShellTile.ActiveTiles.Where(tile => tile.NavigationUri.ToString() == path);
+           return secondaryTiles.Count() > 0;
         }
     }
 }

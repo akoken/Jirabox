@@ -45,17 +45,18 @@
             </Grid.RowDefinitions>
             <StackPanel>
                 <TextBlock Text="server url" Margin="10,0,0,0"/>
-                <controls:WatermarkTextBox Text="{Binding ServerUrl, Mode=TwoWay}" HorizontalAlignment="Left" Width="446" Height="72"  WatermarkText="https://dev.atlassian.com/jira" VerticalContentAlignment="Center"/>
+                <controls:WatermarkTextBox Text="{Binding ServerUrl, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="TextBox_TextChanged" HorizontalAlignment="Left" Width="446" Height="72"  WatermarkText="https://dev.atlassian.com/jira" VerticalContentAlignment="Center"/>
             </StackPanel>
             <StackPanel Grid.Row="1">
                 <TextBlock Text="username" Margin="10,0,0,0"/>
-                <TextBox Text="{Binding UserName, Mode=TwoWay}" Height="72" HorizontalAlignment="Left" Width="446"/>
+                <TextBox Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="TextBox_TextChanged" Height="72" HorizontalAlignment="Left" Width="446"/>
             </StackPanel>
             <StackPanel Grid.Row="2">
                 <TextBlock Text="password"
                            VerticalAlignment="Center"
                            Margin="10,0,0,0" />
-                <PasswordBox Password="{Binding Password, Mode=TwoWay}"
+                <PasswordBox Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                             PasswordChanged="PasswordBox_PasswordChanged"
                              Width="446"
                              Height="72"
                              HorizontalAlignment="Left" />
@@ -88,9 +89,8 @@
         <bar:BindableApplicationBar IsVisible="True"
                                     BackgroundColor="#1199CC"
                                     Mode="Default">
-            <bar:BindableApplicationBarButton Text="login"
-                                              IsEnabled="{Binding LoginButtonEnabled, Mode=TwoWay}"
-                                              Command="{Binding LoginCommand}"
+            <bar:BindableApplicationBarButton Text="login"                                             
+                                              Command="{Binding LoginCommand, Mode=TwoWay}"
                                               IconUri="/Assets/login.png" />
             <bar:BindableApplicationBarButton Text="about"
                                               Command="{Binding AboutCommand}"

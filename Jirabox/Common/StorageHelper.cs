@@ -138,6 +138,6 @@ namespace Jirabox.Common
                 }
             }
             return displayPicture;
-        }
+        }      
     }
 }
