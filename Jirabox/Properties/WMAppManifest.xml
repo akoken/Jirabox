@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
-  <App xmlns="" ProductID="{13fe6aac-e927-42ce-8e9a-ea521583c010}" Title="Jirabox" RuntimeType="Silverlight" Version="2.0.0.0" Genre="apps.normal" Author="Abdurrahman Köken" Description="Jirabox is a JIRA client application for Windows Phone." Publisher="Abdurrahman Köken" PublisherID="{504d5f7a-c6c1-424d-9de2-5e5fecfb4e50}">
+  <App xmlns="" ProductID="{13fe6aac-e927-42ce-8e9a-ea521583c010}" Title="Jirabox" RuntimeType="Silverlight" Version="2.4.1.0" Genre="apps.normal" Author="Abdurrahman Köken" Description="Jirabox is a JIRA client application for Windows Phone." Publisher="Abdurrahman Köken" PublisherID="{504d5f7a-c6c1-424d-9de2-5e5fecfb4e50}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
       <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />
     </Capabilities>
     <Tasks>
-      <DefaultTask Name="_default"/>
+      <DefaultTask Name="_default" />
     </Tasks>
     <Tokens>
       <PrimaryToken TokenID="JiraboxToken" TaskName="_default">
