@@ -175,12 +175,7 @@ namespace Jirabox.Services
                 {
                     Key = "Method",
                     Value = "JiraService.GetIssueByKey"
-                });
-                extras.Add(new CrashExtraData
-                {
-                    Key = "Request Url",
-                    Value = requestUrl
-                });
+                });               
 
                 BugSenseHandler.Instance.LogException(exception, extras);
                 dialogService.ShowDialog(AppResources.ErrorMessage, "Error");
@@ -238,17 +233,7 @@ namespace Jirabox.Services
                 {
                     Key = "Method",
                     Value = "JiraService.Search"
-                });
-                extras.Add(new CrashExtraData
-                {
-                    Key = "Request Url",
-                    Value = url
-                });
-                extras.Add(new CrashExtraData
-                {
-                    Key = "Post Data",
-                    Value = data
-                });
+                });              
 
                 var result = await httpManager.PostAsync(url, data, true, App.UserName, App.Password, tokenSource);
                 if (result == null) return null;
@@ -311,12 +296,7 @@ namespace Jirabox.Services
             }
             catch (Exception exception)
             {
-                var extras = BugSenseHandler.Instance.CrashExtraData;
-                extras.Add(new CrashExtraData
-                {
-                    Key = "Post Data",
-                    Value = data
-                });
+                var extras = BugSenseHandler.Instance.CrashExtraData;             
                 extras.Add(new CrashExtraData
                 {
                     Key = "Method",

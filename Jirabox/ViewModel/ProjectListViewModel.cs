@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Linq;
 using Jirabox.Resources;
 using System.Threading;
+using BugSense;
 
 namespace Jirabox.ViewModel
 {
@@ -156,7 +157,12 @@ namespace Jirabox.ViewModel
             jiraService.GetUserProfileAsync(App.UserName).ContinueWith(task =>
             {                
                 DisplayPicture = jiraService.GetDisplayPicture(App.UserName);
-            }, CancellationToken.None, TaskContinuationOptions.OnlyOnRanToCompletion, taskScheduler);
+            }, CancellationToken.None, TaskContinuationOptions.OnlyOnRanToCompletion, taskScheduler).ContinueWith(t=>
+            {
+                var aggException = t.Exception.Flatten();
+                foreach (var exception in aggException.InnerExceptions)
+                    BugSenseHandler.Instance.LogException(exception);
+            }, TaskContinuationOptions.OnlyOnFaulted);
 
             var projects = await jiraService.GetProjects(App.ServerUrl, App.UserName, App.Password, withoutCache);
             GroupedProjects = AlphaKeyGroup<Project>.CreateGroups(projects, System.Threading.Thread.CurrentThread.CurrentUICulture, (Project s) => { return s.Name; }, true);
