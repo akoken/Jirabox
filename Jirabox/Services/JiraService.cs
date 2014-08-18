@@ -17,6 +17,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace Jirabox.Services
@@ -71,7 +74,7 @@ namespace Jirabox.Services
                 //Download all project images if they do not exist
                 foreach (var project in projects)
                 {
-                    await DownloadImage(project.AvatarUrls.Size48, project.Key);
+                    await DownloadImage(project.AvatarUrls.Size48, project.Key, true);
                 }
 
                 //Save new data to the cache
@@ -172,12 +175,7 @@ namespace Jirabox.Services
                 {
                     Key = "Method",
                     Value = "JiraService.GetIssueByKey"
-                });
-                extras.Add(new CrashExtraData
-                {
-                    Key = "Request Url",
-                    Value = requestUrl
-                });
+                });               
 
                 BugSenseHandler.Instance.LogException(exception, extras);
                 dialogService.ShowDialog(AppResources.ErrorMessage, "Error");
@@ -235,17 +233,7 @@ namespace Jirabox.Services
                 {
                     Key = "Method",
                     Value = "JiraService.Search"
-                });
-                extras.Add(new CrashExtraData
-                {
-                    Key = "Request Url",
-                    Value = url
-                });
-                extras.Add(new CrashExtraData
-                {
-                    Key = "Post Data",
-                    Value = data
-                });
+                });              
 
                 var result = await httpManager.PostAsync(url, data, true, App.UserName, App.Password, tokenSource);
                 if (result == null) return null;
@@ -308,12 +296,7 @@ namespace Jirabox.Services
             }
             catch (Exception exception)
             {
-                var extras = BugSenseHandler.Instance.CrashExtraData;
-                extras.Add(new CrashExtraData
-                {
-                    Key = "Post Data",
-                    Value = data
-                });
+                var extras = BugSenseHandler.Instance.CrashExtraData;             
                 extras.Add(new CrashExtraData
                 {
                     Key = "Method",
@@ -552,7 +535,7 @@ namespace Jirabox.Services
             return bitmapImage;
         }
 
-        private async Task DownloadImage(string url, string filename)
+        private async Task DownloadImage(string url, string filename, bool isProjectAvatar = false)
         {
             try
             {
@@ -579,6 +562,11 @@ namespace Jirabox.Services
                         using (var fs = isf.CreateFile(path))
                         {
                             PNGWriter.WritePNG(wb, fs);
+                        }
+                        if (isProjectAvatar)
+                        {
+                            CreateCustomeLiveTile(image, filename);
+                            //SaveLiveTileImage(wb, filename);
                         }
                     }
                 }
@@ -607,6 +595,7 @@ namespace Jirabox.Services
                 BugSenseHandler.Instance.LogException(exception, extras);
             }
         }
+
         public async Task<ObservableCollection<Transition>> GetTransitions(string issueKey)
         {
             var url = string.Format("{0}issue/{1}/transitions", App.BaseUrl, issueKey);
@@ -668,6 +657,52 @@ namespace Jirabox.Services
             if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
                 return true;
             return false;
+        }
+        private void SaveLiveTileImage(WriteableBitmap tileImage, string projectKey)
+        {
+            var imageFolder = @"\Shared\ShellContent";
+            var fileName = string.Format("{0}.png", projectKey.Trim());
+            using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                using(var stream = isf.CreateFile(Path.Combine(imageFolder, fileName)))
+                {
+                    PNGWriter.WritePNG(tileImage, stream);
+                }
+            }
+        }
+        private void CreateCustomeLiveTile(BitmapImage imageSource, string projectKey)
+        {
+            WriteableBitmap b = new WriteableBitmap(173, 173);            
+
+            var canvas = new Grid();
+            canvas.Width = b.PixelWidth;
+            canvas.Height = b.PixelHeight;
+            canvas.Background = new SolidColorBrush(Colors.LightGray);
+            canvas.HorizontalAlignment = HorizontalAlignment.Center;
+            canvas.VerticalAlignment = VerticalAlignment.Center;
+
+            var image = new Image();
+            image.Height = 74;
+            image.Width = 74;
+            image.Margin = new Thickness(b.PixelWidth / 2 - 37, b.PixelHeight / 2 - 37, 0, 0);            
+            image.HorizontalAlignment = HorizontalAlignment.Center;
+            image.VerticalAlignment = VerticalAlignment.Center;
+            image.Source = imageSource;
+            canvas.Children.Add(image);
+            
+            b.Render(canvas, null);
+            b.Invalidate(); //Draw bitmap
+
+            //Save bitmap as jpeg file in Isolated Storage
+            var imageFolder = @"\Shared\ShellContent";
+            var fileName = string.Format("{0}.png", projectKey.Trim());
+            using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                using (var stream = isf.CreateFile(Path.Combine(imageFolder, fileName)))
+                {
+                    PNGWriter.WritePNG(b, stream);
+                }
+            }
         }
     }
 }

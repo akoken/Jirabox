@@ -3,7 +3,6 @@ using GalaSoft.MvvmLight.Command;
 using Jirabox.Common;
 using Jirabox.Core.Contracts;
 using Jirabox.Core.ExceptionExtension;
-using Jirabox.Model;
 using Jirabox.Resources;
 using System;
 using System.Threading;
@@ -49,11 +48,9 @@ namespace Jirabox.ViewModel
             }
             set
             {
-                if (loginButtonEnabled != value)
-                {
-                    loginButtonEnabled = value;
-                    RaisePropertyChanged(() => LoginButtonEnabled);
-                }
+                loginButtonEnabled = value;
+                RaisePropertyChanged(() => LoginButtonEnabled);
+                LoginCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -98,20 +95,7 @@ namespace Jirabox.ViewModel
                     RaisePropertyChanged(() => IsDataLoaded);
                 }
             }
-        }
-
-        public bool IsRememberMe
-        {
-            get { return isRememberMe; }
-            set
-            {
-                if (value != isRememberMe)
-                {
-                    isRememberMe = value;
-                    RaisePropertyChanged(() => IsRememberMe);
-                }
-            }
-        }
+        }     
         
         public LoginViewModel(INavigationService navigationService, IDialogService dialogService, IJiraService jiraService)
         {            
@@ -149,11 +133,8 @@ namespace Jirabox.ViewModel
                 var isLoginSuccess = await jiraService.LoginAsync(ServerUrl, UserName, Password, cancellationTokenSource);
                 if (isLoginSuccess)
                 {
-                    if (IsRememberMe)
-                        StorageHelper.SaveUserCredential(ServerUrl, UserName, Password);
-                    else
-                        StorageHelper.ClearUserCredential();
-
+                    App.IsLoggedIn = true;
+                    StorageHelper.SaveUserCredential(ServerUrl, UserName, Password);                        
                     navigationService.Navigate<ProjectListViewModel>();                    
                 }
             }         
@@ -195,20 +176,28 @@ namespace Jirabox.ViewModel
 
         private void InitializeData()
         {
-            LoginCommand = new RelayCommand(Login);
+            LoginCommand = new RelayCommand(Login, CanLogin);
             AboutCommand = new RelayCommand(NavigateToAboutView);
             
             IsDataLoaded = true;
-            LoginButtonEnabled = true;
+            LoginButtonEnabled = false;
             var credential = StorageHelper.GetUserCredential();
             if (credential != null)
             {
                 ServerUrl = credential.ServerUrl;
                 UserName = credential.UserName;
-                Password = credential.Password;
-                IsRememberMe = true;
+                Password = credential.Password;                
                 Login();
             }
+            else
+            {
+                LoginButtonEnabled = true;
+            }
+        }
+
+        private bool CanLogin()
+        {
+            return LoginButtonEnabled;
         }
 
         private void NavigateToAboutView()
@@ -226,8 +215,7 @@ namespace Jirabox.ViewModel
         {
             ServerUrl = string.Empty;
             UserName = string.Empty;
-            Password = string.Empty;
-            IsRememberMe = false;
+            Password = string.Empty;            
         }
 
         public void RemoveBackEntry()

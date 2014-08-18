@@ -3,7 +3,11 @@ using GalaSoft.MvvmLight.Command;
 using Jirabox.Core.Contracts;
 using Jirabox.Model;
 using Jirabox.Resources;
+using Microsoft.Phone.Shell;
+using System;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 
 namespace Jirabox.ViewModel
 {
@@ -20,6 +24,7 @@ namespace Jirabox.ViewModel
         public RelayCommand<Issue> ShowIssueDetailCommand { get; private set; }
         public RelayCommand CreateIssueCommand { get; private set; }
         public RelayCommand RefreshCommand { get; private set; }
+        public RelayCommand PinToStartScreenCommand { get; private set; }
         
 
         public bool IsDataLoaded
@@ -86,20 +91,7 @@ namespace Jirabox.ViewModel
             ShowIssueDetailCommand = new RelayCommand<Issue>(issue => NavigateToIssueDetailView(issue), issue => issue != null);
             CreateIssueCommand = new RelayCommand(NavigateToCreateIssueView);
             RefreshCommand = new RelayCommand(RefreshIssues);
-        }
-
-        private void RefreshIssues()
-        {            
-            Initialize(Key, true);
-        }  
- 
-        private void NavigateToIssueDetailView(Issue selectedIssue)
-        {
-            navigationService.Navigate<IssueDetailViewModel>(selectedIssue.ProxyKey);
-        }
-        private void NavigateToCreateIssueView()
-        {
-            navigationService.Navigate<CreateIssueViewModel>(Project);
+            PinToStartScreenCommand = new RelayCommand(PinToStartScreen);
         }
 
         public async void Initialize(string projectKey, bool withoutCache = false)
@@ -117,13 +109,52 @@ namespace Jirabox.ViewModel
             Issues = await jiraService.GetIssuesByProjectKey(App.ServerUrl, App.UserName, App.Password, projectKey, withoutCache);
             Key = projectKey;
             IsDataLoaded = true;
-        }      
+        }
 
         public void CleanUp()
         {
             Project = null;
             Issues = null;
             Key = null;
+        }
+
+        private void PinToStartScreen()
+        {
+            var imageFolder = @"\Shared\ShellContent";
+            var projectKey = string.Format("{0}.png", Project.Key.Trim());
+            var avatarPath = Path.Combine(imageFolder, projectKey);
+            var tileUri = new Uri(string.Format("/View/ProjectDetailView.xaml?Key={0}", Project.Key), UriKind.Relative);
+
+            //Create project tile
+            if(!DoesTileAlreadyExist(tileUri.ToString()))
+            ShellTile.Create(tileUri, new StandardTileData
+            {
+                //IconImage = new Uri(@"isostore:" + avatarPath, UriKind.Absolute),
+                BackgroundImage = new Uri(@"isostore:" + avatarPath, UriKind.Absolute),
+                Title = Project.Key,
+                BackContent = Project.Name,                             
+            });
+        }
+
+        private void RefreshIssues()
+        {            
+            Initialize(Key, true);
+        }  
+ 
+        private void NavigateToIssueDetailView(Issue selectedIssue)
+        {
+            navigationService.Navigate<IssueDetailViewModel>(selectedIssue.ProxyKey);
+        }
+
+        private void NavigateToCreateIssueView()
+        {
+            navigationService.Navigate<CreateIssueViewModel>(Project);
+        }
+       
+        private bool DoesTileAlreadyExist(string path)
+        {
+           var secondaryTiles = ShellTile.ActiveTiles.Where(tile => tile.NavigationUri.ToString() == path);
+           return secondaryTiles.Count() > 0;
         }
     }
 }

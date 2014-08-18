@@ -77,8 +77,11 @@
                         <TextBlock Text="{Binding Project.Lead.DisplayName}" Margin="10,10,0,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="3" Height="35" Margin="0,0,0,3">
-                        <TextBlock Text="URL:"/>
-                        <TextBlock Text="{Binding Project.Url}" Margin="5,0,0,0"/>
+                        <TextBlock Text="URL:" VerticalAlignment="Center"/>
+                        <HyperlinkButton Content="{Binding Project.Url}"
+                                         NavigateUri="{Binding Project.Url}"
+                                         TargetName="_blank"
+                                         Foreground="#1199CC" Margin="5,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"  Grid.Row="4" Margin="0,5,0,0">
                         <TextBlock Text="Description:" VerticalAlignment="Top"/>
@@ -169,12 +172,15 @@
 
     <bar:Bindable.ApplicationBar>
         <bar:BindableApplicationBar IsVisible="True" BackgroundColor="#1199CC" Mode="Default">
-            <bar:BindableApplicationBarButton Text="create issue" 
-                                              Command="{Binding CreateIssueCommand}" 
-                                              IconUri="/Assets/add.png"/>
             <bar:BindableApplicationBarButton Text="refresh"
                                               Command="{Binding RefreshCommand}"
                                               IconUri="/Assets/refresh.png" />
+            <bar:BindableApplicationBarButton Text="create issue"
+                                              Command="{Binding CreateIssueCommand}"
+                                              IconUri="/Assets/add.png" />
+            <bar:BindableApplicationBarButton Text="pin to start"
+                                              Command="{Binding PinToStartScreenCommand}"
+                                              IconUri="/Assets/pin.png" />
         </bar:BindableApplicationBar>
     </bar:Bindable.ApplicationBar>
 </phone:PhoneApplicationPage>

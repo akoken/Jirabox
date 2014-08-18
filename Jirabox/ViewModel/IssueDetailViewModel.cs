@@ -99,13 +99,17 @@ namespace Jirabox.ViewModel
 
         private void NavigateToChangeStatusView()
         {
+            var parameter = navigationService.GetNavigationParameter();
             var parameterPackage = new StatusPackage
             {
                 SelectedIssue = Issue,
-                Transitions = Transitions,
-                SearchParameter = (SearchParameter)navigationService.GetNavigationParameter()
+                Transitions = Transitions,              
             };
-            navigationService.Navigate<ChangeStatusViewModel>(parameterPackage);
+
+            if (parameter is SearchParameter)
+                parameterPackage.SearchParameter = (SearchParameter)parameter;            
+
+                navigationService.Navigate<ChangeStatusViewModel>(parameterPackage);         
         }
     
         private void AddComment()
