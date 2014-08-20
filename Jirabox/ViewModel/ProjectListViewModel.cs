@@ -19,7 +19,7 @@ namespace Jirabox.ViewModel
     public class ProjectListViewModel : ViewModelBase
     {
         private readonly INavigationService navigationService;
-        private readonly ICacheDataService cacheDataService;
+        private readonly ICacheService cacheDataService;
         private readonly IDialogService dialogService;
         private readonly IJiraService jiraService;
 
@@ -97,7 +97,7 @@ namespace Jirabox.ViewModel
             }
         }
 
-        public ProjectListViewModel(INavigationService navigationService, IDialogService dialogService, IJiraService jiraService, ICacheDataService cacheDataService)
+        public ProjectListViewModel(INavigationService navigationService, IDialogService dialogService, IJiraService jiraService, ICacheService cacheDataService)
         {
             this.navigationService = navigationService;
             this.cacheDataService = cacheDataService;
@@ -122,13 +122,13 @@ namespace Jirabox.ViewModel
         private void Logout()
         {
             var messageBox = dialogService.ShowPromptDialog(AppResources.LogoutWarningMessage, AppResources.LogoutPromptMessage, AppResources.LogoutPromptCaption);
-            messageBox.Dismissed += async(s1, e1) =>
+            messageBox.Dismissed += (s1, e1) =>
             {
                 if (e1.Result == Microsoft.Phone.Controls.CustomMessageBoxResult.LeftButton)
                 {
                     IsDataLoaded = false;
                     StorageHelper.ClearUserCredential();
-                    await cacheDataService.ClearCacheData();
+                    cacheDataService.ClearCache();
                     DeleteSecondaryTiles();
                     App.IsLoggedIn = false;
                     IsDataLoaded = true;

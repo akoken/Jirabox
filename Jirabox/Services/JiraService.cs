@@ -28,10 +28,10 @@ namespace Jirabox.Services
     {
         private IHttpManager httpManager;
         private IDialogService dialogService;
-        private ICacheDataService cacheDataService;
+        private ICacheService cacheDataService;
         public CancellationTokenSource tokenSource = null;
 
-        public JiraService(IHttpManager httpManager, IDialogService dialogService, ICacheDataService cacheDataService)
+        public JiraService(IHttpManager httpManager, IDialogService dialogService, ICacheService cacheDataService)
         {
             this.httpManager = httpManager;
             this.dialogService = dialogService;
@@ -55,10 +55,10 @@ namespace Jirabox.Services
             const string cacheFileName = "Projects.cache";
 
             //Check cache data
-            var isCacheExist = await cacheDataService.DoesFileExist(cacheFileName);
+            var isCacheExist = cacheDataService.DoesFileExist(cacheFileName);
             if (!withoutCache && isCacheExist)
             {
-                var projectListFile = await cacheDataService.Get(cacheFileName);
+                var projectListFile = cacheDataService.Read(cacheFileName);
                 return JsonConvert.DeserializeObject<ObservableCollection<Project>>(projectListFile);
             }
 
@@ -99,10 +99,10 @@ namespace Jirabox.Services
             var cacheFileName = string.Format("ProjectByKey.{0}.cache", key);
             
             //Check cache file is exist            
-            var isCacheExist = await cacheDataService.DoesFileExist(cacheFileName);
+            var isCacheExist = cacheDataService.DoesFileExist(cacheFileName);
             if (!withoutCache && isCacheExist)
             {
-                var projectFile = await cacheDataService.Get(cacheFileName);
+                var projectFile = cacheDataService.Read(cacheFileName);
                 return JsonConvert.DeserializeObject<Project>(projectFile);
             }
 
@@ -257,10 +257,10 @@ namespace Jirabox.Services
         public async Task<ObservableCollection<Issue>> GetIssuesByProjectKey(string serverUrl, string username, string password, string key, bool withoutCache = false)
         {
             var cacheFileName = string.Format("IssuesByProjectKey.{0}.cache", key);
-            var isCacheExist = await cacheDataService.DoesFileExist(cacheFileName);
+            var isCacheExist = cacheDataService.DoesFileExist(cacheFileName);
             if (!withoutCache && isCacheExist)
             {
-                var issuesFile = await cacheDataService.Get(cacheFileName);
+                var issuesFile = cacheDataService.Read(cacheFileName);
                 return JsonConvert.DeserializeObject<ObservableCollection<Issue>>(issuesFile);
             }
 
@@ -313,10 +313,10 @@ namespace Jirabox.Services
             var cacheFileName = string.Format("IssueTypesOfProject.{0}.cache", projectKey);
 
             //Check cache data file
-            var isCacheExist = await cacheDataService.DoesFileExist(cacheFileName);
+            var isCacheExist = cacheDataService.DoesFileExist(cacheFileName);
             if (isCacheExist)
             {
-                var issueTypesFile = await cacheDataService.Get(cacheFileName);
+                var issueTypesFile = cacheDataService.Read(cacheFileName);
                 return JsonConvert.DeserializeObject<ObservableCollection<IssueType>>(issueTypesFile);
             }
 
@@ -385,10 +385,10 @@ namespace Jirabox.Services
         public async Task<ObservableCollection<Priority>> GetPriorities()
         {
             const string cacheFileName = "Priorities.cache";
-            var isCacheExist = await cacheDataService.DoesFileExist(cacheFileName);
+            var isCacheExist = cacheDataService.DoesFileExist(cacheFileName);
             if (isCacheExist)
             {
-                var prioritiesFile = await cacheDataService.Get(cacheFileName);
+                var prioritiesFile = cacheDataService.Read(cacheFileName);
                 return JsonConvert.DeserializeObject<ObservableCollection<Priority>>(prioritiesFile);
             }
 
@@ -429,10 +429,10 @@ namespace Jirabox.Services
             var cacheFileName = string.Format("UserProfile.{0}.cache", username);
 
             //Check cache file 
-            var isCacheExist = await cacheDataService.DoesFileExist(cacheFileName);
+            var isCacheExist = cacheDataService.DoesFileExist(cacheFileName);
             if (isCacheExist)
             {
-                var userProfileFile = await cacheDataService.Get(cacheFileName);
+                var userProfileFile = cacheDataService.Read(cacheFileName);
                 return JsonConvert.DeserializeObject<User>(userProfileFile);
             }
 
