@@ -13,6 +13,7 @@ using System.Linq;
 using Jirabox.Resources;
 using System.Threading;
 using BugSense;
+using Jirabox.Common.Extensions;
 
 namespace Jirabox.ViewModel
 {
@@ -156,7 +157,7 @@ namespace Jirabox.ViewModel
 
             jiraService.GetUserProfileAsync(App.UserName).ContinueWith(task =>
             {                
-                DisplayPicture = jiraService.GetDisplayPicture(App.UserName);
+                DisplayPicture = jiraService.GetDisplayPicture(App.UserName).ToBitmapImage();
             }, CancellationToken.None, TaskContinuationOptions.OnlyOnRanToCompletion, taskScheduler).ContinueWith(t=>
             {
                 var aggException = t.Exception.Flatten();

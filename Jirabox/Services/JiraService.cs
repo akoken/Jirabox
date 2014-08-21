@@ -498,10 +498,9 @@ namespace Jirabox.Services
             return false;
         }
 
-        public BitmapImage GetDisplayPicture(string username)
+        public byte[] GetDisplayPicture(string username)
         {
-            byte[] data;
-            var bitmapImage = new BitmapImage();
+            byte[] data;            
             try
             {
                 using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
@@ -513,11 +512,7 @@ namespace Jirabox.Services
                     {
                         data = new byte[fs.Length];
                         if (data.Length == 0) return null;
-                        fs.Read(data, 0, data.Length);
-                        using (var ms = new MemoryStream(data))
-                        {
-                            bitmapImage.SetSource(ms);
-                        }
+                        fs.Read(data, 0, data.Length);                       
                     }
                 }
             }
@@ -532,7 +527,7 @@ namespace Jirabox.Services
 
                 BugSenseHandler.Instance.LogException(exception, extras);
             }
-            return bitmapImage;
+            return null;
         }
 
         private async Task DownloadImage(string url, string filename, bool isProjectAvatar = false)
