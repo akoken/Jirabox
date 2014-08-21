@@ -62,8 +62,8 @@ namespace Jirabox
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {               
             //Clear cache data
-            var cacheDataService = new CacheService();
-            cacheDataService.ClearCache();
+            var cacheService = new CacheService();
+            cacheService.ClearCache();
 
             //Clear image data
             var cacheSetting = new IsolatedStorageProperty<bool>("ClearImageCache", false);

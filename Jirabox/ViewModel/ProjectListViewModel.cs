@@ -19,7 +19,7 @@ namespace Jirabox.ViewModel
     public class ProjectListViewModel : ViewModelBase
     {
         private readonly INavigationService navigationService;
-        private readonly ICacheService cacheDataService;
+        private readonly ICacheService cacheService;
         private readonly IDialogService dialogService;
         private readonly IJiraService jiraService;
 
@@ -100,7 +100,7 @@ namespace Jirabox.ViewModel
         public ProjectListViewModel(INavigationService navigationService, IDialogService dialogService, IJiraService jiraService, ICacheService cacheDataService)
         {
             this.navigationService = navigationService;
-            this.cacheDataService = cacheDataService;
+            this.cacheService = cacheDataService;
             this.dialogService = dialogService;
             this.jiraService = jiraService;
 
@@ -128,7 +128,7 @@ namespace Jirabox.ViewModel
                 {
                     IsDataLoaded = false;
                     StorageHelper.ClearUserCredential();
-                    cacheDataService.ClearCache();
+                    cacheService.ClearCache();
                     DeleteSecondaryTiles();
                     App.IsLoggedIn = false;
                     IsDataLoaded = true;
