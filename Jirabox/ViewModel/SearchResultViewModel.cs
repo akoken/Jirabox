@@ -73,10 +73,28 @@ namespace Jirabox.ViewModel
             cancellationTokenSource.Cancel();
         }
 
+        public void SetNavigationToAssignedIssues()
+        {
+            var searchCriteria = new SearchParameter { IsAssignedToMe = true };
+            navigationService.NavigationParameter = searchCriteria;
+        }
+        public void SetNavigationToIssuesReportedByMe()
+        {
+            var searchCriteria = new SearchParameter { IsReportedByMe = true };
+            navigationService.NavigationParameter = searchCriteria;
+        }
+
+        public void NavigateToLoginView()
+        {
+            navigationService.Navigate<LoginViewModel>();
+        }
+
         private void NavigateToIssueDetailView(Issue selectedIssue)
         {
             navigationService.Navigate<IssueDetailViewModel>(selectedIssue.ProxyKey);
         }
+
+
 
     }
 }

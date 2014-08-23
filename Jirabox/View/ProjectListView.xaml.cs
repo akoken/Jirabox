@@ -17,6 +17,7 @@ namespace Jirabox.Views
         protected async override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             var vm = this.DataContext as ProjectListViewModel;
+
             if (App.IsLoggedIn)
             {
                 await vm.InitializeData(true);

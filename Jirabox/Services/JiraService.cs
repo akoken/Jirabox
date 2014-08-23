@@ -514,6 +514,7 @@ namespace Jirabox.Services
                         if (data.Length == 0) return null;
                         fs.Read(data, 0, data.Length);                       
                     }
+                    return data;
                 }
             }
             catch (Exception exception)

@@ -193,12 +193,12 @@ namespace Jirabox.ViewModel
         {
             navigationService.Navigate<UserProfileViewModel>();
         }
-        private void NavigateToAssignedIssues()
+        public void NavigateToAssignedIssues()
         {
             var searchCriteria = new SearchParameter { IsAssignedToMe = true };
             navigationService.Navigate<SearchResultViewModel>(searchCriteria);
         }
-        private void NavigateToIssuesReportedByMe()
+        public void NavigateToIssuesReportedByMe()
         {
             var searchCriteria = new SearchParameter { IsReportedByMe = true };
             navigationService.Navigate<SearchResultViewModel>(searchCriteria);

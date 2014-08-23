@@ -14,8 +14,35 @@ namespace Jirabox.View
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             var vm = DataContext as SearchResultViewModel;
-            vm.CleanUp();
-            vm.Initialize();
+            if (e.NavigationMode == System.Windows.Navigation.NavigationMode.New)
+            {
+                if (App.IsLoggedIn)
+                {
+                    if (NavigationContext.QueryString.ContainsKey("voiceCommandName"))
+                    {
+                        string voiceCommandName = NavigationContext.QueryString["voiceCommandName"];
+                        switch (voiceCommandName)
+                        {
+                            case "Assigned":
+                                vm.SetNavigationToAssignedIssues();
+                                break;
+                            case "Reported":
+                                vm.SetNavigationToIssuesReportedByMe();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    vm.CleanUp();
+                    vm.Initialize();
+                }
+                else
+                {
+                    vm.NavigateToLoginView();
+                }
+            }
+            
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
