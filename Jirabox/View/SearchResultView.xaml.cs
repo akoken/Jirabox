@@ -1,5 +1,6 @@
 ﻿using Jirabox.ViewModel;
 using Microsoft.Phone.Controls;
+using System.Windows;
 using System.Windows.Navigation;
 
 namespace Jirabox.View
@@ -20,7 +21,7 @@ namespace Jirabox.View
                 {
                     if (NavigationContext.QueryString.ContainsKey("voiceCommandName"))
                     {
-                        string voiceCommandName = NavigationContext.QueryString["voiceCommandName"];
+                        string voiceCommandName = NavigationContext.QueryString["voiceCommandName"];                       
                         switch (voiceCommandName)
                         {
                             case "Assigned":
@@ -29,6 +30,11 @@ namespace Jirabox.View
                             case "Reported":
                                 vm.SetNavigationToIssuesReportedByMe();
                                 break;
+                            case "Search":
+                                {
+                                    string searchText = NavigationContext.QueryString["dictatedSearchTerms"];                                    
+                                    vm.SetNavigationSearchText(searchText);
+                                }break;
                             default:
                                 break;
                         }

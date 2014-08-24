@@ -78,9 +78,16 @@ namespace Jirabox.ViewModel
             var searchCriteria = new SearchParameter { IsAssignedToMe = true };
             navigationService.NavigationParameter = searchCriteria;
         }
+
         public void SetNavigationToIssuesReportedByMe()
         {
             var searchCriteria = new SearchParameter { IsReportedByMe = true };
+            navigationService.NavigationParameter = searchCriteria;
+        }
+
+        public void SetNavigationSearchText(string searchText)
+        {            
+            var searchCriteria = new SearchParameter { SearchText = searchText };
             navigationService.NavigationParameter = searchCriteria;
         }
 
@@ -93,8 +100,5 @@ namespace Jirabox.ViewModel
         {
             navigationService.Navigate<IssueDetailViewModel>(selectedIssue.ProxyKey);
         }
-
-
-
     }
 }

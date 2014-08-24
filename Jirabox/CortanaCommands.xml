@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<VoiceCommands xmlns="http://schemas.microsoft.com/voicecommands/1.0">
+<VoiceCommands xmlns="http://schemas.microsoft.com/voicecommands/1.1">
   <CommandSet xml:lang="en-US">
     <CommandPrefix>Jirabox</CommandPrefix>
     <Example> show assigned to me </Example>
@@ -11,6 +11,7 @@
       <Feedback> Showing assigned to you </Feedback>
       <Navigate Target="/View/SearchResultView.xaml"/>
     </Command>
+    
     <Command Name="Reported">
       <Example> Show reported by me </Example>
       <ListenFor> Show reported by me  </ListenFor>
@@ -18,42 +19,16 @@
       <Navigate Target="/View/SearchResultView.xaml"/>
     </Command>
     
+    <Command Name="Search">
+      <Example> Search memory leak bug</Example>      
+      <ListenFor> [do a] [Search] [for] {dictatedSearchTerms} </ListenFor>           
+      <Feedback> Searching {dictatedSearchTerms}... </Feedback>
+      <Navigate Target="/View/SearchResultView.xaml"/>
+    </Command>
+
+    <PhraseTopic Label="dictatedSearchTerms" Scenario="Search">
+      <Subject>Jirabox</Subject>
+    </PhraseTopic>
+    
   </CommandSet>
 </VoiceCommands>
-
-<!-- For Applications targeted at Windows Phone 8.1 -->
-<!--
-    1. Change the version to 1.1
-        <VoiceCommands xmlns="http://schemas.microsoft.com/voicecommands/1.1">
-
-    2. Add PhraseTopic section
-        <PhraseTopic Label="dateTopic" Scenario="Form Filling"> 
-            <Subject> Date/Time </Subject> 
-            <Subject> MyCustomSubject </Subject> 
-        </PhraseTopic>
--->
-
-<!-- Example -->
-<!--
-
-    The preceding example demonstrates a hypothetical game called 'Contoso ROD3O!' which defines two
-    Commands that a user can say to either start a new game or replay one of three levels in the game.  
-    To initiate the PlayGame command, a user can say "Contoso Rodeo play  a new game" or "Contoso Rodeo
-    play new game". Either phrase will start a new game. To initiate the second Command, a user can say
-    "Contoso Rodeo replay level one", "Contoso Rodeo replay level two", or "Contoso Rodeo replay level 
-    three".
-    The second Command demonstrates how to use a PhraseList with a Command. PhraseLists can be updated 
-    dynamically by the application (e.g., if a user unlocks a new level or game or feature, you might 
-    want to allow the user to give commands for newfeatures after voice commands are already registered.)
-    The third Command demonstrates how the {*} sequence can parallel another command to recognize speech
-    that is not defined in the CommandSet.
-
-  Note:
-
-      [and] Indicates that "and" is optional. Making connecting words like this optional
-            can help both "Contoso Rodeo, play new game" and "open Contoso Rodeo and play
-            a new game" feel natural to speak.
-                 
-      {number} Defined separately from the Command, mapping to "one" or "two" or "three".
-
--->

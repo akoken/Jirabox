@@ -8,10 +8,12 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Navigation;
+using System.Windows.Threading;
 using Windows.Phone.Speech.VoiceCommands;
 
 namespace Jirabox
@@ -77,7 +79,6 @@ namespace Jirabox
             try
             {
                 await VoiceCommandService.InstallCommandSetsFromFileAsync(new Uri("ms-appx:///CortanaCommands.xml", UriKind.Absolute));
-
             }
             catch (Exception ex)
             {
@@ -217,6 +218,6 @@ namespace Jirabox
                 }
                 throw;
             }
-        }
+        }   
     }
 }
