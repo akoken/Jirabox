@@ -1,5 +1,6 @@
 ﻿using Jirabox.ViewModel;
 using Microsoft.Phone.Controls;
+using System.Windows.Navigation;
 
 namespace Jirabox.Views
 {
@@ -17,10 +18,14 @@ namespace Jirabox.Views
         protected async override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             var vm = this.DataContext as ProjectListViewModel;
+
             if (App.IsLoggedIn)
             {
-                await vm.InitializeData(true);
-                vm.RemoveBackEntry();
+                if (e.NavigationMode == NavigationMode.New)
+                {
+                    await vm.InitializeData(true);
+                    vm.RemoveBackEntry();
+                }
             }
             else
             {

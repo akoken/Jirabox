@@ -14,7 +14,7 @@ namespace Jirabox.Core.Contracts
 
         Task<User> GetUserProfileAsync(string username);
 
-        BitmapImage GetDisplayPicture(string username);
+        byte[] GetDisplayPicture(string username);
 
         Task<Project> GetProjectByKey(string serverUrl, string username, string password, string key, bool withoutCache = false);
 

@@ -15,7 +15,7 @@ namespace Jirabox.ViewModel
             SimpleIoc.Default.Register<IJiraService, JiraService>();
             SimpleIoc.Default.Register<INavigationService, NavigationService>();
             SimpleIoc.Default.Register<IDialogService, DialogService>();
-            SimpleIoc.Default.Register<ICacheDataService, CacheDataService>();   
+            SimpleIoc.Default.Register<ICacheService, CacheService>();   
        
             SimpleIoc.Default.Register<LoginViewModel>();
             SimpleIoc.Default.Register<ProjectListViewModel>();
