@@ -1,5 +1,6 @@
 ﻿using Jirabox.ViewModel;
 using Microsoft.Phone.Controls;
+using System.Windows.Navigation;
 
 namespace Jirabox.Views
 {
@@ -20,8 +21,11 @@ namespace Jirabox.Views
 
             if (App.IsLoggedIn)
             {
-                await vm.InitializeData(true);
-                vm.RemoveBackEntry();
+                if (e.NavigationMode == NavigationMode.New)
+                {
+                    await vm.InitializeData(true);
+                    vm.RemoveBackEntry();
+                }
             }
             else
             {

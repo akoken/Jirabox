@@ -215,7 +215,7 @@
 
     <bar:Bindable.ApplicationBar>
         <bar:BindableApplicationBar IsVisible="True" BackgroundColor="#1199CC" Mode="Minimized">
-            <bar:BindableApplicationBarButton Text="status"
+            <bar:BindableApplicationBarButton Text="change status"
                                               Command="{Binding ChangeStatusCommand}"
                                               IconUri="/Assets/status.png" />
             <bar:BindableApplicationBarButton Text="comment"

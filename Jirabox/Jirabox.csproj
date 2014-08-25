@@ -297,6 +297,8 @@
     </Content>
     <Resource Include="Assets\logo.png" />
     <Content Include="Assets\assigned.png" />
+    <Content Include="Assets\cancel.png" />
+    <Content Include="Assets\check.png" />
     <Content Include="Assets\comment.png" />
     <Content Include="Assets\login.png" />
     <Content Include="Assets\pin.png" />
