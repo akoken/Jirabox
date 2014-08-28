@@ -128,6 +128,7 @@
     <Compile Include="Model\CreateIssueRequest.cs" />
     <Compile Include="Model\CreateIssueResponse.cs" />
     <Compile Include="Model\CreateIssueType.cs" />
+    <Compile Include="Model\Favourite.cs" />
     <Compile Include="Model\Fields.cs" />
     <Compile Include="Model\History.cs" />
     <Compile Include="Model\Issue.cs" />
@@ -300,6 +301,7 @@
     <Content Include="Assets\cancel.png" />
     <Content Include="Assets\check.png" />
     <Content Include="Assets\comment.png" />
+    <Content Include="Assets\favorites.png" />
     <Content Include="Assets\login.png" />
     <Content Include="Assets\pin.png" />
     <Content Include="Assets\refresh.png" />

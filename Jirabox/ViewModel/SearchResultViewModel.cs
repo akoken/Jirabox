@@ -58,7 +58,8 @@ namespace Jirabox.ViewModel
             if (searchParameter != null)
             {
                 cancellationTokenSource = new CancellationTokenSource();
-                Issues = await jiraService.Search(searchParameter.SearchText, searchParameter.IsAssignedToMe, searchParameter.IsReportedByMe, cancellationTokenSource);
+                var searchText = searchParameter.IsFavourite ? searchParameter.JQL : searchParameter.SearchText;
+                Issues = await jiraService.Search(searchText, searchParameter.IsAssignedToMe, searchParameter.IsReportedByMe, searchParameter.IsFavourite, cancellationTokenSource);
             }
             IsDataLoaded = true;
         }

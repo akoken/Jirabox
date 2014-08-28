@@ -183,38 +183,45 @@ namespace Jirabox.Services
             return issue;
         }
 
-        public async Task<ObservableCollection<Issue>> Search(string searchText, bool assignedToMe = false, bool reportedByMe = false, CancellationTokenSource tokenSource = null)
+        public async Task<ObservableCollection<Issue>> Search(string searchText, bool assignedToMe = false, bool reportedByMe = false, bool isFavourite = false, CancellationTokenSource tokenSource = null)
         {
             var fields = new List<string> { "summary", "status", "assignee", "reporter", "description", "issuetype", "priority", "comment" };
             var expands = new List<string> { "changelog" };
             var url = string.Format("{0}{1}", App.BaseUrl, JiraRequestType.Search.ToString().ToLower());
             var jql = string.Empty;
 
-            if (!string.IsNullOrEmpty(searchText))
-            {
-                jql += string.Format("text ~ {0}", searchText);
-            }
-            if (assignedToMe)
+            if (!isFavourite)
             {
                 if (!string.IsNullOrEmpty(searchText))
                 {
-                    jql += string.Format("{0} AND assignee = currentUser()", jql);
+                    jql += string.Format("text ~ {0}", searchText);
                 }
-                else
+                if (assignedToMe)
                 {
-                    jql += "assignee = currentUser()";
+                    if (!string.IsNullOrEmpty(searchText))
+                    {
+                        jql += string.Format("{0} AND assignee = currentUser()", jql);
+                    }
+                    else
+                    {
+                        jql += "assignee = currentUser()";
+                    }
+                }
+                if (reportedByMe)
+                {
+                    if (!string.IsNullOrEmpty(searchText))
+                    {
+                        jql += string.Format("{0} AND reporter = currentUser()", jql);
+                    }
+                    else
+                    {
+                        jql += "reporter = currentUser()";
+                    }
                 }
             }
-            if (reportedByMe)
+            else
             {
-                if (!string.IsNullOrEmpty(searchText))
-                {
-                    jql += string.Format("{0} AND reporter = currentUser()", jql);
-                }
-                else
-                {
-                    jql += "reporter = currentUser()";
-                }
+                jql = searchText;
             }
 
             var maxSearchResultSetting = new IsolatedStorageProperty<int>(Settings.MaxSearchResult, 50);
@@ -442,7 +449,7 @@ namespace Jirabox.Services
             User user = null;
             try
             {
-                var responseStr = await response.Content.ReadAsStringAsync();
+                var responseStr = await response.Content.ReadAsStringAsync();                
                 user = JsonConvert.DeserializeObject<User>(responseStr);
                 var userDisplayPictureUrl = user.AvatarUrls.Size48.Substring(0, user.AvatarUrls.Size48.Length - 2) + "183";
 
@@ -654,6 +661,37 @@ namespace Jirabox.Services
                 return true;
             return false;
         }
+
+        public async Task<ObservableCollection<Favourite>> GetFavourites()
+        {
+            var url = string.Format("{0}filter/favourite", App.BaseUrl);
+            var favourites = new ObservableCollection<Favourite>();
+            try
+            {
+                var result = await httpManager.GetAsync(url, true, App.UserName, App.Password);
+                result.EnsureSuccessStatusCode();
+                var responseString = await result.Content.ReadAsStringAsync();
+                var favouriteObject = JsonConvert.DeserializeObject<List<Favourite>>(responseString);
+
+                if (favouriteObject != null)
+                    favourites = new ObservableCollection<Favourite>(favouriteObject);
+
+                return favourites;
+            }
+            catch (Exception exception)
+            {
+                var extras = BugSenseHandler.Instance.CrashExtraData;
+                extras.Add(new CrashExtraData
+                {
+                    Key = "Method",
+                    Value = "JiraService.GetTransitions"
+                });
+
+                BugSenseHandler.Instance.LogException(exception, extras);
+            }
+            return favourites;
+        }
+
         private void SaveLiveTileImage(WriteableBitmap tileImage, string projectKey)
         {
             var imageFolder = @"\Shared\ShellContent";

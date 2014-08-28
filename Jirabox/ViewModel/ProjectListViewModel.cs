@@ -26,8 +26,10 @@ namespace Jirabox.ViewModel
 
         private bool isDataLoaded;
         private bool isGroupingEnabled;
+        private bool isFavouriteExist;
         private BitmapImage displayPicture;
         private List<AlphaKeyGroup<Project>> groupedProjects;
+        private ObservableCollection<Favourite> favorites;
         private ObservableCollection<Project> flatProjects;
 
         public RelayCommand<Project> ProjectDetailCommand { get; private set; }
@@ -40,6 +42,7 @@ namespace Jirabox.ViewModel
         public RelayCommand LogoutCommand { get; private set; }
         public RelayCommand AboutCommand { get; private set; }
         public RelayCommand<string> SearchCommand { get; private set; }
+        public RelayCommand<Favourite> SearchWithFavouriteCommand { get; set; }
 
         public bool IsDataLoaded
         {
@@ -60,6 +63,19 @@ namespace Jirabox.ViewModel
                 {
                     isGroupingEnabled = value;
                     RaisePropertyChanged(() => IsGroupingEnabled);
+                }
+            }
+        }
+
+        public bool IsFavouriteExist
+        {
+            get { return isFavouriteExist; }
+            set
+            {
+                if (isFavouriteExist != value)
+                {
+                    isFavouriteExist = value;
+                    RaisePropertyChanged(() => IsFavouriteExist);
                 }
             }
         }
@@ -98,6 +114,19 @@ namespace Jirabox.ViewModel
             }
         }
 
+        public ObservableCollection<Favourite> Favourites
+        {
+            get { return favorites; }
+            set
+            {
+                if (favorites != value)
+                {
+                    favorites = value;
+                    RaisePropertyChanged(() => Favourites);
+                }
+            }
+        }
+
         public ProjectListViewModel(INavigationService navigationService, IDialogService dialogService, IJiraService jiraService, ICacheService cacheDataService)
         {
             this.navigationService = navigationService;
@@ -114,6 +143,7 @@ namespace Jirabox.ViewModel
             SearchCommand = new RelayCommand<string>(searchText => NavigateToSearchResults(searchText));
             RefreshCommand = new RelayCommand(async () => await Refresh());
             LogoutCommand = new RelayCommand(Logout);
+            SearchWithFavouriteCommand = new RelayCommand<Favourite>(favorite => NavigateToSearchResults(favorite), favourite=> favourite != null);
 
             MessengerInstance.Register<bool>(this, (isEnabled) =>
             {
@@ -168,6 +198,8 @@ namespace Jirabox.ViewModel
             var projects = await jiraService.GetProjects(App.ServerUrl, App.UserName, App.Password, withoutCache);
             GroupedProjects = AlphaKeyGroup<Project>.CreateGroups(projects, System.Threading.Thread.CurrentThread.CurrentUICulture, (Project s) => { return s.Name; }, true);
             FlatProjects = projects;
+            Favourites = await jiraService.GetFavourites();
+            IsFavouriteExist = Favourites.Count > 0;
             
             IsGroupingEnabled = true;
             IsGroupingEnabled = new IsolatedStorageProperty<bool>(Settings.IsGroupingEnabled, true).Value;
@@ -214,6 +246,11 @@ namespace Jirabox.ViewModel
         private void NavigateToSearchResults(string searchText)
         {
             var searchCriteria = new SearchParameter { SearchText = searchText };
+            navigationService.Navigate<SearchResultViewModel>(searchCriteria);
+        }
+        private void NavigateToSearchResults(Favourite favorite)
+        {
+            var searchCriteria = new SearchParameter { IsFavourite = true, JQL = favorite.JQL };
             navigationService.Navigate<SearchResultViewModel>(searchCriteria);
         }
     }
