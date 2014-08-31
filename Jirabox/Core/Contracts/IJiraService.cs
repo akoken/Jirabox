@@ -30,11 +30,13 @@ namespace Jirabox.Core.Contracts
 
         Task<CreateIssueResponse> CreateIssue(CreateIssueRequest request);
 
-        Task<ObservableCollection<Issue>> Search(string searchText, bool assignedToMe = false, bool reportedByMe = false, CancellationTokenSource tokenSource = null);
+        Task<ObservableCollection<Issue>> Search(string searchText, bool assignedToMe = false, bool reportedByMe = false, bool isFavourite = false, CancellationTokenSource tokenSource = null);
        
         Task<ObservableCollection<Transition>> GetTransitions(string issueKey);
 
         Task<bool> PerformTransition(string issueKey, string transitionId);
+
+        Task<ObservableCollection<Favourite>> GetFavourites();
         
     }
 }
