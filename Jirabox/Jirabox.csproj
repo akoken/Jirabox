@@ -192,6 +192,9 @@
     <Compile Include="View\AddCommentView.xaml.cs">
       <DependentUpon>AddCommentView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ChangeLogView.xaml.cs">
+      <DependentUpon>ChangeLogView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ChangeStatusView.xaml.cs">
       <DependentUpon>ChangeStatusView.xaml</DependentUpon>
     </Compile>
@@ -203,6 +206,9 @@
     </Compile>
     <Compile Include="View\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PrivacyPolicyView.xaml.cs">
+      <DependentUpon>PrivacyPolicyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ProjectDetailView.xaml.cs">
       <DependentUpon>ProjectDetailView.xaml</DependentUpon>
@@ -245,6 +251,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\ChangeLogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\ChangeStatusView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -258,6 +268,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PrivacyPolicyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
