@@ -254,7 +254,7 @@
                         </TextBox>
                     </StackPanel>
                     <StackPanel Visibility="{Binding IsFavouriteExist, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <TextBlock Text="Favourites"
+                        <TextBlock Text="Favorites"
                                    Foreground="Black"
                                    Margin="12,0,0,0"
                                    FontSize="45" />
