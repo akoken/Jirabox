@@ -15,74 +15,108 @@
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="False">
 
-    <Grid x:Name="LayoutRoot" Background="#FFECECEC">
-        <Grid.RowDefinitions>            
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto" MinHeight="200"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+    <Grid x:Name="LayoutRoot"
+          Background="#FFECECEC">
+        <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />           
         </Grid.RowDefinitions>
-        
-        <StackPanel Grid.Row="0" >
-            <StackPanel Orientation="Horizontal">
-                <Image Source="/Jirabox;component/Assets/logo.png"
-                       Width="80"
-                       Height="80"
-                       Margin="10,0,0,0" />
-                <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}"
-                           Style="{StaticResource PhoneTextTitle1Style}"
-                           Foreground="{StaticResource BlackForeground}"
-                           VerticalAlignment="Center" />
-            </StackPanel>
-            <TextBlock Text="About"
-                       Style="{StaticResource PhoneTextTitle2Style}"
-                       Foreground="{StaticResource BlackForeground}" />
-        </StackPanel>
 
-        <StackPanel Grid.Row="1" Margin="15,0,0,0" VerticalAlignment="Center">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Version : "
-                           FontSize="{StaticResource PhoneFontSizeMedium}"
-                           VerticalAlignment="Center" />
-                <TextBlock Text="{Binding Version}"
-                           FontSize="{StaticResource PhoneFontSizeNormal}"
-                           VerticalAlignment="Center" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Created by : "
-                           VerticalAlignment="Center"
-                           FontSize="{StaticResource PhoneFontSizeMedium}" />
-                <TextBlock Text="Abdurrahman Köken"
-                           VerticalAlignment="Center"
-                           FontSize="{StaticResource PhoneFontSizeNormal}" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Twitter : "
-                           VerticalAlignment="Center"
-                           FontSize="{StaticResource PhoneFontSizeMedium}" />
-                <HyperlinkButton Content="@AAKoken"
-                           VerticalAlignment="Center"
-                                 FontSize="{StaticResource PhoneFontSizeNormal}"                                 
-                                 Command="{Binding NavigateToTwitter}"
-                                 Foreground="#1199CC"/>                
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="GitHub : "
-                           VerticalAlignment="Center"
-                           FontSize="{StaticResource PhoneFontSizeMedium}" />
-                <HyperlinkButton Content="@AKoken"
-                                 VerticalAlignment="Center"
-                                 FontSize="{StaticResource PhoneFontSizeNormal}"
-                                 Command="{Binding NavigateToGitHub}"
-                                 Foreground="#1199CC" />
-            </StackPanel>
-        </StackPanel>
-        <Button Content="send email" Grid.Row="2" Command="{Binding EmailCommand}"  Background="#1199CC" FontSize="24"/>        
-        <Button Content="review this app" Grid.Row="3" Command="{Binding ReviewCommand}"  Background="#1199CC" FontSize="24"/>
-        <Button Content="share with your friends" Grid.Row="4" Command="{Binding ShareCommand}"  Background="#1199CC" FontSize="24"/>
-        <Button Content="report bugs/suggestions" Grid.Row="5" Command="{Binding FeedbackCommand}" Background="#1199CC" FontSize="24" />
+        <TextBlock Text="ABOUT"
+                   FontSize="35"
+                   FontWeight="SemiBold"
+                   Margin="12,12,0,0" />
+        <Image Source="/Jirabox;component/Assets/logo.png"
+               Width="150"
+               Height="150"
+               Grid.Row="1" />
+        <ScrollViewer Grid.Row="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0">
+                    <TextBlock Text="publisher"
+                               FontSize="28"
+                               Margin="12,0,0,0" />
+                    <TextBlock Text="abdurrahman köken"
+                               FontSize="28"
+                               Margin="12,0,0,0"
+                               Foreground="Silver" />
+                </StackPanel>
+                <StackPanel Grid.Row="1"
+                            Margin="0,20,0,0">
+                    <TextBlock Text="version"
+                               FontSize="28"
+                               Margin="12,0,0,0" />
+                    <HyperlinkButton Content="{Binding Version}"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Left"
+                                     FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                                     NavigateUri="/View/ChangeLogView.xaml"
+                                     Style="{StaticResource HyperlinkButtonStyle}"
+                                     Foreground="#1199CC" />
+                </StackPanel>
+                <StackPanel Grid.Row="2"
+                            Margin="0,20,0,0">
+                    <TextBlock Text="privacy policy"
+                               FontSize="28"
+                               Margin="12,0,0,0" />
+                    <HyperlinkButton Content="view"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Left"
+                                     FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                                     NavigateUri="/View/PrivacyPolicyView.xaml"
+                                     Style="{StaticResource HyperlinkButtonStyle}"
+                                     Foreground="#1199CC" />
+                </StackPanel>
+                <StackPanel Grid.Row="3"
+                            Margin="0,20,0,0">
+                    <TextBlock Text="support"
+                               FontSize="28"
+                               Margin="12,0,0,0" />
+                    <HyperlinkButton Content="review"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Left"
+                                     FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                                     Command="{Binding ReviewCommand}"
+                                     Style="{StaticResource HyperlinkButtonStyle}"
+                                     Foreground="#1199CC" />
+                </StackPanel>
+                <StackPanel Grid.Row="4"
+                            Margin="0,20,0,0">
+                    <TextBlock Text="feedback"
+                               FontSize="28"
+                               Margin="12,0,0,0" />
+                    <HyperlinkButton Content="uservoice"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Left"
+                                     FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                                     Command="{Binding FeedbackCommand}"
+                                     Style="{StaticResource HyperlinkButtonStyle}"
+                                     Foreground="#1199CC" />
+                </StackPanel>
+                <StackPanel Grid.Row="5"
+                            Margin="0,20,0,0">
+                    <TextBlock Text="contact us"
+                               FontSize="28"
+                               Margin="12,0,0,0" />
+                    <HyperlinkButton Content="email"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Left"
+                                     FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                                     Command="{Binding EmailCommand}"
+                                     Style="{StaticResource HyperlinkButtonStyle}"
+                                     Foreground="#1199CC" />
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
     </Grid>
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>

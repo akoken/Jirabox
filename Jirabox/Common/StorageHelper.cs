@@ -21,14 +21,14 @@ namespace Jirabox.Common
         public static void SaveUserCredential(string serverUrl, string username, string password)
         {
             using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
-            {                
-                if (isf.FileExists(path))                
-                    isf.DeleteFile(path);     
-           
+            {
+                if (isf.FileExists(path))
+                    isf.DeleteFile(path);
+
                 using (var sw = new StreamWriter(new IsolatedStorageFileStream(path, FileMode.Create, FileAccess.Write, isf)))
-                {                   
+                {
                     byte[] pPassword = ProtectedData.Protect(Encoding.UTF8.GetBytes(password), null);
-        
+
                     sw.WriteLine(serverUrl);
                     sw.WriteLine(username);
                     WriteEncryptedPasswordToFile(pPassword);
@@ -39,14 +39,14 @@ namespace Jirabox.Common
         public static UserCredential GetUserCredential()
         {
             using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
-            {                
+            {
                 if (isf.FileExists(path))
                 {
                     var fs = isf.OpenFile(path, FileMode.Open, FileAccess.Read);
                     using (var sr = new StreamReader(fs))
                     {
                         var data = sr.ReadToEnd();
-                        var credentialArray = data.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);                       
+                        var credentialArray = data.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
                         var password = ProtectedData.Unprotect(ReadEncryptedPasswordFromFile(), null);
 
                         var userCredential = new UserCredential
@@ -55,7 +55,7 @@ namespace Jirabox.Common
                             UserName = credentialArray[1],
                             Password = Encoding.UTF8.GetString(password, 0, password.Length)
                         };
-                        return userCredential;                       
+                        return userCredential;
                     }
                 }
                 return null;
@@ -102,7 +102,7 @@ namespace Jirabox.Common
 
                         BugSenseHandler.Instance.LogException(storageException, extras);
                     }
-                }         
+                }
             }
         }
 
@@ -149,17 +149,17 @@ namespace Jirabox.Common
         }
 
         private static void WriteEncryptedPasswordToFile(byte[] passwordData)
-        {            
-            using(var file = IsolatedStorageFile.GetUserStoreForApplication())
+        {
+            using (var file = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                using(var writestream = new IsolatedStorageFileStream(encryptedPath, System.IO.FileMode.Create, System.IO.FileAccess.Write, file))
+                using (var writestream = new IsolatedStorageFileStream(encryptedPath, System.IO.FileMode.Create, System.IO.FileAccess.Write, file))
                 {
                     using (var writer = new StreamWriter(writestream).BaseStream)
                     {
                         writer.Write(passwordData, 0, passwordData.Length);
                     }
-                }                
-            }            
+                }
+            }
         }
 
         private static byte[] ReadEncryptedPasswordFromFile()
@@ -172,11 +172,21 @@ namespace Jirabox.Common
                     using (var reader = new StreamReader(readstream).BaseStream)
                     {
                         passwordArray = new byte[reader.Length];
-                        reader.Read(passwordArray, 0, passwordArray.Length);                       
+                        reader.Read(passwordArray, 0, passwordArray.Length);
                     }
                 }
             }
             return passwordArray;
+        }
+
+        public static void DeleteOldCredentialFile()
+        {
+            string filePath = "credential.ak";
+            using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (isf.FileExists(filePath))
+                    isf.DeleteFile(filePath);
+            }
         }
     }
 }

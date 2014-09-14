@@ -78,6 +78,7 @@ namespace Jirabox
 
             try
             {
+                StorageHelper.DeleteOldCredentialFile();
                 await VoiceCommandService.InstallCommandSetsFromFileAsync(new Uri("ms-appx:///CortanaCommands.xml", UriKind.Absolute));
             }
             catch (Exception ex)
@@ -218,6 +219,6 @@ namespace Jirabox
                 }
                 throw;
             }
-        }   
+        }          
     }
 }
