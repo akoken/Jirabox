@@ -11,8 +11,7 @@
         <converter:DoubleToIntConverter x:Key="DoubleToIntConverter" xmlns:converter="clr-namespace:Jirabox.Converters" />
         <converter:UserStatusToString x:Key="UserStatusToStringConverter" xmlns:converter="clr-namespace:Jirabox.Converters" />
         <SolidColorBrush x:Key="BlackForeground" Color="Black" />
-        <SolidColorBrush x:Key="JiraboxSolidColorBrush"
-                         Color="#1199CC" />
+        <SolidColorBrush x:Key="JiraboxSolidColorBrush" Color="#1199CC" />
         <Style x:Key="PanoramaItemHeaderTextStyle" TargetType="TextBlock">
       <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
       <Setter Property="FontSize" Value="{StaticResource PanoramaItemHeaderFontSize}" />
@@ -68,6 +67,10 @@
                                            Text="{TemplateBinding Content}"
                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                           Style="{StaticResource PhoneTextExtraLargeStyle}"
+                                           FontSize="27"
+                                           Foreground="#1199CC"
+                                           Margin="0"
                                            TextWrapping="Wrap"
                                            TextDecorations="none" />
                             </Border>

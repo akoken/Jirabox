@@ -12,33 +12,51 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="False">
-    
+
     <Grid x:Name="LayoutRoot"
           Background="#FFECECEC">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
+
+        <StackPanel Grid.Row="0"
+                    Margin="12,17,0,28">
             <TextBlock Text="CHANGE LIST"
-                       FontWeight="SemiBold"
-                       FontSize="26"
-                       Foreground="Black" />
+                       Style="{StaticResource PhoneTextExtraLargeStyle}"
+                       FontSize="35"
+                       Foreground="Black"
+                       FontWeight="SemiBold" />
         </StackPanel>
-        
-        <ScrollViewer x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+
+        <ScrollViewer x:Name="ContentPanel"
+                      Grid.Row="1"
+                      Margin="12,0,12,0">
             <StackPanel>
-                <TextBlock Text="v2.6.0.0"  Foreground="Black"/>
-                <TextBlock>
+                <TextBlock Text="v2.6.0.0"
+                           Style="{StaticResource PhoneTextNormalStyle}"
+                           FontSize="24"
+                           FontWeight="SemiBold"
+                           Foreground="Black" />
+                <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                           FontSize="24"
+                           Foreground="Black">
                     <Run Text="- Ability to search by your favorite filters added
-" Foreground="Black"/><LineBreak />
-                    <Run Text="- Other minor UI consistency fixes"  Foreground="Black"/>
+"
+                         Foreground="Black" /><LineBreak />
+                    <Run Text="- Other minor UI consistency fixes"
+                         Foreground="Black" />
                 </TextBlock>
                 <TextBlock Text="v2.5.0.0"
-                           Foreground="Black" Margin="0,10,0,0"/>
-                <TextBlock>
-                    <Run Text="-Cortana integration"
+                           Style="{StaticResource PhoneTextNormalStyle}"
+                           FontWeight="SemiBold"
+                           FontSize="24"
+                           Foreground="Black"
+                           Margin="0,20,0,0" />
+                <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                           FontSize="24"
+                           Foreground="Black">
+                    <Run Text="- Cortana integration"
                          Foreground="Black" /><LineBreak />
                     <Run Text="- Minor improvements"
                          Foreground="Black" />
@@ -46,5 +64,4 @@
             </StackPanel>
         </ScrollViewer>
     </Grid>
-
 </phone:PhoneApplicationPage>

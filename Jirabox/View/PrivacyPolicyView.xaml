@@ -21,32 +21,41 @@
         </Grid.RowDefinitions>
         
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="PRIVACY POLICY" FontWeight="SemiBold" FontSize="26" Foreground="Black"/>
+            <TextBlock Text="PRIVACY POLICY"
+                       FontSize="35"
+                       Foreground="Black"
+                       FontWeight="SemiBold" />
         </StackPanel>
         
         <Grid x:Name="ContentPanel"
               Grid.Row="1"
               Margin="12,0,12,0">
-            <StackPanel>
-                <TextBlock Text="1. What information do we collect?"
-                           FontWeight="SemiBold"
-                           FontSize="26"
-                           Foreground="Black" />
-                <TextBlock Text="We do not collect any type of information about you, your data or your interaction with the application. This application only communicates with Jira servers and impersonates you for the purposes of presenting you with your own data. Everthing you access always remains on your device."
-                           TextWrapping="Wrap"
-                           Foreground="Black" 
-                           Margin="12,10,0,0"/>
-                <TextBlock Text="2. What control do you have over your personal/company data?"
-                           FontWeight="SemiBold"
-                           FontSize="26"
-                           Foreground="Black"
-                           TextWrapping="Wrap"
-                           Margin="0,10,0,0"/>
-                <TextBlock Text="Since we have no access to your data, you retain full control of the data you own. You can uninstall the application at any time."
-                           TextWrapping="Wrap"
-                           Foreground="Black"
-                           Margin="12,10,0,0" />
-            </StackPanel>
+            <ScrollViewer>
+                <StackPanel>
+                    <TextBlock Text="1. What information do we collect?"
+                               FontWeight="SemiBold"
+                               FontSize="26"
+                               Foreground="Black" />
+                    <TextBlock Text="We do not collect any type of information about you, your data or your interaction with the application. This application only communicates with jira servers and impersonates you for the purposes of presenting you with your own data. Everthing you access always remains on your device."
+                               TextWrapping="Wrap"
+                               Style="{StaticResource PhoneTextNormalStyle}"
+                               FontSize="24"
+                               Foreground="Black"
+                               Margin="12,15,0,0" />
+                    <TextBlock Text="2. What control do you have over your personal/company data?"
+                               FontWeight="SemiBold"
+                               FontSize="26"
+                               Foreground="Black"
+                               TextWrapping="Wrap"
+                               Margin="0,25,0,0" />
+                    <TextBlock Text="Since we have no access to your data, you retain full control of the data you own. You can uninstall the application at any time."
+                               TextWrapping="Wrap"
+                               Style="{StaticResource PhoneTextNormalStyle}"
+                               FontSize="24"
+                               Foreground="Black"
+                               Margin="12,15,0,0" />
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
     </Grid>
 

@@ -24,15 +24,17 @@
         </Grid.RowDefinitions>
 
         <TextBlock Text="ABOUT"
+                   Style="{StaticResource PhoneTextExtraLargeStyle}"
                    FontSize="35"
+                   Foreground="Black"
                    FontWeight="SemiBold"
-                   Margin="12,12,0,0" />
+                   Margin="22,12,0,0" />
         <Image Source="/Jirabox;component/Assets/logo.png"
-               Width="150"
-               Height="150"
+               Width="130"
+               Height="130"
                Grid.Row="1" />
         <ScrollViewer Grid.Row="2">
-            <Grid>
+            <Grid Margin="10,0,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -43,17 +45,22 @@
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0">
                     <TextBlock Text="publisher"
-                               FontSize="28"
+                               Style="{StaticResource PhoneTextExtraLargeStyle}"
+                               FontSize="27"
+                               Foreground="Black"
                                Margin="12,0,0,0" />
                     <TextBlock Text="abdurrahman köken"
-                               FontSize="28"
+                               Style="{StaticResource PhoneTextExtraLargeStyle}"
+                               FontSize="27"
                                Margin="12,0,0,0"
-                               Foreground="Silver" />
+                               Foreground="Gray" />
                 </StackPanel>
                 <StackPanel Grid.Row="1"
                             Margin="0,20,0,0">
                     <TextBlock Text="version"
-                               FontSize="28"
+                               Style="{StaticResource PhoneTextExtraLargeStyle}"
+                               FontSize="27"
+                               Foreground="Black"
                                Margin="12,0,0,0" />
                     <HyperlinkButton Content="{Binding Version}"
                                      VerticalAlignment="Center"
@@ -66,7 +73,9 @@
                 <StackPanel Grid.Row="2"
                             Margin="0,20,0,0">
                     <TextBlock Text="privacy policy"
-                               FontSize="28"
+                               Style="{StaticResource PhoneTextExtraLargeStyle}"
+                               FontSize="27"
+                               Foreground="Black"
                                Margin="12,0,0,0" />
                     <HyperlinkButton Content="view"
                                      VerticalAlignment="Center"
@@ -79,7 +88,9 @@
                 <StackPanel Grid.Row="3"
                             Margin="0,20,0,0">
                     <TextBlock Text="support"
-                               FontSize="28"
+                               Style="{StaticResource PhoneTextExtraLargeStyle}"
+                               FontSize="27"
+                               Foreground="Black"
                                Margin="12,0,0,0" />
                     <HyperlinkButton Content="review"
                                      VerticalAlignment="Center"
@@ -92,7 +103,9 @@
                 <StackPanel Grid.Row="4"
                             Margin="0,20,0,0">
                     <TextBlock Text="feedback"
-                               FontSize="28"
+                               Style="{StaticResource PhoneTextExtraLargeStyle}"
+                               FontSize="27"
+                               Foreground="Black"
                                Margin="12,0,0,0" />
                     <HyperlinkButton Content="uservoice"
                                      VerticalAlignment="Center"
@@ -105,7 +118,9 @@
                 <StackPanel Grid.Row="5"
                             Margin="0,20,0,0">
                     <TextBlock Text="contact us"
-                               FontSize="28"
+                               Style="{StaticResource PhoneTextExtraLargeStyle}"
+                               FontSize="27"
+                               Foreground="Black"
                                Margin="12,0,0,0" />
                     <HyperlinkButton Content="email"
                                      VerticalAlignment="Center"
