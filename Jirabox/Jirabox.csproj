@@ -180,6 +180,7 @@
     <Compile Include="ViewModel\CreateIssueViewModel.cs" />
     <Compile Include="ViewModel\IssueDetailViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
+    <Compile Include="ViewModel\LogWorkViewModel.cs" />
     <Compile Include="ViewModel\ProjectDetailViewModel.cs" />
     <Compile Include="ViewModel\ProjectListViewModel.cs" />
     <Compile Include="ViewModel\SearchResultViewModel.cs" />
@@ -206,6 +207,9 @@
     </Compile>
     <Compile Include="View\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LogWorkView.xaml.cs">
+      <DependentUpon>LogWorkView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\PrivacyPolicyView.xaml.cs">
       <DependentUpon>PrivacyPolicyView.xaml</DependentUpon>
@@ -271,6 +275,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\LogWorkView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\PrivacyPolicyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -326,6 +334,8 @@
     <Content Include="Assets\status.png" />
     <Content Include="Assets\Tiles\LiveTileM.png" />
     <Content Include="Assets\Tiles\LiveTileS.png" />
+    <Content Include="Assets\time.png" />
+    <Content Include="Assets\timesheet.png" />
     <Content Include="BugSense\BugSense - SDK License Agreement.txt" />
     <Content Include="CortanaCommands.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

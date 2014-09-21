@@ -47,6 +47,9 @@ namespace Jirabox.Services
                                                                           },
                                                                           {
                                                                               typeof(ChangeStatusViewModel), ViewNames.ChangeStatusView
+                                                                          },
+                                                                          {
+                                                                              typeof(LogWorkViewModel), ViewNames.LogWorkView
                                                                           }
                                                                     };        
        
