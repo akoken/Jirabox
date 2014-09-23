@@ -134,6 +134,7 @@
     <Compile Include="Model\Issue.cs" />
     <Compile Include="Model\IssueKey.cs" />
     <Compile Include="Model\IssueTypeRequest.cs" />
+    <Compile Include="Model\LogWorkRequest.cs" />
     <Compile Include="Model\Priority.cs" />
     <Compile Include="Model\SearchParameter.cs" />
     <Compile Include="Model\SearchRequest.cs" />

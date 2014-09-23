@@ -17,7 +17,7 @@
       <Setter Property="FontSize" Value="{StaticResource PanoramaItemHeaderFontSize}" />
       <Setter Property="CharacterSpacing" Value="-35" />
     </Style>
-        <Style TargetType="CheckBox">
+        <Style TargetType="CheckBox" x:Key="CheckBoxStyle">
             <Setter Property="Foreground"
                     Value="Black" />
             <Setter Property="FontSize"

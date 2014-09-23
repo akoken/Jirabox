@@ -36,31 +36,51 @@
                        Style="{StaticResource PhoneTextTitle2Style}"
                        Foreground="{StaticResource BlackForeground}" />
         </StackPanel>
-
         <StackPanel x:Name="ContentPanel"
-              Grid.Row="2"
-              Margin="12,15,15,0">
-            <TextBlock Text="Started working:"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    Grid.Row="2"
+                    Margin="12,15,15,50">
+            <CheckBox Name="PeriodCheckBox"
+                      Content="Period"  
+                      IsChecked="{Binding IsPeriod, Mode=TwoWay}"
+                      Foreground="Black"
+                      />
+            <TextBlock Text="Date:"
                        Margin="15,0,0,0"
                        Style="{StaticResource PhoneTextExtraLargeStyle}"
                        FontSize="27"
                        Foreground="Black" />
-            <toolkit:DatePicker  Foreground="Black"/>            
-            <toolkit:TimePicker Foreground="Black"/>
-            <TextBlock Text="Time spent:"
+            <toolkit:DatePicker  Foreground="Black" Value="{Binding StartDate, Mode=TwoWay}"/>
+            <StackPanel Visibility="{Binding ElementName=PeriodCheckBox, Path=IsChecked, Converter={StaticResource BoolToVisibilityConverter}}">
+                <TextBlock Text="End date:"
+                           Margin="15,0,0,0"
+                           Style="{StaticResource PhoneTextExtraLargeStyle}"
+                           FontSize="27"
+                           Foreground="Black" />
+                <toolkit:DatePicker  Foreground="Black"
+                                     Value="{Binding EndDate, Mode=TwoWay}" />
+            </StackPanel>
+            <TextBlock Text="Worked:"
                        Margin="15,0,0,0"
                        Style="{StaticResource PhoneTextExtraLargeStyle}"
                        FontSize="27"
                        Foreground="Black" />
             <StackPanel Orientation="Horizontal">
-                <TextBox Text="0" Width="65" TextAlignment="Center"/>
+                <TextBox Text="{Binding Hour, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                         TextChanged="TextBox_TextChanged"
+                         Width="65"
+                         TextAlignment="Center" />
                 <TextBlock Text="h."
                            VerticalAlignment="Center"
                            Style="{StaticResource PhoneTextExtraLargeStyle}"
                            Margin="0"
                            FontSize="27"
                            Foreground="Black" />
-                <TextBox Text="0" Width="65" TextAlignment="Center"/>
+                <TextBox 
+                         Width="65"
+                         TextAlignment="Center"
+                    TextChanged="TextBox_TextChanged"
+                         Text="{Binding Minute, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
                 <TextBlock Text="m."
                            VerticalAlignment="Center"
                            Style="{StaticResource PhoneTextExtraLargeStyle}"
@@ -73,7 +93,8 @@
                        Margin="15,0,0,0"
                        FontSize="27"
                        Foreground="Black" />
-            <TextBox TextWrapping="Wrap" MinHeight="240" />
+            <TextBox TextWrapping="Wrap"
+                     MinHeight="150" Text="{Binding Comment,Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="TextBox_TextChanged"/>
         </StackPanel>
     </Grid>
     <toolkit:TransitionService.NavigationInTransition>

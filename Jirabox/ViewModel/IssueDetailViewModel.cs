@@ -97,7 +97,7 @@ namespace Jirabox.ViewModel
 
         private void NavigateToLogWorkView()
         {
-            navigationService.Navigate<LogWorkViewModel>(Issue.ProxyKey);
+            navigationService.Navigate<LogWorkViewModel>((object)Issue.ProxyKey);
         }       
 
         private bool CanChangeStatus()
