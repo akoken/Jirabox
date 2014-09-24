@@ -114,13 +114,15 @@ namespace Jirabox.ViewModel
             {
                 IsDataLoaded = true;
                 dialogService.ShowDialog(AppResources.UnauthorizedMessage, AppResources.LoginFailedMessage);
+                LoginButtonEnabled = true;
                 return;
             }
 
             if (!ValidateUrl(ServerUrl))
             {
                 IsDataLoaded = true;
-                dialogService.ShowDialog(AppResources.InvalidServerUrlMessage, AppResources.LoginFailedMessage);                
+                dialogService.ShowDialog(AppResources.InvalidServerUrlMessage, AppResources.LoginFailedMessage);
+                LoginButtonEnabled = true;
                 return;
             }
             try
