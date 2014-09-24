@@ -118,13 +118,27 @@ namespace Jirabox.ViewModel
         private async Task LogWork()
         {
             var issueKey = navigationService.GetNavigationParameter().ToString();
-            while (StartDate.ToShortDateString() != EndDate.ToShortDateString())
+            if (IsPeriod)
             {
-                var date = String.Format("{0:s}", StartDate);
+                while (StartDate.ToShortDateString() != EndDate.ToShortDateString())
+                {
+                    var formattedDate = StartDate.ToString("O");
+                    var dateIndex = formattedDate.LastIndexOf(":");
+                    var date = formattedDate.Remove(dateIndex, 1);
+                    var timeSpent = String.Format("{0}h {1}m", Hour, minute);
+                    var result = await jiraService.LogWork(issueKey, date, timeSpent, Comment);
+                    StartDate = StartDate.AddDays(1);
+                }
+            }
+            else
+            {
+                //TODO:Convert date format
+                var dateIndex = StartDate.ToString("O").LastIndexOf(":");
+                var date = StartDate.ToString("O").Remove(dateIndex, 1);
                 var timeSpent = String.Format("{0}h {1}m", Hour, minute);
                 var result = await jiraService.LogWork(issueKey, date, timeSpent, Comment);
-                StartDate = StartDate.AddDays(1);
-            }            
+            }
+            navigationService.GoBack();
         }
     }
 }
