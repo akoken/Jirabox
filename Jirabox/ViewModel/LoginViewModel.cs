@@ -19,8 +19,7 @@ namespace Jirabox.ViewModel
         private string serverUrl;
         private string userName;        
         private string password;
-        private bool isDataLoaded;
-        private bool isRememberMe;
+        private bool isDataLoaded;        
         private bool loginButtonEnabled;
 
         public RelayCommand LoginCommand { get; private set; }

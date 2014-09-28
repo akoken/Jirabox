@@ -313,6 +313,24 @@ namespace Jirabox.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Opps! Something went wrong while adding logwork..
+        /// </summary>
+        public static string LogWorkError {
+            get {
+                return ResourceManager.GetString("LogWorkError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logwork successfully added..
+        /// </summary>
+        public static string LogWorkSuccess {
+            get {
+                return ResourceManager.GetString("LogWorkSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LeftToRight.
         /// </summary>
         public static string ResourceFlowDirection {

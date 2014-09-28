@@ -224,4 +224,10 @@
   <data name="LogoutPromptMessage" xml:space="preserve">
     <value>Do you really want to logout?</value>
   </data>
+  <data name="LogWorkError" xml:space="preserve">
+    <value>Opps! Something went wrong while adding logwork.</value>
+  </data>
+  <data name="LogWorkSuccess" xml:space="preserve">
+    <value>Logwork successfully added.</value>
+  </data>
 </root>

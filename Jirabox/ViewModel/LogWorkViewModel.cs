@@ -1,7 +1,9 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Jirabox.Core.Contracts;
+using Jirabox.Resources;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Jirabox.ViewModel
@@ -10,11 +12,26 @@ namespace Jirabox.ViewModel
     {
         private readonly INavigationService navigationService;
         private readonly IJiraService jiraService;
+        private readonly IDialogService dialogService;
+        private CancellationTokenSource cancellationTokenSource = null;
 
         public RelayCommand LogWorkCommand { get; private set; }
 
-        private DateTime startDate;
+        private bool isDataLoaded;
+        public bool IsDataLoaded
+        {
+            get { return isDataLoaded; }
+            set
+            {
+                if (isDataLoaded != value)
+                {
+                    isDataLoaded = value;
+                    RaisePropertyChanged(() => IsDataLoaded);
+                }
+            }
+        }
 
+        private DateTime startDate;
         public DateTime StartDate
         {
             get { return startDate; }
@@ -29,7 +46,6 @@ namespace Jirabox.ViewModel
         }
 
         private DateTime endDate;
-
         public DateTime EndDate
         {
             get { return endDate; }
@@ -43,9 +59,7 @@ namespace Jirabox.ViewModel
             }
         }
 
-
         private int hour;
-
         public int Hour
         {
             get { return hour; }
@@ -60,7 +74,6 @@ namespace Jirabox.ViewModel
         }
 
         private int minute;
-
         public int Minute
         {
             get { return minute; }
@@ -75,7 +88,6 @@ namespace Jirabox.ViewModel
         }
 
         private string comment;
-
         public string Comment
         {
             get { return comment; }
@@ -90,7 +102,6 @@ namespace Jirabox.ViewModel
         }
 
         private bool isPeriod;
-
         public bool IsPeriod
         {
             get { return isPeriod; }
@@ -104,41 +115,86 @@ namespace Jirabox.ViewModel
             }
         }
 
-
-        public LogWorkViewModel(INavigationService navigationService, IJiraService jiraService)
+        public LogWorkViewModel(INavigationService navigationService, IJiraService jiraService, IDialogService dialogService)
         {
             this.navigationService = navigationService;
             this.jiraService = jiraService;
+            this.dialogService = dialogService;
 
             LogWorkCommand = new RelayCommand(async()=>await LogWork());
             StartDate = DateTime.Now;
             EndDate = DateTime.Now;
         }
 
+        public void Initialize()
+        {                      
+            IsDataLoaded = true;
+            cancellationTokenSource = new CancellationTokenSource();
+        }
+
         private async Task LogWork()
         {
+            IsDataLoaded = false;
             var issueKey = navigationService.GetNavigationParameter().ToString();
             if (IsPeriod)
             {
-                while (StartDate.ToShortDateString() != EndDate.ToShortDateString())
-                {
-                    var formattedDate = StartDate.ToString("O");
-                    var dateIndex = formattedDate.LastIndexOf(":");
-                    var date = formattedDate.Remove(dateIndex, 1);
+                while (IsStartDateLessThanEndDate(StartDate, EndDate))
+                {                    
+                    //2013-09-01T10:30:18.932+0530
+                    var formattedDate = FormatDate(StartDate);                  
                     var timeSpent = String.Format("{0}h {1}m", Hour, minute);
-                    var result = await jiraService.LogWork(issueKey, date, timeSpent, Comment);
+                    var isLogged = await jiraService.LogWork(issueKey, formattedDate, timeSpent, Comment);
+                    if (!isLogged)
+                    {
+                        dialogService.ShowDialog(AppResources.LogWorkError, AppResources.Error);
+                        return;
+                    }
                     StartDate = StartDate.AddDays(1);
                 }
             }
             else
-            {
-                //TODO:Convert date format
-                var dateIndex = StartDate.ToString("O").LastIndexOf(":");
-                var date = StartDate.ToString("O").Remove(dateIndex, 1);
+            {                
+                var formattedDate = FormatDate(StartDate);
                 var timeSpent = String.Format("{0}h {1}m", Hour, minute);
-                var result = await jiraService.LogWork(issueKey, date, timeSpent, Comment);
+                var isLogged = await jiraService.LogWork(issueKey, formattedDate, timeSpent, Comment, cancellationTokenSource);
+                if (!isLogged)
+                {
+                    dialogService.ShowDialog(AppResources.LogWorkError, AppResources.Error);
+                    return;
+                }
             }
+            IsDataLoaded = true;
+            dialogService.ShowDialog(AppResources.LogWorkSuccess, AppResources.Done);
             navigationService.GoBack();
+        }
+
+        public void Cancel()
+        {
+            if (cancellationTokenSource != null)
+                cancellationTokenSource.Cancel();
+        }
+
+        private string FormatDate(DateTime dateTime)
+        {
+            var day = dateTime.Day.ToString();
+            var month = dateTime.Month.ToString();
+
+            if(day.Length < 2)
+            {
+                day = String.Format("0{0}", day);
+            }
+            if(month.Length < 2)
+            {
+                month = String.Format("0{0}", month);
+            }
+            return String.Format("{0}-{1}-{2}T09:00:00.932+0530", dateTime.Year, month, day);
+        }
+
+        private bool IsStartDateLessThanEndDate(DateTime startDate, DateTime endDate)
+        {
+            if (startDate.Year <= EndDate.Year && startDate.Month <= endDate.Month && startDate.Day <= endDate.Day)            
+                return true;
+            return false;
         }
     }
 }

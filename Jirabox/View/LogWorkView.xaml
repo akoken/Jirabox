@@ -14,13 +14,20 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="False">
+    
     <Grid x:Name="LayoutRoot"
           Background="#FFECECEC">
         <Grid.RowDefinitions>
             <RowDefinition Height="10" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-        </Grid.RowDefinitions>      
+        </Grid.RowDefinitions>
+        <ProgressBar x:Name="progressBar"
+                     IsIndeterminate="True"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Top"
+                     Visibility="{Binding IsDataLoaded, Converter={StaticResource IsDataLoadedToVisibilityConverter}}"
+                     Margin="0,4,0,0" />
         <StackPanel Grid.Row="1">
             <StackPanel Orientation="Horizontal">
                 <Image Source="/Jirabox;component/Assets/logo.png"
@@ -36,21 +43,21 @@
                        Style="{StaticResource PhoneTextTitle2Style}"
                        Foreground="{StaticResource BlackForeground}" />
         </StackPanel>
-        <StackPanel x:Name="ContentPanel"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                    Grid.Row="2"
+
+        <ScrollViewer Grid.Row="2">
+        <StackPanel x:Name="ContentPanel"                    
                     Margin="12,15,15,50">
             <CheckBox Name="PeriodCheckBox"
-                      Content="Period"  
+                      Content="Period"
                       IsChecked="{Binding IsPeriod, Mode=TwoWay}"
-                      Foreground="Black"
-                      />
+                      Foreground="Black" />
             <TextBlock Text="Date:"
                        Margin="15,0,0,0"
                        Style="{StaticResource PhoneTextExtraLargeStyle}"
                        FontSize="27"
                        Foreground="Black" />
-            <toolkit:DatePicker  Foreground="Black" Value="{Binding StartDate, Mode=TwoWay}"/>
+            <toolkit:DatePicker  Foreground="Black"
+                                 Value="{Binding StartDate, Mode=TwoWay}" />
             <StackPanel Visibility="{Binding ElementName=PeriodCheckBox, Path=IsChecked, Converter={StaticResource BoolToVisibilityConverter}}">
                 <TextBlock Text="End date:"
                            Margin="15,0,0,0"
@@ -76,11 +83,10 @@
                            Margin="0"
                            FontSize="27"
                            Foreground="Black" />
-                <TextBox 
-                         Width="65"
+                <TextBox Width="65"
                          TextAlignment="Center"
-                    TextChanged="TextBox_TextChanged"
-                         Text="{Binding Minute, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
+                         TextChanged="TextBox_TextChanged"
+                         Text="{Binding Minute, Mode=TwoWay, UpdateSourceTrigger=Explicit}" />
                 <TextBlock Text="m."
                            VerticalAlignment="Center"
                            Style="{StaticResource PhoneTextExtraLargeStyle}"
@@ -94,8 +100,11 @@
                        FontSize="27"
                        Foreground="Black" />
             <TextBox TextWrapping="Wrap"
-                     MinHeight="150" Text="{Binding Comment,Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="TextBox_TextChanged"/>
+                     MinHeight="200"
+                     Text="{Binding Comment,Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                     TextChanged="TextBox_TextChanged" />
         </StackPanel>
+        </ScrollViewer>
     </Grid>
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>

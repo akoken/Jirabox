@@ -68,16 +68,16 @@
                                     <TextBlock Text="{Binding ProxyKey}"
                                                Grid.Column="2"
                                                Foreground="Black"
-                                               FontSize="26"
-                                               Style="{StaticResource PhoneTextExtraLargeStyle}" />
+                                               FontSize="24"
+                                              />
                                     <TextBlock Text="{Binding Fields.Summary}"
                                                Grid.Row="1"
                                                Grid.Column="1"
                                                Grid.ColumnSpan="2"
                                                Margin="4,0,0,0"
                                                Foreground="Black"
-                                               FontSize="26"
-                                               Style="{StaticResource PhoneTextExtraLargeStyle}" />
+                                               FontSize="24"
+                                               />
                             </Grid>
                         </DataTemplate>
                     </phone:LongListSelector.ItemTemplate>

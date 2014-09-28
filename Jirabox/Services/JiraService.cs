@@ -692,7 +692,7 @@ namespace Jirabox.Services
             return favourites;
         }
 
-        public async Task<bool> LogWork(string issueKey, string startedDate, string worked, string comment)
+        public async Task<bool> LogWork(string issueKey, string startedDate, string worked, string comment, CancellationTokenSource tokenSource = null)
         {
             HttpResponseMessage response = null;
             var requestUrl = string.Format("{0}issue/{1}/worklog", App.BaseUrl, issueKey);
@@ -722,7 +722,7 @@ namespace Jirabox.Services
                 BugSenseHandler.Instance.LogException(exception, extras);
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            if (response.StatusCode == System.Net.HttpStatusCode.Created)
                 return true;
             return false;
         }
