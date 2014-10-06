@@ -692,6 +692,41 @@ namespace Jirabox.Services
             return favourites;
         }
 
+        public async Task<bool> LogWork(string issueKey, string startedDate, string worked, string comment, CancellationTokenSource tokenSource = null)
+        {
+            HttpResponseMessage response = null;
+            var requestUrl = string.Format("{0}issue/{1}/worklog", App.BaseUrl, issueKey);
+
+            var logWorkRequest = new LogWorkRequest
+            {
+                Started = startedDate,
+                TimeSpent = worked,
+                Comment = comment
+            };
+
+            var data = JsonConvert.SerializeObject(logWorkRequest);
+            try
+            {
+                response = await httpManager.PostAsync(requestUrl, data, true, App.UserName, App.Password);
+                response.EnsureSuccessStatusCode();
+            }
+            catch (Exception exception)
+            {
+                var extras = BugSenseHandler.Instance.CrashExtraData;
+                extras.Add(new CrashExtraData
+                {
+                    Key = "Method",
+                    Value = "JiraService.LogWork"
+                });
+
+                BugSenseHandler.Instance.LogException(exception, extras);
+            }
+
+            if (response.StatusCode == System.Net.HttpStatusCode.Created)
+                return true;
+            return false;
+        }
+
         private void SaveLiveTileImage(WriteableBitmap tileImage, string projectKey)
         {
             var imageFolder = @"\Shared\ShellContent";

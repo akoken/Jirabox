@@ -19,8 +19,7 @@ namespace Jirabox.ViewModel
         private string serverUrl;
         private string userName;        
         private string password;
-        private bool isDataLoaded;
-        private bool isRememberMe;
+        private bool isDataLoaded;        
         private bool loginButtonEnabled;
 
         public RelayCommand LoginCommand { get; private set; }
@@ -114,13 +113,15 @@ namespace Jirabox.ViewModel
             {
                 IsDataLoaded = true;
                 dialogService.ShowDialog(AppResources.UnauthorizedMessage, AppResources.LoginFailedMessage);
+                LoginButtonEnabled = true;
                 return;
             }
 
             if (!ValidateUrl(ServerUrl))
             {
                 IsDataLoaded = true;
-                dialogService.ShowDialog(AppResources.InvalidServerUrlMessage, AppResources.LoginFailedMessage);                
+                dialogService.ShowDialog(AppResources.InvalidServerUrlMessage, AppResources.LoginFailedMessage);
+                LoginButtonEnabled = true;
                 return;
             }
             try

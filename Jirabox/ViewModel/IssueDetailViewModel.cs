@@ -23,6 +23,8 @@ namespace Jirabox.ViewModel
 
         public RelayCommand ChangeStatusCommand { get; private set; }
 
+        public RelayCommand LogWorkCommand { get; private set; }
+
         public Comment SelectedComment
         {
             get { return selectedComment; }
@@ -89,7 +91,13 @@ namespace Jirabox.ViewModel
             this.jiraService = jiraService;
           
             AddCommentCommand = new RelayCommand(AddComment);
-            ChangeStatusCommand = new RelayCommand(NavigateToChangeStatusView, CanChangeStatus);                             
+            ChangeStatusCommand = new RelayCommand(NavigateToChangeStatusView, CanChangeStatus);
+            LogWorkCommand = new RelayCommand(NavigateToLogWorkView);            
+        }
+
+        private void NavigateToLogWorkView()
+        {
+            navigationService.Navigate<LogWorkViewModel>((object)Issue.ProxyKey);
         }       
 
         private bool CanChangeStatus()

@@ -128,8 +128,7 @@ namespace Jirabox.ViewModel
             //Create project tile
             if(!DoesTileAlreadyExist(tileUri.ToString()))
             ShellTile.Create(tileUri, new StandardTileData
-            {
-                //IconImage = new Uri(@"isostore:" + avatarPath, UriKind.Absolute),
+            {                
                 BackgroundImage = new Uri(@"isostore:" + avatarPath, UriKind.Absolute),
                 Title = Project.Key,
                 BackContent = Project.Name,                             

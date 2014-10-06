@@ -57,12 +57,27 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20" />
                                     <ColumnDefinition Width="29"/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <Image Source="{Binding Fields.IssueType.IconUrl}" Width="25" Height="25"/>
-                                <TextBlock Text="{Binding ProxyKey}" Grid.Column="1" Foreground="Black"/>
-                                <TextBlock Text="{Binding Fields.Summary}" Grid.Row="1" Grid.ColumnSpan="2" Margin="4,0,0,0" Foreground="Black"/>
+                                    <Rectangle Fill="{StaticResource JiraboxSolidColorBrush}"
+                                               Width="10"
+                                               Height="Auto" Grid.RowSpan="2"/>
+                                    <Image Source="{Binding Fields.IssueType.IconUrl}" Grid.Column="1" Width="25" Height="25"/>
+                                    <TextBlock Text="{Binding ProxyKey}"
+                                               Grid.Column="2"
+                                               Foreground="Black"
+                                               FontSize="24"
+                                              />
+                                    <TextBlock Text="{Binding Fields.Summary}"
+                                               Grid.Row="1"
+                                               Grid.Column="1"
+                                               Grid.ColumnSpan="2"
+                                               Margin="4,0,0,0"
+                                               Foreground="Black"
+                                               FontSize="24"
+                                               />
                             </Grid>
                         </DataTemplate>
                     </phone:LongListSelector.ItemTemplate>
