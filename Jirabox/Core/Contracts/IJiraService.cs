@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
 
 namespace Jirabox.Core.Contracts
 {

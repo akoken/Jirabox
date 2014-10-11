@@ -1,7 +1,6 @@
 ﻿
 using Jirabox.Model;
 using Microsoft.Phone.Controls;
-using System;
 namespace Jirabox.Core.Contracts
 {
     public interface IDialogService

@@ -1,9 +1,6 @@
 ﻿using Jirabox.Common;
 using Jirabox.Core.Contracts;
-using Jirabox.Resources;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Tasks;
-using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;

@@ -1,6 +1,5 @@
 ﻿using Jirabox.ViewModel;
 using Microsoft.Phone.Controls;
-using System.Windows;
 using System.Windows.Navigation;
 
 namespace Jirabox.View

@@ -75,6 +75,7 @@
             <StackPanel Orientation="Horizontal">
                 <TextBox Text="{Binding Hour, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
                          TextChanged="TextBox_TextChanged"
+                         InputScope="Number"
                          Width="65"
                          TextAlignment="Center" />
                 <TextBlock Text="h."
@@ -86,6 +87,7 @@
                 <TextBox Width="65"
                          TextAlignment="Center"
                          TextChanged="TextBox_TextChanged"
+                         InputScope="Number"
                          Text="{Binding Minute, Mode=TwoWay, UpdateSourceTrigger=Explicit}" />
                 <TextBlock Text="m."
                            VerticalAlignment="Center"

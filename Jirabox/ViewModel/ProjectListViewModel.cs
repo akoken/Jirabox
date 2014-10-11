@@ -1,19 +1,19 @@
-﻿using GalaSoft.MvvmLight;
+﻿using BugSense;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
 using Jirabox.Common;
+using Jirabox.Common.Extensions;
 using Jirabox.Core.Contracts;
 using Jirabox.Model;
+using Jirabox.Resources;
 using Microsoft.Phone.Shell;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
-using System.Linq;
-using Jirabox.Resources;
-using System.Threading;
-using BugSense;
-using Jirabox.Common.Extensions;
 
 namespace Jirabox.ViewModel
 {

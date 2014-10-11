@@ -230,4 +230,19 @@
   <data name="LogWorkSuccess" xml:space="preserve">
     <value>Logwork successfully added.</value>
   </data>
+  <data name="IssueKeyNotFoundMessage" xml:space="preserve">
+    <value>Sorry, something went wrong. We couldn't get issue key.</value>
+  </data>
+  <data name="LogWorkLoggedTimeZeroErrorMessage" xml:space="preserve">
+    <value>Worked time cannot be zero.</value>
+  </data>
+  <data name="LogWorkStartDateGreaterThanEndDateErrorMessage" xml:space="preserve">
+    <value>Start date cannot be greater than end date.</value>
+  </data>
+  <data name="LogWorkStartDateGreaterThanTodayErrorMessage" xml:space="preserve">
+    <value>Start date cannot be greater than today.</value>
+  </data>
+  <data name="LogWorkEndDateGreaterThanTodayErrorMessage" xml:space="preserve">
+    <value>End date cannot be greater than today.</value>
+  </data>
 </root>

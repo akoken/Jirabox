@@ -268,6 +268,15 @@ namespace Jirabox.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, something went wrong. We couldn&apos;t get issue key..
+        /// </summary>
+        public static string IssueKeyNotFoundMessage {
+            get {
+                return ResourceManager.GetString("IssueKeyNotFoundMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login failed.
         /// </summary>
         public static string LoginFailedMessage {
@@ -313,11 +322,47 @@ namespace Jirabox.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End date cannot be greater than today..
+        /// </summary>
+        public static string LogWorkEndDateGreaterThanTodayErrorMessage {
+            get {
+                return ResourceManager.GetString("LogWorkEndDateGreaterThanTodayErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Opps! Something went wrong while adding logwork..
         /// </summary>
         public static string LogWorkError {
             get {
                 return ResourceManager.GetString("LogWorkError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Worked time cannot be zero..
+        /// </summary>
+        public static string LogWorkLoggedTimeZeroErrorMessage {
+            get {
+                return ResourceManager.GetString("LogWorkLoggedTimeZeroErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start date cannot be greater than end date..
+        /// </summary>
+        public static string LogWorkStartDateGreaterThanEndDateErrorMessage {
+            get {
+                return ResourceManager.GetString("LogWorkStartDateGreaterThanEndDateErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start date cannot be greater than today..
+        /// </summary>
+        public static string LogWorkStartDateGreaterThanTodayErrorMessage {
+            get {
+                return ResourceManager.GetString("LogWorkStartDateGreaterThanTodayErrorMessage", resourceCulture);
             }
         }
         

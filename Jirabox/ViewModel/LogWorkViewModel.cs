@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Jirabox.Core;
 using Jirabox.Core.Contracts;
 using Jirabox.Resources;
 using System;
@@ -119,28 +120,39 @@ namespace Jirabox.ViewModel
         {
             this.navigationService = navigationService;
             this.jiraService = jiraService;
-            this.dialogService = dialogService;
-
-            LogWorkCommand = new RelayCommand(async()=>await LogWork());
-            StartDate = DateTime.Now;
-            EndDate = DateTime.Now;
+            this.dialogService = dialogService;    
+            LogWorkCommand = new RelayCommand(async () => await LogWork());       
         }
 
         public void Initialize()
         {                      
             IsDataLoaded = true;
             cancellationTokenSource = new CancellationTokenSource();
+           
+            StartDate = DateTime.Now;
+            EndDate = DateTime.Now;
+            Comment = string.Empty;
+            IsPeriod = false;
+            Hour = default(int);
+            Minute = default(int);
         }
 
         private async Task LogWork()
         {
             IsDataLoaded = false;
             var issueKey = navigationService.GetNavigationParameter().ToString();
+            
+            OperationResult validationResult = ValidateInputs(issueKey);
+            if (!validationResult.IsValid)
+            {
+                dialogService.ShowDialog(validationResult.ErrorMessage, AppResources.Error);
+                return;
+            }
+
             if (IsPeriod)
             {
                 while (IsStartDateLessThanEndDate(StartDate, EndDate))
-                {                    
-                    //2013-09-01T10:30:18.932+0530
+                {                                        
                     var formattedDate = FormatDate(StartDate);                  
                     var timeSpent = String.Format("{0}h {1}m", Hour, minute);
                     var isLogged = await jiraService.LogWork(issueKey, formattedDate, timeSpent, Comment);
@@ -195,6 +207,29 @@ namespace Jirabox.ViewModel
             if (startDate.Year <= EndDate.Year && startDate.Month <= endDate.Month && startDate.Day <= endDate.Day)            
                 return true;
             return false;
+        }
+
+        private OperationResult ValidateInputs(string issueKey)
+        {
+            if (String.IsNullOrEmpty(issueKey))
+            {
+                return new OperationResult { IsValid = false, ErrorMessage = AppResources.IssueKeyNotFoundMessage };
+            }
+
+            if (Hour == 0 && Minute == 0) return new OperationResult { IsValid = false, ErrorMessage = AppResources.LogWorkLoggedTimeZeroErrorMessage };
+
+            if (IsPeriod)
+            {
+                if (!IsStartDateLessThanEndDate(StartDate, EndDate)) return new OperationResult { IsValid = false, ErrorMessage = AppResources.LogWorkStartDateGreaterThanEndDateErrorMessage };
+
+                if (!(EndDate.Year <= DateTime.Now.Year && EndDate.Month <= DateTime.Now.Month && EndDate.Day <= DateTime.Now.Day)) return new OperationResult { IsValid = false, ErrorMessage = AppResources.LogWorkEndDateGreaterThanTodayErrorMessage };
+            }
+            else
+            {
+                if (!(StartDate.Year <= DateTime.Now.Year && StartDate.Month <= DateTime.Now.Month && StartDate.Day <= DateTime.Now.Day)) return new OperationResult { IsValid = false, ErrorMessage = AppResources.LogWorkStartDateGreaterThanTodayErrorMessage };
+            }
+
+            return new OperationResult { IsValid = true };
         }
     }
 }
