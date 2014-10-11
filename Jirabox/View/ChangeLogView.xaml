@@ -40,6 +40,7 @@
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="43*" />
@@ -78,8 +79,16 @@
                     <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
                                FontSize="24"
                                Foreground="Black"
-                               Text="- Minor UI improvements"
+                               Text="- Login button enabling issue fixed"
                                Grid.Row="4"
+                               Grid.Column="0"
+                               TextWrapping="Wrap"
+                               Grid.ColumnSpan="2" />
+                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                               FontSize="24"
+                               Foreground="Black"
+                               Text="- Minor UI improvements"
+                               Grid.Row="5"
                                Grid.Column="0"
                                TextWrapping="Wrap"
                                Grid.ColumnSpan="2" />
