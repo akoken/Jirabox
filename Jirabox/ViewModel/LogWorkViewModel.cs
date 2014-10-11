@@ -139,7 +139,6 @@ namespace Jirabox.ViewModel
 
         private async Task LogWork()
         {
-            IsDataLoaded = false;
             var issueKey = navigationService.GetNavigationParameter().ToString();
             
             OperationResult validationResult = ValidateInputs(issueKey);
@@ -151,11 +150,14 @@ namespace Jirabox.ViewModel
 
             if (IsPeriod)
             {
-                while (IsStartDateLessThanEndDate(StartDate, EndDate))
+                while (IsFirstDateLessThanSecondDate(StartDate, EndDate))
                 {                                        
                     var formattedDate = FormatDate(StartDate);                  
                     var timeSpent = String.Format("{0}h {1}m", Hour, minute);
+                    IsDataLoaded = false;
                     var isLogged = await jiraService.LogWork(issueKey, formattedDate, timeSpent, Comment);
+                    IsDataLoaded = true;
+
                     if (!isLogged)
                     {
                         dialogService.ShowDialog(AppResources.LogWorkError, AppResources.Error);
@@ -168,14 +170,15 @@ namespace Jirabox.ViewModel
             {                
                 var formattedDate = FormatDate(StartDate);
                 var timeSpent = String.Format("{0}h {1}m", Hour, minute);
+                IsDataLoaded = false;
                 var isLogged = await jiraService.LogWork(issueKey, formattedDate, timeSpent, Comment, cancellationTokenSource);
+                IsDataLoaded = true;
                 if (!isLogged)
                 {
                     dialogService.ShowDialog(AppResources.LogWorkError, AppResources.Error);
                     return;
                 }
-            }
-            IsDataLoaded = true;
+            }            
             dialogService.ShowDialog(AppResources.LogWorkSuccess, AppResources.Done);
             navigationService.GoBack();
         }
@@ -200,14 +203,7 @@ namespace Jirabox.ViewModel
                 month = String.Format("0{0}", month);
             }
             return String.Format("{0}-{1}-{2}T09:00:00.932+0530", dateTime.Year, month, day);
-        }
-
-        private bool IsStartDateLessThanEndDate(DateTime startDate, DateTime endDate)
-        {
-            if (startDate.Year <= EndDate.Year && startDate.Month <= endDate.Month && startDate.Day <= endDate.Day)            
-                return true;
-            return false;
-        }
+        }      
 
         private OperationResult ValidateInputs(string issueKey)
         {
@@ -220,16 +216,23 @@ namespace Jirabox.ViewModel
 
             if (IsPeriod)
             {
-                if (!IsStartDateLessThanEndDate(StartDate, EndDate)) return new OperationResult { IsValid = false, ErrorMessage = AppResources.LogWorkStartDateGreaterThanEndDateErrorMessage };
-
-                if (!(EndDate.Year <= DateTime.Now.Year && EndDate.Month <= DateTime.Now.Month && EndDate.Day <= DateTime.Now.Day)) return new OperationResult { IsValid = false, ErrorMessage = AppResources.LogWorkEndDateGreaterThanTodayErrorMessage };
+                if (!IsFirstDateLessThanSecondDate(EndDate, DateTime.Today)) return new OperationResult { IsValid = false, ErrorMessage = AppResources.LogWorkEndDateGreaterThanTodayErrorMessage };
+                if (!IsFirstDateLessThanSecondDate(StartDate, EndDate)) return new OperationResult { IsValid = false, ErrorMessage = AppResources.LogWorkStartDateGreaterThanEndDateErrorMessage };
             }
             else
             {
-                if (!(StartDate.Year <= DateTime.Now.Year && StartDate.Month <= DateTime.Now.Month && StartDate.Day <= DateTime.Now.Day)) return new OperationResult { IsValid = false, ErrorMessage = AppResources.LogWorkStartDateGreaterThanTodayErrorMessage };
+                if (!IsFirstDateLessThanSecondDate(StartDate, DateTime.Today)) return new OperationResult { IsValid = false, ErrorMessage = AppResources.LogWorkStartDateGreaterThanTodayErrorMessage };
             }
 
             return new OperationResult { IsValid = true };
+        }
+
+        private bool IsFirstDateLessThanSecondDate(DateTime firstDate, DateTime secondDate)
+        {
+            var result = firstDate.CompareTo(secondDate);
+            if (result <= 0)
+                return true;
+            return false;
         }
     }
 }

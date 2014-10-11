@@ -367,7 +367,7 @@ namespace Jirabox.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logwork successfully added..
+        ///   Looks up a localized string similar to Work entry successfully logged..
         /// </summary>
         public static string LogWorkSuccess {
             get {
