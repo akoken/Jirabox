@@ -150,7 +150,7 @@ namespace Jirabox.ViewModel
 
             if (IsPeriod)
             {
-                while (IsFirstDateLessThanSecondDate(StartDate, EndDate))
+                while (IsFirstDateLessOrEqualThanSecondDate(StartDate, EndDate))
                 {                                        
                     var formattedDate = FormatDate(StartDate);                  
                     var timeSpent = String.Format("{0}h {1}m", Hour, minute);
@@ -216,20 +216,20 @@ namespace Jirabox.ViewModel
 
             if (IsPeriod)
             {
-                if (!IsFirstDateLessThanSecondDate(EndDate, DateTime.Today)) return new OperationResult { IsValid = false, ErrorMessage = AppResources.LogWorkEndDateGreaterThanTodayErrorMessage };
-                if (!IsFirstDateLessThanSecondDate(StartDate, EndDate)) return new OperationResult { IsValid = false, ErrorMessage = AppResources.LogWorkStartDateGreaterThanEndDateErrorMessage };
+                if (!IsFirstDateLessOrEqualThanSecondDate(EndDate, DateTime.Today)) return new OperationResult { IsValid = false, ErrorMessage = AppResources.LogWorkEndDateGreaterThanTodayErrorMessage };
+                if (!IsFirstDateLessOrEqualThanSecondDate(StartDate, EndDate)) return new OperationResult { IsValid = false, ErrorMessage = AppResources.LogWorkStartDateGreaterThanEndDateErrorMessage };
             }
             else
             {
-                if (!IsFirstDateLessThanSecondDate(StartDate, DateTime.Today)) return new OperationResult { IsValid = false, ErrorMessage = AppResources.LogWorkStartDateGreaterThanTodayErrorMessage };
+                if (!IsFirstDateLessOrEqualThanSecondDate(StartDate, DateTime.Today)) return new OperationResult { IsValid = false, ErrorMessage = AppResources.LogWorkStartDateGreaterThanTodayErrorMessage };
             }
 
             return new OperationResult { IsValid = true };
         }
 
-        private bool IsFirstDateLessThanSecondDate(DateTime firstDate, DateTime secondDate)
+        private bool IsFirstDateLessOrEqualThanSecondDate(DateTime firstDate, DateTime secondDate)
         {
-            var result = firstDate.CompareTo(secondDate);
+            var result = firstDate.Date.CompareTo(secondDate.Date);
             if (result <= 0)
                 return true;
             return false;
