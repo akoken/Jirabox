@@ -122,6 +122,7 @@
     <Compile Include="Core\Contracts\ICacheService.cs" />
     <Compile Include="Core\OperationResult.cs" />
     <Compile Include="Model\AddCommentRequest.cs" />
+    <Compile Include="Model\Attachment.cs" />
     <Compile Include="Model\ChangeLog.cs" />
     <Compile Include="Model\Comment.cs" />
     <Compile Include="Model\Comments.cs" />

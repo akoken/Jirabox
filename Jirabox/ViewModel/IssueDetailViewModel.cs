@@ -17,7 +17,7 @@ namespace Jirabox.ViewModel
         private bool isDataLoaded;
         private Issue issue;               
 
-        public RelayCommand<Comment> ShowCommentDetailCommand { get; private set; }
+        public RelayCommand<Attachment> DownloadAttachmentCommand { get; private set; }
         
         public RelayCommand AddCommentCommand { get; private set; }
 

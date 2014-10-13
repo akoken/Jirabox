@@ -282,7 +282,7 @@ namespace Jirabox.Services
 
         public async Task<ObservableCollection<Issue>> GetIssues(string jql, List<string> fields = null, int startAt = 0, int maxResult = 50)
         {
-            fields = fields ?? new List<string> { "summary", "status", "assignee", "reporter", "description", "issuetype", "priority", "comment" };
+            fields = fields ?? new List<string> { "summary", "status", "assignee", "reporter", "description", "issuetype", "priority", "comment","attachment" };
             var requestUrl = string.Format("{0}{1}", App.BaseUrl, JiraRequestType.Search.ToString().ToLower());
 
             var request = new SearchRequest();

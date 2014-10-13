@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Jirabox.Model
 {
@@ -27,5 +28,8 @@ namespace Jirabox.Model
 
         [JsonProperty("comment")]
         public CommentItem Comment { get; set; }
+
+        [JsonProperty("attachment")]
+        public List<Attachment> Attachments { get; set; }
     }
 }
