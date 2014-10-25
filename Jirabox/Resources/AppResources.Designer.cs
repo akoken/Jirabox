@@ -8,6 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+
 namespace Jirabox.Resources {
     using System;
     
@@ -138,6 +139,17 @@ namespace Jirabox.Resources {
         public static string CreateIssueErrorMessage {
             get {
                 return ResourceManager.GetString("CreateIssueErrorMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Opps! Something went wrong. Unable to get project detail.
+        /// </summary>
+        public static string CreatingIssueMessage
+        {
+            get
+            {
+                return ResourceManager.GetString("CreatingIssueMessage", resourceCulture);
             }
         }
         
@@ -273,6 +285,17 @@ namespace Jirabox.Resources {
         public static string IssueKeyNotFoundMessage {
             get {
                 return ResourceManager.GetString("IssueKeyNotFoundMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Loading....
+        /// </summary>
+        public static string LoadingMessage
+        {
+            get
+            {
+                return ResourceManager.GetString("LoadingMessage", resourceCulture);
             }
         }
         

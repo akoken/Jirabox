@@ -2,7 +2,9 @@
 using GalaSoft.MvvmLight.Command;
 using Jirabox.Core.Contracts;
 using Jirabox.Model;
+using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace Jirabox.ViewModel
 {
@@ -92,12 +94,19 @@ namespace Jirabox.ViewModel
           
             AddCommentCommand = new RelayCommand(AddComment);
             ChangeStatusCommand = new RelayCommand(NavigateToChangeStatusView, CanChangeStatus);
-            LogWorkCommand = new RelayCommand(NavigateToLogWorkView);            
+            LogWorkCommand = new RelayCommand(NavigateToLogWorkView);
+            DownloadAttachmentCommand = new RelayCommand<Attachment>(async (t) => await DownloadAttachment(t));
+        }
+
+        private async Task DownloadAttachment(Attachment attachment)
+        {
+            var isDownloaded = await jiraService.DownloadAttachment(attachment.Url, attachment.FileName);            
         }
 
         private void NavigateToLogWorkView()
         {
-            navigationService.Navigate<LogWorkViewModel>((object)Issue.ProxyKey);
+            if (Issue != null && !String.IsNullOrEmpty(Issue.ProxyKey))
+                navigationService.Navigate<LogWorkViewModel>((object)Issue.ProxyKey);
         }       
 
         private bool CanChangeStatus()

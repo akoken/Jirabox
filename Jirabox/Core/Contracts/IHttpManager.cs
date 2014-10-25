@@ -9,5 +9,7 @@ namespace Jirabox.Core.Contracts
         Task<HttpResponseMessage> GetAsync(string url, bool withBasicAuthentication = false, string username = null, string password = null, CancellationTokenSource cancellationTokenSource = null);
 
         Task<HttpResponseMessage> PostAsync(string url, string data, bool withBasicAuthentication = false, string username = null, string password = null, CancellationTokenSource cancellationTokenSource = null);
+
+        Task<HttpResponseMessage> DownloadAttachment(string fileUrl, bool withBasicAuthentication = false, string username = null, string password = null, CancellationTokenSource cancellationTokenSource = null);
     }
 }

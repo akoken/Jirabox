@@ -10,6 +10,8 @@
         <converter:DateTimeConverter x:Key="DateTimeConverter" xmlns:converter="clr-namespace:Jirabox.Converters" />
         <converter:DoubleToIntConverter x:Key="DoubleToIntConverter" xmlns:converter="clr-namespace:Jirabox.Converters" />
         <converter:UserStatusToString x:Key="UserStatusToStringConverter" xmlns:converter="clr-namespace:Jirabox.Converters" />
+        <converter:InvertBooleanPropertyConverter xmlns:converter="clr-namespace:Jirabox.Converters"
+                                                  x:Key="InvertBooleanPropertyConverter" />
         <SolidColorBrush x:Key="BlackForeground" Color="Black" />
         <SolidColorBrush x:Key="JiraboxSolidColorBrush" Color="#1199CC" />
         <Style x:Key="PanoramaItemHeaderTextStyle" TargetType="TextBlock">

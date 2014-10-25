@@ -22,22 +22,23 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
-    shell:SystemTray.IsVisible="False">
+    shell:SystemTray.IsVisible="True"
+    shell:SystemTray.ForegroundColor="Black"
+    shell:SystemTray.Opacity="0">
 
-    
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator IsIndeterminate="True"
+                                 IsVisible="{Binding IsDataLoaded, Converter={StaticResource InvertBooleanPropertyConverter}}"
+                                 Text="Getting issue details..." />
+    </shell:SystemTray.ProgressIndicator>
+
+
     <Grid x:Name="LayoutRoot" Background="#FFECECEC">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="10" />
+        <Grid.RowDefinitions>            
             <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <ProgressBar x:Name="progressBar"
-                     IsIndeterminate="True"
-                     HorizontalAlignment="Stretch"
-                     VerticalAlignment="Top"
-                     Visibility="{Binding IsDataLoaded, Converter={StaticResource IsDataLoadedToVisibilityConverter}}"
-                     Margin="0,4,0,0" />
+        </Grid.RowDefinitions>     
         <phone:Pivot Foreground="Black"
-                     Grid.Row="1">
+                     Grid.Row="0">
             <phone:Pivot.TitleTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal"
@@ -201,6 +202,13 @@
                                 </StackPanel>
                             </DataTemplate>
                         </phone:LongListSelector.ItemTemplate>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Tap">
+                                <command:EventToCommand PassEventArgsToCommand="False"
+                                                        CommandParameter="{Binding Path=SelectedItem, ElementName=AttachmentList}"
+                                                        Command="{Binding DownloadAttachmentCommand}" />
+                            </i:EventTrigger>                           
+                        </i:Interaction.Triggers>
                     </phone:LongListSelector>
                 </ScrollViewer>
             </phone:PivotItem>

@@ -15,15 +15,22 @@
         SupportedOrientations="Portrait"
         Orientation="Portrait"
         mc:Ignorable="d"
-        shell:SystemTray.IsVisible="False">
+        shell:SystemTray.IsVisible="True"
+        shell:SystemTray.ForegroundColor="Black"
+        shell:SystemTray.Opacity="0">
+
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator IsIndeterminate="True"
+                                 IsVisible="{Binding IsDataLoaded, Converter={StaticResource InvertBooleanPropertyConverter}}"
+                                 Text="Loading..." />
+    </shell:SystemTray.ProgressIndicator>
 
     <Grid x:Name="LayoutRoot" Background="#FFECECEC">   
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="6*"/>
             <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <ProgressBar x:Name="progressBar" IsIndeterminate="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" Visibility="{Binding IsDataLoaded, Converter={StaticResource IsDataLoadedToVisibilityConverter}}" Margin="0,4,0,0"/>        
+        </Grid.RowDefinitions>       
             <StackPanel Orientation="Horizontal" Margin="10,0,0,0" Grid.Row="0">
                 <Border Height="48" Width="48" CornerRadius="5" Margin="3">
                     <Border.Background>

@@ -16,21 +16,21 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
-    shell:SystemTray.IsVisible="False">
+    shell:SystemTray.IsVisible="True"
+    shell:SystemTray.ForegroundColor="Black"
+    shell:SystemTray.Opacity="0">
 
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator IsIndeterminate="True"
+                                 IsVisible="{Binding IsDataLoaded, Converter={StaticResource InvertBooleanPropertyConverter}}"
+                                 Text="Getting issues..." />
+    </shell:SystemTray.ProgressIndicator>
 
     <Grid x:Name="LayoutRoot" Background="#FFECECEC">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="10" />
+        <Grid.RowDefinitions>            
             <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <ProgressBar x:Name="progressBar"
-                     IsIndeterminate="True"
-                     HorizontalAlignment="Stretch"
-                     VerticalAlignment="Top"
-                     Visibility="{Binding IsDataLoaded, Converter={StaticResource IsDataLoadedToVisibilityConverter}}"
-                     Margin="0,4,0,0" />
-        <phone:Panorama Grid.Row="1">
+        </Grid.RowDefinitions>      
+        <phone:Panorama Grid.Row="0">
             <phone:Panorama.TitleTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal"

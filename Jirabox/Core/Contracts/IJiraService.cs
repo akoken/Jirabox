@@ -38,6 +38,7 @@ namespace Jirabox.Core.Contracts
         Task<ObservableCollection<Favourite>> GetFavourites();
 
         Task<bool> LogWork(string issueKey, string startedDate, string worked, string comment, CancellationTokenSource tokenSource = null);
-        
+
+        Task<bool> DownloadAttachment(string fileUrl, string fileName);
     }
 }

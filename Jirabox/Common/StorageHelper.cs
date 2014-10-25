@@ -188,5 +188,19 @@ namespace Jirabox.Common
                     isf.DeleteFile(filePath);
             }
         }
+
+        public static async Task WriteDataToIsolatedStorageFile(string fileName, byte[] data)
+        {
+            StorageFolder local = Windows.Storage.ApplicationData.Current.LocalFolder;
+            
+            var dataFolder = await local.CreateFolderAsync("Attachments", CreationCollisionOption.OpenIfExists);
+            
+            var file = await dataFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+            
+            using (var s = await file.OpenStreamForWriteAsync())
+            {
+                s.Write(data, 0, data.Length);
+            }
+        }
     }
 }

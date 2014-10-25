@@ -21,6 +21,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Windows.Storage;
+using Windows.System;
 
 namespace Jirabox.Services
 {
@@ -723,6 +725,40 @@ namespace Jirabox.Services
             }
 
             if (response.StatusCode == System.Net.HttpStatusCode.Created)
+                return true;
+            return false;
+        }
+
+        public async Task<bool> DownloadAttachment(string fileUrl, string fileName)
+        {
+            HttpResponseMessage response = null;
+                   
+            try
+            {
+                response = await httpManager.DownloadAttachment(fileUrl, true, App.UserName, App.Password);
+                response.EnsureSuccessStatusCode();
+
+                var data = await response.Content.ReadAsByteArrayAsync();
+                await StorageHelper.WriteDataToIsolatedStorageFile(fileName, data);
+                
+                var local = Windows.Storage.ApplicationData.Current.LocalFolder;
+                var dataFolder = await local.GetFolderAsync("Attachments");
+                var storageFile = await dataFolder.GetFileAsync(fileName);
+                await Launcher.LaunchFileAsync(storageFile);
+            }
+            catch (Exception exception)
+            {
+                var extras = BugSenseHandler.Instance.CrashExtraData;
+                extras.Add(new CrashExtraData
+                {
+                    Key = "Method",
+                    Value = "JiraService.DownloadAttachment"
+                });
+
+                BugSenseHandler.Instance.LogException(exception, extras);
+            }
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 return true;
             return false;
         }

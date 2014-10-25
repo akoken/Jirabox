@@ -15,16 +15,22 @@
     SupportedOrientations="Portrait"
     Orientation="Portrait"
     mc:Ignorable="d"
-    shell:SystemTray.IsVisible="False">
+    shell:SystemTray.IsVisible="True"
+    shell:SystemTray.ForegroundColor="Black"
+    shell:SystemTray.Opacity="0">
+
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator IsIndeterminate="True"
+                                 IsVisible="{Binding IsDataLoaded, Converter={StaticResource InvertBooleanPropertyConverter}}"
+                                 Text="Signing in..." />
+    </shell:SystemTray.ProgressIndicator>
 
     <Grid x:Name="LayoutRoot" Background="#FFECECEC">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="10"/>
+        <Grid.RowDefinitions>        
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <ProgressBar x:Name="progressBar" IsIndeterminate="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" Visibility="{Binding IsDataLoaded, Converter={StaticResource IsDataLoadedToVisibilityConverter}}" Margin="0,4,0,0"/>
-        <StackPanel Grid.Row="1">
+        </Grid.RowDefinitions>        
+        <StackPanel Grid.Row="0">
             <StackPanel Orientation="Horizontal" >
                 <Image Source="/Jirabox;component/Assets/logo.png" Width="80" Height="80" Margin="10,0,0,0"/>
                 <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}"
@@ -35,7 +41,7 @@
             <TextBlock Text="Login" Style="{StaticResource PhoneTextTitle2Style}" Foreground="{StaticResource BlackForeground}"/>
         </StackPanel>
 
-        <Grid x:Name="ContentPanel" Grid.Row="2" Margin="15,25,15,94">
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="15,25,15,94">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>

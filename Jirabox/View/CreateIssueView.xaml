@@ -14,8 +14,16 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     DataContext="{Binding Source={StaticResource Locator},Path=CreateIssueViewModel}"
     mc:Ignorable="d"
-    shell:SystemTray.IsVisible="False">
-   
+    shell:SystemTray.IsVisible="True"
+    shell:SystemTray.ForegroundColor="Black"
+    shell:SystemTray.Opacity="0">
+
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator IsIndeterminate="True"
+                                 IsVisible="{Binding IsDataLoaded, Converter={StaticResource InvertBooleanPropertyConverter}}"
+                                 Text="Loading..." />
+    </shell:SystemTray.ProgressIndicator>
+
 
     <Grid x:Name="LayoutRoot" Background="#FFECECEC">
         <Grid.RowDefinitions>

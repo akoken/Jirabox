@@ -9,10 +9,12 @@ namespace Jirabox.ViewModel
 {
     public class CreateIssueViewModel : ViewModelBase
     {
-        private IJiraService jiraService;
-        private IDialogService dialogService;
-        private INavigationService navigationService;
+        private readonly IJiraService jiraService;
+        private readonly IDialogService dialogService;
+        private readonly INavigationService navigationService;
+
         private bool isDataLoaded;
+        private string loadingText;
         private string summary;
         private string description;        
         private ObservableCollection<IssueType> issueTypes;
@@ -32,6 +34,18 @@ namespace Jirabox.ViewModel
                 {
                     isDataLoaded = value;
                     RaisePropertyChanged(() => IsDataLoaded);
+                }
+            }
+        }
+        public string LoadingText
+        {
+            get { return loadingText; }
+            set
+            {
+                if (loadingText != value)
+                {
+                    loadingText = value;
+                    RaisePropertyChanged(() => LoadingText);
                 }
             }
         }
@@ -163,6 +177,7 @@ namespace Jirabox.ViewModel
             CreateIssueCommand.RaiseCanExecuteChanged();
             IssueTypes = await jiraService.GetIssueTypesOfProject(Project.Key);
             PriorityList = await jiraService.GetPriorities();
+            LoadingText = AppResources.LoadingMessage;
             IsDataLoaded = true;
         }
 
@@ -183,6 +198,7 @@ namespace Jirabox.ViewModel
             request.Fields.IssueType.Name = IssueTypes[SelectedIssueTypeIndex].Name;
             request.Fields.Priority.Id = PriorityList[SelectedPriorityIndex].Id;
             request.Fields.Summary = Summary;
+            LoadingText = AppResources.CreatingIssueMessage;
 
             IsDataLoaded = false;
             var createdIssue = await jiraService.CreateIssue(request);

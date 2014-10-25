@@ -38,6 +38,36 @@ namespace Jirabox
             return response;
         }
 
+        public async Task<HttpResponseMessage> DownloadAttachment(string fileUrl, bool withBasicAuthentication = false, string username = null, string password = null, CancellationTokenSource cancellationTokenSource = null)
+        {          
+            var httpClient = new HttpClient(new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            });
+          
+            httpClient.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; WOW64; Trident/6.0)");
+
+            if (withBasicAuthentication)
+            {
+                httpClient.DefaultRequestHeaders.Add("Authorization", "Basic " + GetBasicCredentials(username, password));
+            }
+
+            HttpResponseMessage response = null;
+            try
+            {
+                if (cancellationTokenSource != null)
+                    response = await httpClient.GetAsync(new Uri(fileUrl, UriKind.RelativeOrAbsolute), HttpCompletionOption.ResponseHeadersRead, cancellationTokenSource.Token);
+                else
+                    response = await httpClient.GetAsync(new Uri(fileUrl, UriKind.RelativeOrAbsolute));
+            }
+            catch (TaskCanceledException)
+            {
+                if (Debugger.IsAttached)
+                    Debug.WriteLine("Http request canceled.");
+            }
+            return response;
+        }
+
         public async Task<HttpResponseMessage> PostAsync(string url, string data, bool withBasicAuthentication = false, string username = null, string password = null, CancellationTokenSource cancellationTokenSource = null)
         {            
             var httpClient = new HttpClient(new HttpClientHandler

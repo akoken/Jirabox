@@ -245,4 +245,10 @@
   <data name="LogWorkEndDateGreaterThanTodayErrorMessage" xml:space="preserve">
     <value>End date cannot be greater than today.</value>
   </data>
+  <data name="LoadingMessage" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="CreatingIssueMessage" xml:space="preserve">
+    <value>Creating issue...</value>
+  </data>
 </root>
