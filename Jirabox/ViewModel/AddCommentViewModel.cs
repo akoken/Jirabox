@@ -8,14 +8,15 @@ namespace Jirabox.ViewModel
 {
     public class AddCommentViewModel : ViewModelBase
     {
-        private IJiraService jiraService;
-        private IDialogService dialogService;
-        private INavigationService navigationService;
+        private readonly IJiraService jiraService;
+        private readonly IDialogService dialogService;
+        private readonly INavigationService navigationService;
 
         private bool isDataLoaded;
         private User user;
         private string commentText;
         private string issueKey;
+        private bool isTaskbarVisible = true;
 
         public RelayCommand SendCommand { get; private set; }
         public RelayCommand CancelCommand { get; private set; }
@@ -80,6 +81,19 @@ namespace Jirabox.ViewModel
             }
         }
 
+        public bool IsTaskbarVisible
+        {
+            get { return isTaskbarVisible; }
+            set
+            {
+                if (isTaskbarVisible != value)
+                {
+                    isTaskbarVisible = value;
+                    RaisePropertyChanged(() => IsTaskbarVisible);
+                }
+            }
+        }
+
         public AddCommentViewModel(IJiraService jiraService, IDialogService dialogService, INavigationService navigationService)
         {
             this.jiraService = jiraService;
@@ -95,13 +109,15 @@ namespace Jirabox.ViewModel
             IsDataLoaded = false;
             var success = await jiraService.AddComment(IssueKey, CommentText);
             IsDataLoaded = true;
+            IsTaskbarVisible = false;
             if (success)
-            {
+            {                
                 dialogService.ShowDialog(AppResources.CommentAddedMessage, AppResources.Done);
                 navigationService.GoBack();
             }
             else
                 dialogService.ShowDialog(AppResources.ErrorMessage, AppResources.Error);
+            IsTaskbarVisible = true;
         }      
         private void CancelComment()
         {

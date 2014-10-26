@@ -21,6 +21,7 @@ namespace Jirabox.ViewModel
         private string password;
         private bool isDataLoaded;        
         private bool loginButtonEnabled;
+        private bool isTaskbarVisible = true;
 
         public RelayCommand LoginCommand { get; private set; }
         public RelayCommand AboutCommand { get; private set; }   
@@ -94,7 +95,20 @@ namespace Jirabox.ViewModel
                     RaisePropertyChanged(() => IsDataLoaded);
                 }
             }
-        }     
+        }
+
+        public bool IsTaskbarVisible
+        {
+            get { return isTaskbarVisible; }
+            set
+            {
+                if (isTaskbarVisible != value)
+                {
+                    isTaskbarVisible = value;
+                    RaisePropertyChanged(() => IsTaskbarVisible);
+                }
+            }
+        }
         
         public LoginViewModel(INavigationService navigationService, IDialogService dialogService, IJiraService jiraService)
         {            
@@ -111,8 +125,10 @@ namespace Jirabox.ViewModel
             LoginButtonEnabled = false;
             if (!IsInputsValid())
             {
+                IsTaskbarVisible = false;
                 IsDataLoaded = true;
                 dialogService.ShowDialog(AppResources.UnauthorizedMessage, AppResources.LoginFailedMessage);
+                IsTaskbarVisible = true;
                 LoginButtonEnabled = true;
                 return;
             }
@@ -120,7 +136,9 @@ namespace Jirabox.ViewModel
             if (!ValidateUrl(ServerUrl))
             {
                 IsDataLoaded = true;
+                IsTaskbarVisible = false;
                 dialogService.ShowDialog(AppResources.InvalidServerUrlMessage, AppResources.LoginFailedMessage);
+                IsTaskbarVisible = true;
                 LoginButtonEnabled = true;
                 return;
             }
@@ -141,8 +159,9 @@ namespace Jirabox.ViewModel
             }         
             catch (HttpRequestStatusCodeException exception)
             {
+                IsTaskbarVisible = false;
                 if (exception.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                {
+                {                    
                     dialogService.ShowDialog(AppResources.UnauthorizedMessage, AppResources.LoginFailedMessage);
                 }
                 else if (exception.StatusCode == System.Net.HttpStatusCode.Forbidden)
@@ -153,10 +172,13 @@ namespace Jirabox.ViewModel
                 {
                     dialogService.ShowDialog(AppResources.ConnectionErrorMessage, AppResources.LoginFailedMessage);
                 }
+                IsTaskbarVisible = true;
             }
             catch (Exception ex)
             {
+                IsTaskbarVisible = false;
                 dialogService.ShowDialog(string.Format(AppResources.FormattedErrorMessage, ex.Message), AppResources.LoginFailedMessage);
+                IsTaskbarVisible = true;
             }
          
            IsDataLoaded = true;

@@ -105,6 +105,17 @@ namespace Jirabox.Resources {
                 return ResourceManager.GetString("ApplicationEmail", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to http://www.windowsphone.com/s?appid=d1413cdb-ea8f-4fba-b3b5-0d776f69b8bb.
+        /// </summary>
+        public static string ApplicationStoreUrl
+        {
+            get
+            {
+                return ResourceManager.GetString("ApplicationStoreUrl", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Jirabox.
@@ -186,6 +197,28 @@ namespace Jirabox.Resources {
         public static string Done {
             get {
                 return ResourceManager.GetString("Done", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading....
+        /// </summary>
+        public static string DownloadingMessage
+        {
+            get
+            {
+                return ResourceManager.GetString("DownloadingMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Getting issue details....
+        /// </summary>
+        public static string GettingIssueDetailsMessage
+        {
+            get
+            {
+                return ResourceManager.GetString("GettingIssueDetailsMessage", resourceCulture);
             }
         }
         
@@ -451,6 +484,17 @@ namespace Jirabox.Resources {
                 return ResourceManager.GetString("UnhandledErrorMessage", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to http://jirabox.uservoice.com.
+        /// </summary>
+        public static string UserVoiceUrl
+        {
+            get {
+                return ResourceManager.GetString("UserVoiceUrl", resourceCulture);
+            }
+        }
+        
         
         /// <summary>
         ///   Looks up a localized string similar to Warning.

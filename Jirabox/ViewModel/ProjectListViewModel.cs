@@ -27,6 +27,8 @@ namespace Jirabox.ViewModel
         private bool isDataLoaded;
         private bool isGroupingEnabled;
         private bool isFavouriteExist;
+        private bool isTaskbarVisible = true;
+
         private BitmapImage displayPicture;
         private List<AlphaKeyGroup<Project>> groupedProjects;
         private ObservableCollection<Favourite> favorites;
@@ -51,6 +53,19 @@ namespace Jirabox.ViewModel
             {
                 isDataLoaded = value;
                 RaisePropertyChanged(() => IsDataLoaded);
+            }
+        }
+
+        public bool IsTaskbarVisible
+        {
+            get { return isTaskbarVisible; }
+            set
+            {
+                if (isTaskbarVisible != value)
+                {
+                    isTaskbarVisible = value;
+                    RaisePropertyChanged(() => IsTaskbarVisible);
+                }
             }
         }
 
@@ -152,6 +167,7 @@ namespace Jirabox.ViewModel
         }
         private void Logout()
         {
+            IsTaskbarVisible = false;
             var messageBox = dialogService.ShowPromptDialog(AppResources.LogoutWarningMessage, AppResources.LogoutPromptMessage, AppResources.LogoutPromptCaption);
             messageBox.Dismissed += (s1, e1) =>
             {
@@ -166,7 +182,8 @@ namespace Jirabox.ViewModel
 
                     SimpleIoc.Default.GetInstance<LoginViewModel>().ClearFields();
                     navigationService.Navigate<LoginViewModel>();                        
-                }                
+                }
+                IsTaskbarVisible = true;
             };            
         }
 

@@ -17,7 +17,8 @@ namespace Jirabox.ViewModel
         private ObservableCollection<Transition> transitions;
         private int selectedTransitionIndex;
         private Issue selectedIssue;
-        private bool isDataLoaded;        
+        private bool isDataLoaded;
+        private bool isTaskbarVisible = true;
 
         public RelayCommand ChangeStatusCommand { get; private set; }
         public RelayCommand CancelCommand { get; private set; }      
@@ -34,6 +35,19 @@ namespace Jirabox.ViewModel
                 {
                     selectedIssue = value;
                     RaisePropertyChanged(() => SelectedIssue);
+                }
+            }
+        }
+
+        public bool IsTaskbarVisible
+        {
+            get { return isTaskbarVisible; }
+            set
+            {
+                if (isTaskbarVisible != value)
+                {
+                    isTaskbarVisible = value;
+                    RaisePropertyChanged(() => IsTaskbarVisible);
                 }
             }
         }
@@ -108,7 +122,8 @@ namespace Jirabox.ViewModel
         }
 
         private async Task ChangeStatus()
-        {           
+        {
+            IsTaskbarVisible = false;
             IsDataLoaded = false;
             var isSuccess = await jiraService.PerformTransition(SelectedIssue.ProxyKey, Transitions[SelectedTransitionIndex].Id);
             if (isSuccess)
@@ -121,6 +136,7 @@ namespace Jirabox.ViewModel
                 dialogService.ShowDialog(AppResources.StatusUpdateErrorMessage, AppResources.Error);
             }
             IsDataLoaded = true;
+            IsTaskbarVisible = true;
         }       
     }
 }

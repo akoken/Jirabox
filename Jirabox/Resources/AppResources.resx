@@ -251,4 +251,16 @@
   <data name="CreatingIssueMessage" xml:space="preserve">
     <value>Creating issue...</value>
   </data>
+  <data name="ApplicationStoreUrl" xml:space="preserve">
+    <value>http://www.windowsphone.com/s?appid=d1413cdb-ea8f-4fba-b3b5-0d776f69b8bb</value>
+  </data>
+  <data name="DownloadingMessage" xml:space="preserve">
+    <value>Downloading...</value>
+  </data>
+  <data name="GettingIssueDetailsMessage" xml:space="preserve">
+    <value>Getting issue details...</value>
+  </data>
+  <data name="UserVoiceUrl" xml:space="preserve">
+    <value>http://jirabox.uservoice.com</value>
+  </data>
 </root>

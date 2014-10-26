@@ -15,6 +15,7 @@ namespace Jirabox.ViewModel
         private readonly IJiraService jiraService;
         private readonly IDialogService dialogService;
         private CancellationTokenSource cancellationTokenSource = null;
+        private bool isTaskbarVisible = true;
 
         public RelayCommand LogWorkCommand { get; private set; }
 
@@ -28,6 +29,19 @@ namespace Jirabox.ViewModel
                 {
                     isDataLoaded = value;
                     RaisePropertyChanged(() => IsDataLoaded);
+                }
+            }
+        }
+
+        public bool IsTaskbarVisible
+        {
+            get { return isTaskbarVisible; }
+            set
+            {
+                if (isTaskbarVisible != value)
+                {
+                    isTaskbarVisible = value;
+                    RaisePropertyChanged(() => IsTaskbarVisible);
                 }
             }
         }
@@ -144,7 +158,9 @@ namespace Jirabox.ViewModel
             OperationResult validationResult = ValidateInputs(issueKey);
             if (!validationResult.IsValid)
             {
+                IsTaskbarVisible = false;
                 dialogService.ShowDialog(validationResult.ErrorMessage, AppResources.Error);
+                IsTaskbarVisible = true;
                 return;
             }
 
@@ -160,7 +176,9 @@ namespace Jirabox.ViewModel
 
                     if (!isLogged)
                     {
+                        IsTaskbarVisible = false;
                         dialogService.ShowDialog(AppResources.LogWorkError, AppResources.Error);
+                        IsTaskbarVisible = true;
                         return;
                     }
                     StartDate = StartDate.AddDays(1);
@@ -175,11 +193,15 @@ namespace Jirabox.ViewModel
                 IsDataLoaded = true;
                 if (!isLogged)
                 {
+                    IsTaskbarVisible = false;
                     dialogService.ShowDialog(AppResources.LogWorkError, AppResources.Error);
+                    IsTaskbarVisible = true;
                     return;
                 }
-            }            
+            }
+            IsTaskbarVisible = false;
             dialogService.ShowDialog(AppResources.LogWorkSuccess, AppResources.Done);
+            IsTaskbarVisible = true;
             navigationService.GoBack();
         }
 

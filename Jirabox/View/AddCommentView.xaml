@@ -15,7 +15,7 @@
         SupportedOrientations="Portrait"
         Orientation="Portrait"
         mc:Ignorable="d"
-        shell:SystemTray.IsVisible="True"
+        shell:SystemTray.IsVisible="{Binding IsTaskbarVisible}"
         shell:SystemTray.ForegroundColor="Black"
         shell:SystemTray.Opacity="0">
 

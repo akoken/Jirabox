@@ -325,6 +325,7 @@
     </Content>
     <Resource Include="Assets\logo.png" />
     <Content Include="Assets\assigned.png" />
+    <Resource Include="Assets\attachment.png" />
     <Content Include="Assets\cancel.png" />
     <Content Include="Assets\check.png" />
     <Content Include="Assets\comment.png" />

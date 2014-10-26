@@ -9,8 +9,8 @@ namespace Jirabox.ViewModel
 {
     public class SearchResultViewModel : ViewModelBase
     {
-        private IJiraService jiraService;
-        private INavigationService navigationService;
+        private readonly IJiraService jiraService;
+        private readonly INavigationService navigationService;
         private bool isDataLoaded;
         private CancellationTokenSource cancellationTokenSource = null;
 

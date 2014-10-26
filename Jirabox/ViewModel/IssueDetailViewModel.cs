@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using Jirabox.Core.Contracts;
 using Jirabox.Model;
+using Jirabox.Resources;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -10,13 +11,13 @@ namespace Jirabox.ViewModel
 {
     public class IssueDetailViewModel : ViewModelBase
     {
-        private readonly INavigationService navigationService;
-        private readonly IDialogService dialogService;
+        private readonly INavigationService navigationService;        
         private readonly IJiraService jiraService;
 
         private ObservableCollection<Transition> transitions;
         private Comment selectedComment;
         private bool isDataLoaded;
+        private string isLoadingText;
         private Issue issue;               
 
         public RelayCommand<Attachment> DownloadAttachmentCommand { get; private set; }
@@ -69,6 +70,22 @@ namespace Jirabox.ViewModel
             }
         }
 
+        public string IsLoadingText
+        {
+            get
+            {
+                return isLoadingText;
+            }
+            set
+            {
+                if (isLoadingText != value)
+                {
+                    isLoadingText = value;
+                    RaisePropertyChanged(() => IsLoadingText);
+                }
+            }
+        }
+
         public ObservableCollection<Transition> Transitions
         {
             get
@@ -86,10 +103,9 @@ namespace Jirabox.ViewModel
             }
         }
 
-        public IssueDetailViewModel(IJiraService jiraService, INavigationService navigationService, IDialogService dialogService)
+        public IssueDetailViewModel(IJiraService jiraService, INavigationService navigationService)
         {
-            this.navigationService = navigationService;
-            this.dialogService = dialogService;
+            this.navigationService = navigationService;            
             this.jiraService = jiraService;
           
             AddCommentCommand = new RelayCommand(AddComment);
@@ -100,7 +116,10 @@ namespace Jirabox.ViewModel
 
         private async Task DownloadAttachment(Attachment attachment)
         {
-            var isDownloaded = await jiraService.DownloadAttachment(attachment.Url, attachment.FileName);            
+            IsLoadingText = AppResources.DownloadingMessage;
+            IsDataLoaded = false;
+            var isDownloaded = await jiraService.DownloadAttachment(attachment.Url, attachment.FileName);
+            IsDataLoaded = true;
         }
 
         private void NavigateToLogWorkView()
@@ -135,6 +154,7 @@ namespace Jirabox.ViewModel
         }
         public async void Initialize(string issueKey)
         {
+            IsLoadingText = AppResources.GettingIssueDetailsMessage;
             IsDataLoaded = false;            
             Issue = await jiraService.GetIssueByKey(App.ServerUrl, App.UserName, App.Password, issueKey);
             Transitions =  await jiraService.GetTransitions(issueKey);

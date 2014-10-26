@@ -13,11 +13,10 @@ namespace Jirabox.ViewModel
 {
     public class ProjectDetailViewModel : ViewModelBase
     {
-        private INavigationService navigationService;
-        private IDialogService dialogService;
-        private IJiraService jiraService;
+        private readonly INavigationService navigationService;        
+        private readonly IJiraService jiraService;
         private string key;
-        private bool isDataLoaded;
+        private bool isDataLoaded;       
         private Project project;
         private ObservableCollection<Issue> issues;
 
@@ -39,7 +38,7 @@ namespace Jirabox.ViewModel
                 }
             }
         }
-
+     
         public Project Project
         {
             get { return project; }
@@ -82,10 +81,9 @@ namespace Jirabox.ViewModel
             }
         }
 
-        public ProjectDetailViewModel(INavigationService navigationService, IDialogService dialogService, IJiraService jiraService)
+        public ProjectDetailViewModel(INavigationService navigationService, IJiraService jiraService)
         {
-            this.navigationService = navigationService;
-            this.dialogService = dialogService;
+            this.navigationService = navigationService;            
             this.jiraService = jiraService;
 
             ShowIssueDetailCommand = new RelayCommand<Issue>(issue => NavigateToIssueDetailView(issue), issue => issue != null);
