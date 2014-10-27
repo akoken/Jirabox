@@ -335,6 +335,7 @@
     <Content Include="Assets\pin.png" />
     <Content Include="Assets\refresh.png" />
     <Content Include="Assets\reported.png" />
+    <Content Include="Assets\search.dark.png" />
     <Content Include="Assets\search.png" />
     <Content Include="Assets\send.png" />
     <Content Include="Assets\setting.png" />

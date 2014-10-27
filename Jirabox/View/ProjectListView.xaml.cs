@@ -1,5 +1,10 @@
 ﻿using Jirabox.ViewModel;
 using Microsoft.Phone.Controls;
+using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 
 namespace Jirabox.Views
@@ -31,6 +36,28 @@ namespace Jirabox.Views
             {
                 vm.NavigateToLoginView();
             }
+        }
+
+        private void SearchTextbox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (SearchTextbox.Text == "")
+            {
+                ImageBrush watermark = new ImageBrush();
+                watermark.ImageSource = new BitmapImage(new Uri(@"/Assets/search.dark.png", UriKind.Relative));
+                watermark.AlignmentX = AlignmentX.Left;
+                watermark.Stretch = Stretch.None;
+                watermark.Opacity = .75;
+                SearchTextbox.Background = watermark;
+            }
+            else
+            {
+                SearchTextbox.Background = new SolidColorBrush(Colors.White);
+            }
+        }
+
+        private void SearchTextbox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            SearchTextbox.Background.Opacity = .75;
         }
     }
 }

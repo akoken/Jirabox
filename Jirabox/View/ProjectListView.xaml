@@ -247,11 +247,17 @@
                     <StackPanel>
                         <TextBlock Text="everything"
                                    Margin="15,0,0,0" />
-                        <TextBox Name="SearchTextbox">
+                        <TextBox Name="SearchTextbox" TextChanged="SearchTextbox_TextChanged" LostFocus="SearchTextbox_LostFocus">
                             <i:Interaction.Behaviors>
                                 <behavior:TextboxEnterBehavior ExecuteCommand="{Binding SearchCommand}"
                                                                ExecuteCommandParameter="{Binding ElementName=SearchTextbox, Path=Text}" />
                             </i:Interaction.Behaviors>
+                            <TextBox.Background>
+                                <ImageBrush ImageSource="/Assets/search.dark.png"
+                                            AlignmentX="Left"
+                                            Stretch="None"
+                                            Opacity=".75" />
+                            </TextBox.Background>                           
                         </TextBox>
                     </StackPanel>
                     <StackPanel Visibility="{Binding IsFavouriteExist, Converter={StaticResource BoolToVisibilityConverter}}">
