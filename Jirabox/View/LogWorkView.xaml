@@ -8,6 +8,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
+    xmlns:behaviors="clr-namespace:Jirabox.Common.Behaviors"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     DataContext="{Binding Source={StaticResource Locator}, Path=LogWorkViewModel}"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"    
@@ -102,10 +104,13 @@
                        Margin="15,0,0,0"
                        FontSize="27"
                        Foreground="Black" />
-            <TextBox TextWrapping="Wrap"
-                     MinHeight="200"
-                     Text="{Binding Comment,Mode=TwoWay, UpdateSourceTrigger=Explicit}"
-                     TextChanged="TextBox_TextChanged" />
+                <TextBox TextWrapping="Wrap"
+                         MinHeight="200"
+                         Text="{Binding Comment,Mode=TwoWay}">
+                    <i:Interaction.Behaviors>
+                        <behaviors:TextBoxUpdatePropertyChanged />
+                    </i:Interaction.Behaviors>
+                </TextBox>
         </StackPanel>
         </ScrollViewer>
     </Grid>

@@ -119,6 +119,7 @@
     <Compile Include="Converters\DoubleToIntConverter.cs" />
     <Compile Include="Converters\HistoryToCreateDateConverter.cs" />
     <Compile Include="Converters\InvertBooleanPropertyConverter.cs" />
+    <Compile Include="Common\Behaviors\TextBoxUpdatePropertyChanged.cs" />
     <Compile Include="Converters\UserStatusToString.cs" />
     <Compile Include="Core\Contracts\ICacheService.cs" />
     <Compile Include="Core\OperationResult.cs" />

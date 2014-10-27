@@ -8,6 +8,8 @@
         xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"        
         xmlns:converter="clr-namespace:Jirabox.Converters"      
         xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
+        xmlns:behaviors="clr-namespace:Jirabox.Common.Behaviors"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         DataContext="{Binding Source={StaticResource Locator},Path=AddCommentViewModel}"
         FontFamily="{StaticResource PhoneFontFamilyNormal}"
         FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -45,12 +47,15 @@
                        FontSize="30"
                        Margin="12,0,0,0" />
             <ScrollViewer>
-                <TextBox Text="{Binding CommentText, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
-                         TextWrapping="Wrap"
-                         TextChanged="TextBox_TextChanged"
+                <TextBox Text="{Binding CommentText, Mode=TwoWay}"
+                         TextWrapping="Wrap"                         
                          Height="Auto"
                          MinHeight="150"
-                         AcceptsReturn="True" />
+                         AcceptsReturn="True">
+                    <i:Interaction.Behaviors>
+                        <behaviors:TextBoxUpdatePropertyChanged />
+                    </i:Interaction.Behaviors>
+                </TextBox>
             </ScrollViewer>
         </StackPanel>
     </Grid>
