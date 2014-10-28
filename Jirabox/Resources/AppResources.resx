@@ -263,4 +263,7 @@
   <data name="UserVoiceUrl" xml:space="preserve">
     <value>http://jirabox.uservoice.com</value>
   </data>
+  <data name="NavigationParameterIsNullError" xml:space="preserve">
+    <value>Sorry, we could not get navigation parameter. Please try again.</value>
+  </data>
 </root>

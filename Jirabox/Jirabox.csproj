@@ -100,6 +100,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\AlphaKeyGroup.cs" />
+    <Compile Include="Common\Behaviors\PasswordBoxUpdatePropertyChanged.cs" />
     <Compile Include="Common\Behaviors\TextboxEnterBehavior.cs" />
     <Compile Include="Common\Enumerations\JiraActionType.cs" />
     <Compile Include="Common\Enumerations\JiraRequestType.cs" />

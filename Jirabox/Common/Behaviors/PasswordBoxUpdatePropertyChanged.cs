@@ -4,29 +4,27 @@ using System.Windows.Data;
 using System.Windows.Interactivity;
 
 namespace Jirabox.Common.Behaviors
-{  
-    public class TextBoxUpdatePropertyChanged : Behavior<TextBox>
-    {       
+{
+    public class PasswordBoxUpdatePropertyChanged : Behavior<PasswordBox>
+    {
         private BindingExpression expression;
         protected override void OnAttached()
         {
-            base.OnAttached();         
+            base.OnAttached();
             expression = AssociatedObject.GetBindingExpression(TextBox.TextProperty);
-            AssociatedObject.TextChanged += OnTextChanged;
+            AssociatedObject.PasswordChanged += OnTextChanged;
         }
 
         protected override void OnDetaching()
         {
             base.OnDetaching();
-            AssociatedObject.TextChanged -= OnTextChanged;
+            AssociatedObject.PasswordChanged -= OnTextChanged;
             expression = null;
         }
-      
+
         private void OnTextChanged(object sender, EventArgs args)
         {
             expression.UpdateSource();
         }
     }
 }
-
-

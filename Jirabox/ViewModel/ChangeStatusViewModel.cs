@@ -110,13 +110,22 @@ namespace Jirabox.ViewModel
         {
             IsDataLoaded = true;
             var parameter = navigationService.GetNavigationParameter() as StatusPackage;
+
+            if (parameter == null)
+            {
+                dialogService.ShowDialog(AppResources.NavigationParameterIsNullError, AppResources.Error);
+                return;
+            }
             SelectedIssue = parameter.SelectedIssue;
             Transitions = parameter.Transitions;
         }        
 
         public void GoBack()
         {
-            navigationService.NavigationParameter = ((StatusPackage)navigationService.GetNavigationParameter()).SearchParameter;
+            var navigationPackage = navigationService.GetNavigationParameter();
+            if (navigationPackage != null)
+                navigationService.NavigationParameter = ((StatusPackage)navigationPackage).SearchParameter;
+                            
             SelectedTransitionIndex = 0;            
             navigationService.GoBack();
         }
@@ -125,6 +134,7 @@ namespace Jirabox.ViewModel
         {
             IsTaskbarVisible = false;
             IsDataLoaded = false;
+
             var isSuccess = await jiraService.PerformTransition(SelectedIssue.ProxyKey, Transitions[SelectedTransitionIndex].Id);
             if (isSuccess)
             {
@@ -135,6 +145,7 @@ namespace Jirabox.ViewModel
             {
                 dialogService.ShowDialog(AppResources.StatusUpdateErrorMessage, AppResources.Error);
             }
+
             IsDataLoaded = true;
             IsTaskbarVisible = true;
         }       

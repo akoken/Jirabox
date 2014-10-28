@@ -448,6 +448,17 @@ namespace Jirabox.Resources {
                 return ResourceManager.GetString("ResourceLanguage", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, we could not get navigation parameter. Please try again..
+        /// </summary>
+        public static string NavigationParameterIsNullError
+        {
+            get
+            {
+                return ResourceManager.GetString("NavigationParameterIsNullError", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Status has been updated..

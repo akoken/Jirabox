@@ -79,10 +79,14 @@
                 <TextBlock Text="password"
                            VerticalAlignment="Center"
                            Margin="10,0,0,0" />
-                <PasswordBox Password="{Binding Password, Mode=TwoWay}"                             
+                <PasswordBox Password="{Binding Password, Mode=TwoWay}"
                              Width="446"
                              Height="72"
-                             HorizontalAlignment="Left" />
+                             HorizontalAlignment="Left">
+                    <i:Interaction.Behaviors>
+                        <behaviors:PasswordBoxUpdatePropertyChanged />
+                    </i:Interaction.Behaviors>
+                </PasswordBox>
             </StackPanel>
         </Grid>
     </Grid>
