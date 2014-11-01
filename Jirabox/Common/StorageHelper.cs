@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using Windows.Storage;
+using System.Linq;
 
 namespace Jirabox.Common
 {
@@ -119,9 +120,15 @@ namespace Jirabox.Common
 
         public static async Task ClearAttachmentCache()
         {
-            var local = Windows.Storage.ApplicationData.Current.LocalFolder;
-            var dataFolder = await local.GetFolderAsync("Attachments");
-            await dataFolder.DeleteAsync();
+            var local = ApplicationData.Current.LocalFolder;
+            var folders = await local.GetFoldersAsync();
+            foreach (StorageFolder folder in folders)
+            {
+                if(folder.Name == "Attachments")
+                {
+                    await folder.DeleteAsync();
+                }
+            }            
         }
 
         public static BitmapImage GetDisplayPicture(string fileName)
@@ -199,11 +206,11 @@ namespace Jirabox.Common
         public static async Task WriteDataToIsolatedStorageFile(string fileName, byte[] data)
         {
             StorageFolder local = ApplicationData.Current.LocalFolder;
-            
+
             var dataFolder = await local.CreateFolderAsync("Attachments", CreationCollisionOption.OpenIfExists);
-            
+
             var file = await dataFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
-            
+
             using (var s = await file.OpenStreamForWriteAsync())
             {
                 s.Write(data, 0, data.Length);

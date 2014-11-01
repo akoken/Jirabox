@@ -155,7 +155,7 @@
   <data name="ErrorMessage" xml:space="preserve">
     <value>Oops! Something went wrong!</value>
   </data>
-  <data name="ImageCacheCleanedMessage" xml:space="preserve">
+  <data name="ImageCacheClearedMessage" xml:space="preserve">
     <value>Image cache cleaned.</value>
   </data>
   <data name="InvalidServerUrlMessage" xml:space="preserve">
@@ -168,7 +168,7 @@
     <value>Sorry, your username and password are incorrect - please try again.</value>
   </data>
   <data name="UnhandledErrorMessage" xml:space="preserve">
-    <value>Oops! Something went wrong. Do you want to send error report ?</value>
+    <value>Opps! Something went wrong. We will fix it as soon as possible.</value>
   </data>
   <data name="ErrorReportMailBody" xml:space="preserve">
     <value>Message: {0}{1}StackTrace: {2}</value>
@@ -265,5 +265,8 @@
   </data>
   <data name="NavigationParameterIsNullError" xml:space="preserve">
     <value>Sorry, we could not get navigation parameter. Please try again.</value>
+  </data>
+  <data name="AttachmentCacheClearedMessage" xml:space="preserve">
+    <value>Attachment cache cleared.</value>
   </data>
 </root>
