@@ -125,6 +125,17 @@ namespace Jirabox.Resources {
                 return ResourceManager.GetString("ApplicationTitle", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Attachment cache cleared..
+        /// </summary>
+        public static string AttachmentCacheClearedMessage
+        {
+            get
+            {
+                return ResourceManager.GetString("AttachmentCacheClearedMessage", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Your comment was added..
@@ -277,11 +288,11 @@ namespace Jirabox.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Image cache cleaned..
+        ///   Looks up a localized string similar to Image cache cleared..
         /// </summary>
-        public static string ImageCacheCleanedMessage {
+        public static string ImageCacheClearedMessage {
             get {
-                return ResourceManager.GetString("ImageCacheCleanedMessage", resourceCulture);
+                return ResourceManager.GetString("ImageCacheClearedMessage", resourceCulture);
             }
         }
         
@@ -488,7 +499,7 @@ namespace Jirabox.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Oops! Something went wrong. Do you want to send error report ?.
+        ///   Looks up a localized string similar to Opps! Something went wrong. We will fix it as soon as possible..
         /// </summary>
         public static string UnhandledErrorMessage {
             get {

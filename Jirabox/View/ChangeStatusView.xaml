@@ -31,7 +31,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>      
-        <StackPanel Grid.Row="0">
+        <StackPanel Grid.Row="0" Margin="0,10,0,0">
             <StackPanel Orientation="Horizontal">
                 <Image Source="/Jirabox;component/Assets/logo.png"
                        Width="80"
@@ -134,7 +134,7 @@
         <bar:BindableApplicationBar IsVisible="True"
                                     BackgroundColor="#1199CC"
                                     Mode="Default">
-            <bar:BindableApplicationBarButton Text="ok"
+            <bar:BindableApplicationBarButton Text="change"
                                               Command="{Binding ChangeStatusCommand}"
                                               IconUri="/Assets/check.png" />
             <bar:BindableApplicationBarButton Text="cancel"

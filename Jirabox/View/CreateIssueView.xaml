@@ -31,8 +31,9 @@
         <Grid.RowDefinitions>            
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-        </Grid.RowDefinitions>       
-        <StackPanel Grid.Row="0">
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0"
+                    Margin="0,10,0,0">
             <StackPanel Orientation="Horizontal">
                 <Image Source="/Jirabox;component/Assets/logo.png"
                        Width="80"
@@ -118,21 +119,18 @@
                     </toolkit:ListPicker.FullModeItemTemplate>
                 </toolkit:ListPicker>
             </StackPanel>
-            <StackPanel  Grid.Row="4" Margin="0,20,0,0">
-                <TextBlock Text="Description"/>
-                <TextBox Text="{Binding Description, Mode=TwoWay}"                         
+            <StackPanel  Grid.Row="4" Grid.RowSpan="2"
+                         Margin="0,20,0,0">
+                <TextBlock Text="Description" />
+                <TextBox Text="{Binding Description, Mode=TwoWay}"
                          TextWrapping="Wrap"
                          AcceptsReturn="True"
-                         Height="210"
+                         Height="250"
                          Margin="-10,0,0,0">
                     <i:Interaction.Behaviors>
                         <behaviors:TextBoxUpdatePropertyChanged />
                     </i:Interaction.Behaviors>
                 </TextBox>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Grid.Row="5" HorizontalAlignment="Center">
-                <Button  Width="220" Content="Create" Command="{Binding CreateIssueCommand}" Background="#1199CC"/>
-                <Button  Width="220" Content="Cancel" Command="{Binding CancelCommand}" Background="#1199CC"/>
             </StackPanel>
         </Grid>
     </Grid>
@@ -156,4 +154,17 @@
             </toolkit:NavigationOutTransition.Forward>
         </toolkit:NavigationOutTransition>
     </toolkit:TransitionService.NavigationOutTransition>
+
+    <bar:Bindable.ApplicationBar>
+        <bar:BindableApplicationBar IsVisible="True"
+                                    BackgroundColor="#1199CC"
+                                    Mode="Default">
+            <bar:BindableApplicationBarButton Text="create"
+                                              Command="{Binding CreateIssueCommand}"
+                                              IconUri="/Assets/check.png" />
+            <bar:BindableApplicationBarButton Text="cancel"
+                                              Command="{Binding CancelCommand}"
+                                              IconUri="/Assets/cancel.png" />
+        </bar:BindableApplicationBar>
+    </bar:Bindable.ApplicationBar>
 </phone:PhoneApplicationPage>

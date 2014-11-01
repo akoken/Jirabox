@@ -132,22 +132,25 @@ namespace Jirabox.ViewModel
 
         private async Task ChangeStatus()
         {
-            IsTaskbarVisible = false;
+           
             IsDataLoaded = false;
-
             var isSuccess = await jiraService.PerformTransition(SelectedIssue.ProxyKey, Transitions[SelectedTransitionIndex].Id);
+            IsDataLoaded = true;
+            IsTaskbarVisible = false;
+
             if (isSuccess)
             {
+                
                 dialogService.ShowDialog(AppResources.StatusUpdatedMessage, AppResources.Done);
+                IsTaskbarVisible = true;
                 GoBack();
             }
             else
             {
+                IsTaskbarVisible = false;
                 dialogService.ShowDialog(AppResources.StatusUpdateErrorMessage, AppResources.Error);
-            }
-
-            IsDataLoaded = true;
-            IsTaskbarVisible = true;
+                IsTaskbarVisible = true;
+            }                      
         }       
     }
 }

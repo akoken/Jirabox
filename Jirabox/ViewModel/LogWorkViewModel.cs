@@ -14,6 +14,7 @@ namespace Jirabox.ViewModel
         private readonly INavigationService navigationService;
         private readonly IJiraService jiraService;
         private readonly IDialogService dialogService;
+
         private CancellationTokenSource cancellationTokenSource = null;
         private bool isTaskbarVisible = true;
 

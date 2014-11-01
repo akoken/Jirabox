@@ -210,7 +210,7 @@ namespace Jirabox.ViewModel
 
         private async void CreateIssue()
         {
-            if (!IsParametersValid()) return;           
+            if (!ValidateParameters()) return;           
 
             var request = new CreateIssueRequest();
             request.Fields.CreateIssueProject.Key = Project.Key;
@@ -246,7 +246,7 @@ namespace Jirabox.ViewModel
             navigationService.GoBack();
         }
 
-        private bool IsParametersValid()
+        private bool ValidateParameters()
         {
             if (string.IsNullOrEmpty(Summary))
             {

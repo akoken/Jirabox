@@ -42,7 +42,7 @@
             <phone:Pivot.TitleTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal"
-                                Margin="-10,-15,0,0">
+                                Margin="-10,-5,0,0">
                         <Image Source="/Jirabox;component/Assets/logo.png"
                                Width="80"
                                Height="80" />

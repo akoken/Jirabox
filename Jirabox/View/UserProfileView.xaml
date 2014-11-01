@@ -29,8 +29,9 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
-        <StackPanel Grid.Row="0">
+
+        <StackPanel Grid.Row="0"
+                    Margin="0,10,0,0">
             <StackPanel Orientation="Horizontal">
                 <Image Source="/Jirabox;component/Assets/logo.png"
                        Width="80"

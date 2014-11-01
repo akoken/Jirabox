@@ -22,8 +22,9 @@
         <Grid.RowDefinitions>         
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-        </Grid.RowDefinitions>        
-        <StackPanel Grid.Row="0">
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0"
+                    Margin="0,10,0,0">
             <StackPanel Orientation="Horizontal">
                 <Image Source="/Jirabox;component/Assets/logo.png"
                        Width="80"
@@ -75,12 +76,18 @@
                         SmallChange="10"
                         LargeChange="20" />
             </StackPanel>
-            <Button Content="clear cached images"
-                    Grid.Row="2"
-                    Command="{Binding ClearCacheCommand}"
-                    Background="#1199CC"
-                    FontSize="24"
-                    VerticalAlignment="Top" />
+            <StackPanel Grid.Row="2">
+                <Button Content="clear image cache"
+                        Command="{Binding ClearImageCacheCommand}"
+                        Background="#1199CC"
+                        FontSize="24"
+                        VerticalAlignment="Top" />
+                <Button Content="clear attachment cache"
+                        Command="{Binding ClearAttachmentCacheCommand}"
+                        Background="#1199CC"
+                        FontSize="24"
+                        VerticalAlignment="Top" />
+            </StackPanel>            
         </Grid>
     </Grid>
 

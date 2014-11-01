@@ -102,7 +102,7 @@
             <phone:Panorama.TitleTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal"
-                                Margin="0,35,0,0">
+                                Margin="0,45,0,0">
                         <Image Source="/Jirabox;component/Assets/logo.png"
                                Width="80"
                                Height="80"

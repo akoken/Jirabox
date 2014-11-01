@@ -75,7 +75,7 @@ namespace Jirabox.Common
             }
         }
 
-        public static void ClearCache()
+        public static void ClearImageCache()
         {
             using (var local = IsolatedStorageFile.GetUserStoreForApplication())
             {
@@ -97,7 +97,7 @@ namespace Jirabox.Common
                         extras.Add(new CrashExtraData
                         {
                             Key = "Method",
-                            Value = "StorageHelper.ClearCache"
+                            Value = "StorageHelper.ClearImageCache"
                         });
 
                         BugSenseHandler.Instance.LogException(storageException, extras);
@@ -115,6 +115,13 @@ namespace Jirabox.Common
                     isf.DeleteFile(path);
                 }
             }
+        }
+
+        public static async Task ClearAttachmentCache()
+        {
+            var local = Windows.Storage.ApplicationData.Current.LocalFolder;
+            var dataFolder = await local.GetFolderAsync("Attachments");
+            await dataFolder.DeleteAsync();
         }
 
         public static BitmapImage GetDisplayPicture(string fileName)
@@ -191,7 +198,7 @@ namespace Jirabox.Common
 
         public static async Task WriteDataToIsolatedStorageFile(string fileName, byte[] data)
         {
-            StorageFolder local = Windows.Storage.ApplicationData.Current.LocalFolder;
+            StorageFolder local = ApplicationData.Current.LocalFolder;
             
             var dataFolder = await local.CreateFolderAsync("Attachments", CreationCollisionOption.OpenIfExists);
             

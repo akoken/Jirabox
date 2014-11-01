@@ -70,7 +70,7 @@ namespace Jirabox
             var cacheSetting = new IsolatedStorageProperty<bool>("ClearImageCache", false);
             if (cacheSetting.Value)
             {
-                StorageHelper.ClearCache();
+                StorageHelper.ClearImageCache();
                 cacheSetting.Value = false;
             }
 
@@ -114,6 +114,7 @@ namespace Jirabox
                 Debugger.Break();
             }
 
+            MessageBox.Show(AppResources.UnhandledErrorMessage, AppResources.Error, MessageBoxButton.OK);
             var extras = BugSenseHandler.Instance.CrashExtraData;
             extras.Add(new CrashExtraData
             {
