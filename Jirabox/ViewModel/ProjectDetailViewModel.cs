@@ -103,8 +103,8 @@ namespace Jirabox.ViewModel
             });
 
             IsDataLoaded = false;
-            Project = await jiraService.GetProjectByKey(App.ServerUrl, App.UserName, App.Password, projectKey, withoutCache);
-            Issues = await jiraService.GetIssuesByProjectKey(App.ServerUrl, App.UserName, App.Password, projectKey, withoutCache);
+            Project = await jiraService.GetProjectByKey(App.ServerUrl, App.UserName, App.Password, projectKey, withoutCache);            
+            Issues = await jiraService.GetIssuesByProjectKey(App.ServerUrl, App.UserName, App.Password, projectKey, withoutCache);            
             Key = projectKey;
             IsDataLoaded = true;
         }

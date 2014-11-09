@@ -11,7 +11,7 @@ namespace Jirabox.Common.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-            expression = AssociatedObject.GetBindingExpression(TextBox.TextProperty);
+            expression = AssociatedObject.GetBindingExpression(PasswordBox.PasswordProperty);
             AssociatedObject.PasswordChanged += OnTextChanged;
         }
 

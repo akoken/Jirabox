@@ -190,7 +190,7 @@ namespace Jirabox.ViewModel
             return Uri.TryCreate(url, UriKind.Absolute, out uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
         }
 
-        private bool IsInputsValid()
+        public bool IsInputsValid()
         {
             if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password))
                 return false;
