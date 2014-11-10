@@ -202,15 +202,8 @@ namespace Jirabox.ViewModel
             IsDataLoaded = false;
             var taskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
-            jiraService.GetUserProfileAsync(App.UserName).ContinueWith(task =>
-            {                
-                DisplayPicture = jiraService.GetDisplayPicture(App.UserName).ToBitmapImage();
-            }, CancellationToken.None, TaskContinuationOptions.OnlyOnRanToCompletion, taskScheduler).ContinueWith(t=>
-            {
-                var aggException = t.Exception.Flatten();
-                foreach (var exception in aggException.InnerExceptions)
-                    BugSenseHandler.Instance.LogException(exception);
-            }, TaskContinuationOptions.OnlyOnFaulted);
+            await jiraService.GetUserProfileAsync(App.UserName);
+            DisplayPicture = jiraService.GetDisplayPicture(App.UserName).ToBitmapImage();           
 
             var projects = await jiraService.GetProjects(App.ServerUrl, App.UserName, App.Password, withoutCache);
             GroupedProjects = AlphaKeyGroup<Project>.CreateGroups(projects, System.Threading.Thread.CurrentThread.CurrentUICulture, (Project s) => { return s.Name; }, true);

@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using Windows.Storage;
-using System.Linq;
 
 namespace Jirabox.Common
 {
@@ -80,6 +79,8 @@ namespace Jirabox.Common
         {
             using (var local = IsolatedStorageFile.GetUserStoreForApplication())
             {
+                if (!local.DirectoryExists("Images")) return;
+
                 var pattern = @"Images\*";
                 var files = local.GetFileNames(pattern);
 
@@ -120,8 +121,9 @@ namespace Jirabox.Common
 
         public static async Task ClearAttachmentCache()
         {
-            var local = ApplicationData.Current.LocalFolder;
+            var local = Windows.ApplicationModel.Package.Current.InstalledLocation;
             var folders = await local.GetFoldersAsync();
+            
             foreach (StorageFolder folder in folders)
             {
                 if(folder.Name == "Attachments")
@@ -205,7 +207,7 @@ namespace Jirabox.Common
 
         public static async Task WriteDataToIsolatedStorageFile(string fileName, byte[] data)
         {
-            StorageFolder local = ApplicationData.Current.LocalFolder;
+            StorageFolder local = Windows.ApplicationModel.Package.Current.InstalledLocation;
 
             var dataFolder = await local.CreateFolderAsync("Attachments", CreationCollisionOption.OpenIfExists);
 
