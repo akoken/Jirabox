@@ -146,7 +146,7 @@
                                     BackgroundColor="#1199CC"
                                     Mode="Default">
             <bar:BindableApplicationBarButton Text="send"
-                                              Command="{Binding LogWorkCommand, Mode=TwoWay}"
+                                              Command="{Binding LogWorkCommand}"
                                               IconUri="/Assets/timesheet.png" />            
         </bar:BindableApplicationBar>
     </bar:Bindable.ApplicationBar>

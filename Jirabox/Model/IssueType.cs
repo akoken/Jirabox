@@ -21,5 +21,10 @@ namespace Jirabox.Model
             if (other == null) return false;
             else return (this.Id == other.Id);
         }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
+        }
     }
 }

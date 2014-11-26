@@ -1,5 +1,4 @@
-﻿using BugSense;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
 using Jirabox.Common;
@@ -7,11 +6,8 @@ using Jirabox.Common.Extensions;
 using Jirabox.Core.Contracts;
 using Jirabox.Model;
 using Jirabox.Resources;
-using Microsoft.Phone.Shell;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
@@ -41,8 +37,7 @@ namespace Jirabox.ViewModel
         public RelayCommand ShowSettingsCommand { get; private set; }
         public RelayCommand ShowAboutViewCommand { get; private set; }
         public RelayCommand RefreshCommand { get; private set; }
-        public RelayCommand LogoutCommand { get; private set; }
-        public RelayCommand AboutCommand { get; private set; }
+        public RelayCommand LogoutCommand { get; private set; }        
         public RelayCommand<string> SearchCommand { get; private set; }
         public RelayCommand<Favourite> SearchWithFavouriteCommand { get; set; }
 
@@ -52,7 +47,7 @@ namespace Jirabox.ViewModel
             set
             {
                 isDataLoaded = value;
-                RaisePropertyChanged(() => IsDataLoaded);
+                RaisePropertyChanged();
             }
         }
 
@@ -64,7 +59,7 @@ namespace Jirabox.ViewModel
                 if (isTaskbarVisible != value)
                 {
                     isTaskbarVisible = value;
-                    RaisePropertyChanged(() => IsTaskbarVisible);
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -77,7 +72,7 @@ namespace Jirabox.ViewModel
                 if (isGroupingEnabled != value)
                 {
                     isGroupingEnabled = value;
-                    RaisePropertyChanged(() => IsGroupingEnabled);
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -90,7 +85,7 @@ namespace Jirabox.ViewModel
                 if (isFavouriteExist != value)
                 {
                     isFavouriteExist = value;
-                    RaisePropertyChanged(() => IsFavouriteExist);
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -104,7 +99,7 @@ namespace Jirabox.ViewModel
                 if (displayPicture != value)
                 {
                     displayPicture = value;
-                    RaisePropertyChanged(() => DisplayPicture);
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -115,7 +110,7 @@ namespace Jirabox.ViewModel
             set
             {
                 groupedProjects = value;
-                RaisePropertyChanged(() => GroupedProjects);
+                RaisePropertyChanged();
             }
         }
 
@@ -125,7 +120,7 @@ namespace Jirabox.ViewModel
             set
             {
                 flatProjects = value;
-                RaisePropertyChanged(() => FlatProjects);
+                RaisePropertyChanged();
             }
         }
 
@@ -137,7 +132,7 @@ namespace Jirabox.ViewModel
                 if (favorites != value)
                 {
                     favorites = value;
-                    RaisePropertyChanged(() => Favourites);
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -176,7 +171,7 @@ namespace Jirabox.ViewModel
                     IsDataLoaded = false;
                     StorageHelper.ClearUserCredential();
                     cacheService.ClearCache();
-                    DeleteSecondaryTiles();
+                    LiveTileManager.DeleteAllSecondaryTiles();
                     App.IsLoggedIn = false;
                     IsDataLoaded = true;
 
@@ -186,15 +181,7 @@ namespace Jirabox.ViewModel
                 IsTaskbarVisible = true;
             };            
         }
-
-        private void DeleteSecondaryTiles()
-        {
-            var tiles = ShellTile.ActiveTiles.Where(tile => tile.NavigationUri.ToString().Contains("/View/ProjectDetailView.xaml?Key="));
-            tiles.ToList().ForEach(tile =>
-            {
-                tile.Delete();
-            });
-        }       
+       
         public async Task InitializeData(bool withoutCache = false)
         {
             GroupedProjects = null;
@@ -215,6 +202,7 @@ namespace Jirabox.ViewModel
             IsGroupingEnabled = new IsolatedStorageProperty<bool>(Settings.IsGroupingEnabled, true).Value;
             IsDataLoaded = true;
         }
+
         public void RemoveBackEntry()
         {
             navigationService.RemoveBackEntry();
@@ -223,41 +211,50 @@ namespace Jirabox.ViewModel
         {
             navigationService.Navigate<LoginViewModel>();            
         }
+
         private async Task Refresh()
         {
             await InitializeData(true);
         }
+
         private void NavigateToProjectDetail(Project project)
         {
             navigationService.Navigate<ProjectDetailViewModel>(project.Key);
         }
+
         private void NavigateToUserProfile()
         {
             navigationService.Navigate<UserProfileViewModel>();
         }
+
         public void NavigateToAssignedIssues()
         {
             var searchCriteria = new SearchParameter { IsAssignedToMe = true };
             navigationService.Navigate<SearchResultViewModel>(searchCriteria);
         }
+
         public void NavigateToIssuesReportedByMe()
         {
             var searchCriteria = new SearchParameter { IsReportedByMe = true };
             navigationService.Navigate<SearchResultViewModel>(searchCriteria);
         }
+
         private void NavigateToSettingsView()
         {
             navigationService.Navigate<SettingsViewModel>();
         }
+
         private void NavigateToAboutView()
         {
             navigationService.Navigate<AboutViewModel>();
         }
+
         private void NavigateToSearchResults(string searchText)
         {
             var searchCriteria = new SearchParameter { SearchText = searchText };
             navigationService.Navigate<SearchResultViewModel>(searchCriteria);
         }
+
         private void NavigateToSearchResults(Favourite favorite)
         {
             var searchCriteria = new SearchParameter { IsFavourite = true, JQL = favorite.JQL };

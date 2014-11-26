@@ -106,6 +106,7 @@
     <Compile Include="Common\Enumerations\JiraActionType.cs" />
     <Compile Include="Common\Enumerations\JiraRequestType.cs" />
     <Compile Include="Common\Extensions\ImageExtensions.cs" />
+    <Compile Include="Common\LiveTileManager.cs" />
     <Compile Include="Common\LiveTiles\StandartTile.xaml.cs">
       <DependentUpon>StandartTile.xaml</DependentUpon>
     </Compile>
@@ -314,7 +315,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>

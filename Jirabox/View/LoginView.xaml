@@ -118,7 +118,7 @@
                                     BackgroundColor="#1199CC"
                                     Mode="Default">
             <bar:BindableApplicationBarButton Text="login"                                             
-                                              Command="{Binding LoginCommand, Mode=TwoWay}"
+                                              Command="{Binding LoginCommand}"
                                               IconUri="/Assets/login.png" />
             <bar:BindableApplicationBarButton Text="about"
                                               Command="{Binding AboutCommand}"
