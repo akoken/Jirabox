@@ -75,8 +75,7 @@ namespace Jirabox
             }
 
             try
-            {
-                StorageHelper.DeleteOldCredentialFile();
+            {                
                 bool isOsVersion81 = ((Environment.OSVersion.Version.Major >= 8) && (Environment.OSVersion.Version.Minor >= 10));
                 if (isOsVersion81)
                     await VoiceCommandService.InstallCommandSetsFromFileAsync(new Uri("ms-appx:///CortanaCommands.xml", UriKind.Absolute));

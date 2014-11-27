@@ -194,17 +194,7 @@ namespace Jirabox.Common
             }
             return passwordArray;
         }
-
-        public static void DeleteOldCredentialFile()
-        {
-            string filePath = "credential.ak";
-            using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                if (isf.FileExists(filePath))
-                    isf.DeleteFile(filePath);
-            }
-        }
-
+       
         public static async Task WriteDataToIsolatedStorageFile(string fileName, byte[] data)
         {
             StorageFolder local = Windows.ApplicationModel.Package.Current.InstalledLocation;
