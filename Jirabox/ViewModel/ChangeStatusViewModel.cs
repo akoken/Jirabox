@@ -17,7 +17,8 @@ namespace Jirabox.ViewModel
         private ObservableCollection<Transition> transitions;
         private int selectedTransitionIndex;
         private Issue selectedIssue;
-        private bool isDataLoaded;        
+        private bool isDataLoaded;
+        private bool isTaskbarVisible = true;
 
         public RelayCommand ChangeStatusCommand { get; private set; }
         public RelayCommand CancelCommand { get; private set; }      
@@ -34,6 +35,19 @@ namespace Jirabox.ViewModel
                 {
                     selectedIssue = value;
                     RaisePropertyChanged(() => SelectedIssue);
+                }
+            }
+        }
+
+        public bool IsTaskbarVisible
+        {
+            get { return isTaskbarVisible; }
+            set
+            {
+                if (isTaskbarVisible != value)
+                {
+                    isTaskbarVisible = value;
+                    RaisePropertyChanged(() => IsTaskbarVisible);
                 }
             }
         }
@@ -96,31 +110,47 @@ namespace Jirabox.ViewModel
         {
             IsDataLoaded = true;
             var parameter = navigationService.GetNavigationParameter() as StatusPackage;
+
+            if (parameter == null)
+            {
+                dialogService.ShowDialog(AppResources.NavigationParameterIsNullError, AppResources.Error);
+                return;
+            }
             SelectedIssue = parameter.SelectedIssue;
             Transitions = parameter.Transitions;
         }        
 
         public void GoBack()
         {
-            navigationService.NavigationParameter = ((StatusPackage)navigationService.GetNavigationParameter()).SearchParameter;
+            var navigationPackage = navigationService.GetNavigationParameter();
+            if (navigationPackage != null)
+                navigationService.NavigationParameter = ((StatusPackage)navigationPackage).SearchParameter;
+                            
             SelectedTransitionIndex = 0;            
             navigationService.GoBack();
         }
 
         private async Task ChangeStatus()
-        {           
+        {
+           
             IsDataLoaded = false;
             var isSuccess = await jiraService.PerformTransition(SelectedIssue.ProxyKey, Transitions[SelectedTransitionIndex].Id);
+            IsDataLoaded = true;
+            IsTaskbarVisible = false;
+
             if (isSuccess)
             {
+                
                 dialogService.ShowDialog(AppResources.StatusUpdatedMessage, AppResources.Done);
+                IsTaskbarVisible = true;
                 GoBack();
             }
             else
             {
+                IsTaskbarVisible = false;
                 dialogService.ShowDialog(AppResources.StatusUpdateErrorMessage, AppResources.Error);
-            }
-            IsDataLoaded = true;
+                IsTaskbarVisible = true;
+            }                      
         }       
     }
 }

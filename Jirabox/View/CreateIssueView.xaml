@@ -8,28 +8,32 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
+    xmlns:behaviors="clr-namespace:Jirabox.Common.Behaviors"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:converter="clr-namespace:Jirabox.Converters"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"    
     SupportedOrientations="Portrait" Orientation="Portrait"
     DataContext="{Binding Source={StaticResource Locator},Path=CreateIssueViewModel}"
     mc:Ignorable="d"
-    shell:SystemTray.IsVisible="False">
-   
+    shell:SystemTray.IsVisible="{Binding IsTaskbarVisible}"
+    shell:SystemTray.ForegroundColor="Black"
+    shell:SystemTray.Opacity="0">
+
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator IsIndeterminate="True"
+                                 IsVisible="{Binding IsDataLoaded, Converter={StaticResource InvertBooleanPropertyConverter}}"
+                                 Text="Loading..." />
+    </shell:SystemTray.ProgressIndicator>
+
 
     <Grid x:Name="LayoutRoot" Background="#FFECECEC">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="10" />
+        <Grid.RowDefinitions>            
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ProgressBar x:Name="progressBar"
-                     IsIndeterminate="True"
-                     HorizontalAlignment="Stretch"
-                     VerticalAlignment="Top"
-                     Visibility="{Binding IsDataLoaded, Converter={StaticResource IsDataLoadedToVisibilityConverter}}"
-                     Margin="0,4,0,0" />
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="0"
+                    Margin="0,10,0,0">
             <StackPanel Orientation="Horizontal">
                 <Image Source="/Jirabox;component/Assets/logo.png"
                        Width="80"
@@ -45,7 +49,7 @@
                        Foreground="{StaticResource BlackForeground}" />
         </StackPanel>
 
-        <Grid x:Name="ContentPanel" Grid.Row="2" Margin="15,15,15,0">
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="15,15,15,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -85,7 +89,14 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="2">
                 <TextBlock Text="Summary" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding Summary, Mode=TwoWay}" Height="70" Width="343" Margin="6,0,0,0"/>
+                <TextBox Text="{Binding Summary, Mode=TwoWay}"
+                         Height="70"
+                         Width="343"
+                         Margin="6,0,0,0">
+                    <i:Interaction.Behaviors>
+                        <behaviors:TextBoxUpdatePropertyChanged />
+                    </i:Interaction.Behaviors>
+                </TextBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="3">
                 <TextBlock Text="Priority" VerticalAlignment="Center"/>
@@ -108,13 +119,18 @@
                     </toolkit:ListPicker.FullModeItemTemplate>
                 </toolkit:ListPicker>
             </StackPanel>
-            <StackPanel  Grid.Row="4" Margin="0,20,0,0">
-                <TextBlock Text="Description"/>
-                <TextBox Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="Description_TextChanged" TextWrapping="Wrap" AcceptsReturn="True" Height="210" Margin="-10,0,0,0"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Grid.Row="5" HorizontalAlignment="Center">
-                <Button  Width="220" Content="Create" Command="{Binding CreateIssueCommand}" Background="#1199CC"/>
-                <Button  Width="220" Content="Cancel" Command="{Binding CancelCommand}" Background="#1199CC"/>
+            <StackPanel  Grid.Row="4" Grid.RowSpan="2"
+                         Margin="0,20,0,0">
+                <TextBlock Text="Description" />
+                <TextBox Text="{Binding Description, Mode=TwoWay}"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         Height="250"
+                         Margin="-10,0,0,0">
+                    <i:Interaction.Behaviors>
+                        <behaviors:TextBoxUpdatePropertyChanged />
+                    </i:Interaction.Behaviors>
+                </TextBox>
             </StackPanel>
         </Grid>
     </Grid>
@@ -138,4 +154,17 @@
             </toolkit:NavigationOutTransition.Forward>
         </toolkit:NavigationOutTransition>
     </toolkit:TransitionService.NavigationOutTransition>
+
+    <bar:Bindable.ApplicationBar>
+        <bar:BindableApplicationBar IsVisible="True"
+                                    BackgroundColor="#1199CC"
+                                    Mode="Default">
+            <bar:BindableApplicationBarButton Text="create"
+                                              Command="{Binding CreateIssueCommand}"
+                                              IconUri="/Assets/check.png" />
+            <bar:BindableApplicationBarButton Text="cancel"
+                                              Command="{Binding CancelCommand}"
+                                              IconUri="/Assets/cancel.png" />
+        </bar:BindableApplicationBar>
+    </bar:Bindable.ApplicationBar>
 </phone:PhoneApplicationPage>

@@ -33,7 +33,75 @@
                       Grid.Row="1"
                       Margin="12,0,12,30">
             <StackPanel>
-                <Grid>
+                <Grid Margin="0,30,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="58*" />
+                        <ColumnDefinition Width="170*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="v2.8.1.36"
+                               Style="{StaticResource PhoneTextNormalStyle}"
+                               FontSize="24"
+                               FontWeight="SemiBold"
+                               Foreground="Black"
+                               Grid.Column="0" />
+                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                               FontSize="24"
+                               Foreground="Black"
+                               Text="- Bug fixes"
+                               Grid.Row="1"
+                               Grid.Column="0"
+                               TextWrapping="Wrap"
+                               Grid.ColumnSpan="2" />            
+                </Grid>
+                <Grid Margin="0,30,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="43*" />
+                        <ColumnDefinition Width="185*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="v2.8"
+                               Style="{StaticResource PhoneTextNormalStyle}"
+                               FontSize="24"
+                               FontWeight="SemiBold"
+                               Foreground="Black"
+                               Grid.Column="0" />
+                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                               FontSize="24"
+                               Foreground="Black"
+                               Text="- View issue attachments"
+                               Grid.Row="1"
+                               Grid.Column="0"
+                               TextWrapping="Wrap"
+                               Grid.ColumnSpan="2" />
+                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                               FontSize="24"
+                               Foreground="Black"
+                               Text="- Minor UI improvements"
+                               Grid.Row="2"
+                               Grid.Column="0"
+                               TextWrapping="Wrap"
+                               Grid.ColumnSpan="2" />
+                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                               FontSize="24"
+                               Foreground="Black"
+                               Text="- Other minor bug fixes"
+                               Grid.Row="3"
+                               Grid.Column="0"
+                               TextWrapping="Wrap"
+                               Grid.ColumnSpan="2" />
+                </Grid>
+                <Grid Margin="0,30,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />

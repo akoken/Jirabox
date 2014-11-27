@@ -21,6 +21,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Windows.System;
 
 namespace Jirabox.Services
 {
@@ -69,6 +70,8 @@ namespace Jirabox.Services
                 var response = await httpManager.GetAsync(requestUrl, true, username, password);
                 response.EnsureSuccessStatusCode();
                 var responseStr = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrEmpty(responseStr)) return new ObservableCollection<Project>();
+
                 projects = JsonConvert.DeserializeObject<ObservableCollection<Project>>(responseStr);
 
                 //Download all project images if they do not exist
@@ -156,16 +159,17 @@ namespace Jirabox.Services
                 var comments = issue.Fields.Comment.Comments;
 
                 //Download assignee and reporter images if necessary
-                if (assignee != null)
+                if (assignee != null && assignee.AvatarUrls != null)
                     await DownloadImage(assignee.AvatarUrls.Size48, assignee.UserName);
 
-                if (reporter != null)
+                if (reporter != null && reporter.AvatarUrls != null)
                     await DownloadImage(reporter.AvatarUrls.Size48, reporter.UserName);
 
                 //Download comment author images if necessary
                 foreach (var comment in comments)
                 {
-                    await DownloadImage(comment.Author.AvatarUrls.Size48, comment.Author.UserName);
+                    if (comment.Author != null && comment.Author.AvatarUrls != null)
+                        await DownloadImage(comment.Author.AvatarUrls.Size48, comment.Author.UserName);
                 }
             }
             catch (Exception exception)
@@ -242,18 +246,21 @@ namespace Jirabox.Services
                     Value = "JiraService.Search"
                 });              
 
-                var result = await httpManager.PostAsync(url, data, true, App.UserName, App.Password, tokenSource);
-                if (result == null) return null;
+                var result = await httpManager.PostAsync(url, data, true, App.UserName, App.Password, tokenSource);               
                 result.EnsureSuccessStatusCode();
+
                 var responseString = await result.Content.ReadAsStringAsync();
+                if (string.IsNullOrEmpty(responseString)) return new ObservableCollection<Issue>();
+
                 extras.Add(new CrashExtraData
                 {
                     Key = "Response String",
                     Value = responseString
                 });
+
                 var response = JsonConvert.DeserializeObject<SearchResponse>(responseString);
                 return new ObservableCollection<Issue>(response.Issues);
-            }
+            }            
             catch (Exception exception)
             {
                 BugSenseHandler.Instance.LogException(exception, extras);
@@ -282,7 +289,7 @@ namespace Jirabox.Services
 
         public async Task<ObservableCollection<Issue>> GetIssues(string jql, List<string> fields = null, int startAt = 0, int maxResult = 50)
         {
-            fields = fields ?? new List<string> { "summary", "status", "assignee", "reporter", "description", "issuetype", "priority", "comment" };
+            fields = fields ?? new List<string> { "summary", "status", "assignee", "reporter", "description", "issuetype", "priority", "comment","attachment" };
             var requestUrl = string.Format("{0}{1}", App.BaseUrl, JiraRequestType.Search.ToString().ToLower());
 
             var request = new SearchRequest();
@@ -723,6 +730,40 @@ namespace Jirabox.Services
             }
 
             if (response.StatusCode == System.Net.HttpStatusCode.Created)
+                return true;
+            return false;
+        }
+
+        public async Task<bool> DownloadAttachment(string fileUrl, string fileName)
+        {
+            HttpResponseMessage response = null;
+                   
+            try
+            {
+                response = await httpManager.DownloadAttachment(fileUrl, true, App.UserName, App.Password);
+                response.EnsureSuccessStatusCode();
+
+                var data = await response.Content.ReadAsByteArrayAsync();
+                await StorageHelper.WriteDataToIsolatedStorageFile(fileName, data);
+                
+                var local = Windows.ApplicationModel.Package.Current.InstalledLocation;
+                var dataFolder = await local.GetFolderAsync("Attachments");
+                var storageFile = await dataFolder.GetFileAsync(fileName);
+                await Launcher.LaunchFileAsync(storageFile);
+            }
+            catch (Exception exception)
+            {
+                var extras = BugSenseHandler.Instance.CrashExtraData;
+                extras.Add(new CrashExtraData
+                {
+                    Key = "Method",
+                    Value = "JiraService.DownloadAttachment"
+                });
+
+                BugSenseHandler.Instance.LogException(exception, extras);
+            }
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 return true;
             return false;
         }

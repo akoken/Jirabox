@@ -41,7 +41,7 @@ namespace Jirabox.ViewModel
         private void Feedback()
         {
             var webBrowserTask = new WebBrowserTask();
-            webBrowserTask.Uri = new Uri("http://jirabox.uservoice.com");
+            webBrowserTask.Uri = new Uri(AppResources.UserVoiceUrl);
             webBrowserTask.Show(); 
         }
         private void SendEmail()
@@ -54,7 +54,7 @@ namespace Jirabox.ViewModel
         {
             var shareLinkTask = new ShareLinkTask();
             shareLinkTask.Title = AppResources.ApplicationTitle;
-            shareLinkTask.LinkUri = new Uri("http://www.windowsphone.com/s?appid=d1413cdb-ea8f-4fba-b3b5-0d776f69b8bb", UriKind.Absolute);
+            shareLinkTask.LinkUri = new Uri(AppResources.ApplicationStoreUrl, UriKind.Absolute);
             shareLinkTask.Message = AppResources.ApplicationDescription;
             shareLinkTask.Show();
         }

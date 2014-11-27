@@ -22,26 +22,27 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
-    shell:SystemTray.IsVisible="False">
+    shell:SystemTray.IsVisible="True"
+    shell:SystemTray.ForegroundColor="Black"
+    shell:SystemTray.Opacity="0">
 
-    
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator IsIndeterminate="True"
+                                 IsVisible="{Binding IsDataLoaded, Converter={StaticResource InvertBooleanPropertyConverter}}"
+                                 Text="{Binding IsLoadingText}" />
+    </shell:SystemTray.ProgressIndicator>
+
+
     <Grid x:Name="LayoutRoot" Background="#FFECECEC">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="10" />
+        <Grid.RowDefinitions>            
             <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <ProgressBar x:Name="progressBar"
-                     IsIndeterminate="True"
-                     HorizontalAlignment="Stretch"
-                     VerticalAlignment="Top"
-                     Visibility="{Binding IsDataLoaded, Converter={StaticResource IsDataLoadedToVisibilityConverter}}"
-                     Margin="0,4,0,0" />
+        </Grid.RowDefinitions>     
         <phone:Pivot Foreground="Black"
-                     Grid.Row="1">
+                     Grid.Row="0">
             <phone:Pivot.TitleTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal"
-                                Margin="-10,-15,0,0">
+                                Margin="-10,-5,0,0">
                         <Image Source="/Jirabox;component/Assets/logo.png"
                                Width="80"
                                Height="80" />
@@ -186,6 +187,29 @@
                                 </StackPanel>
                             </DataTemplate>
                         </phone:LongListSelector.ItemTemplate>                       
+                    </phone:LongListSelector>
+                </ScrollViewer>
+            </phone:PivotItem>
+            <phone:PivotItem Header="Attachments">
+                <ScrollViewer>
+                    <phone:LongListSelector Name="AttachmentList"
+                                            ItemsSource="{Binding Issue.Fields.Attachments}"
+                                            toolkit:TiltEffect.IsTiltEnabled="True">
+                        <phone:LongListSelector.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="12,0,0,0">
+                                    <Image Source="/Jirabox;component/Assets/attachment.png" Width="75" Height="75" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding FileName}" FontSize="24" Foreground="Black" Margin="-5,0,0,0" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </phone:LongListSelector.ItemTemplate>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Tap">
+                                <command:EventToCommand PassEventArgsToCommand="False"
+                                                        CommandParameter="{Binding Path=SelectedItem, ElementName=AttachmentList}"
+                                                        Command="{Binding DownloadAttachmentCommand}" />
+                            </i:EventTrigger>                           
+                        </i:Interaction.Triggers>
                     </phone:LongListSelector>
                 </ScrollViewer>
             </phone:PivotItem>

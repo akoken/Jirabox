@@ -27,5 +27,9 @@ namespace Jirabox.Model
 
             return false;
         }
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
+        }
     }
 }

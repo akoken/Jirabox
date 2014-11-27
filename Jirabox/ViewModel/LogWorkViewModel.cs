@@ -14,7 +14,9 @@ namespace Jirabox.ViewModel
         private readonly INavigationService navigationService;
         private readonly IJiraService jiraService;
         private readonly IDialogService dialogService;
+
         private CancellationTokenSource cancellationTokenSource = null;
+        private bool isTaskbarVisible = true;
 
         public RelayCommand LogWorkCommand { get; private set; }
 
@@ -27,7 +29,20 @@ namespace Jirabox.ViewModel
                 if (isDataLoaded != value)
                 {
                     isDataLoaded = value;
-                    RaisePropertyChanged(() => IsDataLoaded);
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public bool IsTaskbarVisible
+        {
+            get { return isTaskbarVisible; }
+            set
+            {
+                if (isTaskbarVisible != value)
+                {
+                    isTaskbarVisible = value;
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -41,7 +56,7 @@ namespace Jirabox.ViewModel
                 if (startDate != value)
                 {
                     startDate = value;
-                    RaisePropertyChanged(() => StartDate);
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -55,7 +70,7 @@ namespace Jirabox.ViewModel
                 if (endDate != value)
                 {
                     endDate = value;
-                    RaisePropertyChanged(() => EndDate);
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -69,7 +84,7 @@ namespace Jirabox.ViewModel
                 if (hour != value)
                 {
                     hour = value;
-                    RaisePropertyChanged(() => Hour);
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -83,7 +98,7 @@ namespace Jirabox.ViewModel
                 if (minute != value)
                 {
                     minute = value;
-                    RaisePropertyChanged(() => Minute);
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -97,7 +112,7 @@ namespace Jirabox.ViewModel
                 if (comment != value)
                 {
                     comment = value;
-                    RaisePropertyChanged(() => Comment);
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -111,7 +126,7 @@ namespace Jirabox.ViewModel
                 if (isPeriod != value)
                 {
                     isPeriod = value;
-                    RaisePropertyChanged(() => IsPeriod);
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -144,7 +159,9 @@ namespace Jirabox.ViewModel
             OperationResult validationResult = ValidateInputs(issueKey);
             if (!validationResult.IsValid)
             {
+                IsTaskbarVisible = false;
                 dialogService.ShowDialog(validationResult.ErrorMessage, AppResources.Error);
+                IsTaskbarVisible = true;
                 return;
             }
 
@@ -160,7 +177,9 @@ namespace Jirabox.ViewModel
 
                     if (!isLogged)
                     {
+                        IsTaskbarVisible = false;
                         dialogService.ShowDialog(AppResources.LogWorkError, AppResources.Error);
+                        IsTaskbarVisible = true;
                         return;
                     }
                     StartDate = StartDate.AddDays(1);
@@ -175,11 +194,15 @@ namespace Jirabox.ViewModel
                 IsDataLoaded = true;
                 if (!isLogged)
                 {
+                    IsTaskbarVisible = false;
                     dialogService.ShowDialog(AppResources.LogWorkError, AppResources.Error);
+                    IsTaskbarVisible = true;
                     return;
                 }
-            }            
+            }
+            IsTaskbarVisible = false;
             dialogService.ShowDialog(AppResources.LogWorkSuccess, AppResources.Done);
+            IsTaskbarVisible = true;
             navigationService.GoBack();
         }
 
@@ -190,19 +213,15 @@ namespace Jirabox.ViewModel
         }
 
         private string FormatDate(DateTime dateTime)
-        {
-            var day = dateTime.Day.ToString();
-            var month = dateTime.Month.ToString();
+        {          
+            var timeOffset = new DateTimeOffset(DateTime.Now).Offset;
+            var offsetStr = timeOffset.ToString();
+            string formattedTimeOffset = offsetStr.Remove(offsetStr.LastIndexOf(":"), 3);
 
-            if(day.Length < 2)
-            {
-                day = String.Format("0{0}", day);
-            }
-            if(month.Length < 2)
-            {
-                month = String.Format("0{0}", month);
-            }
-            return String.Format("{0}-{1}-{2}T09:00:00.932+0530", dateTime.Year, month, day);
+            if (timeOffset.Hours > -1)
+                formattedTimeOffset = "+" + formattedTimeOffset;
+                        
+            return String.Format("{0}-{1}-{2}T00:00:00.000{3}", dateTime.Year, dateTime.Month.ToString("00"), dateTime.Day.ToString("00"), formattedTimeOffset.Replace(":",""));
         }      
 
         private OperationResult ValidateInputs(string issueKey)

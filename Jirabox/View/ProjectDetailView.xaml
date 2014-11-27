@@ -17,25 +17,26 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
-    shell:SystemTray.IsVisible="False">
-  
-    
+    shell:SystemTray.IsVisible="True"
+    shell:SystemTray.ForegroundColor="Black"
+    shell:SystemTray.Opacity="0">
+
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator IsIndeterminate="True"
+                                 IsVisible="{Binding IsDataLoaded, Converter={StaticResource InvertBooleanPropertyConverter}}"
+                                 Text="Getting project details..." />
+    </shell:SystemTray.ProgressIndicator>
+
+
     <Grid x:Name="LayoutRoot" Background="#FFECECEC">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="10" />
+        <Grid.RowDefinitions>            
             <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <ProgressBar x:Name="progressBar"
-                     IsIndeterminate="True"
-                     HorizontalAlignment="Stretch"
-                     VerticalAlignment="Top"
-                     Visibility="{Binding IsDataLoaded, Converter={StaticResource IsDataLoadedToVisibilityConverter}}"
-                     Margin="0,4,0,0" />
+        </Grid.RowDefinitions>      
         <phone:Pivot Grid.Row="1">
             <phone:Pivot.TitleTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal"
-                                Margin="-10,-15,0,0">
+                                Margin="-10,-5,0,0">
                         <Image Source="/Jirabox;component/Assets/logo.png"
                                Width="80"
                                Height="80" />
@@ -50,7 +51,7 @@
                 <phone:PivotItem.Header>
                     <TextBlock Text="Project" Foreground="Black"/>
                 </phone:PivotItem.Header>
-                <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,10">
+                <Grid x:Name="ContentPanel" Grid.Row="0" Margin="12,0,12,10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="75"/>
                         <RowDefinition Height="55"/>

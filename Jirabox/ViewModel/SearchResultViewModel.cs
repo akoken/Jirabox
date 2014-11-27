@@ -9,8 +9,8 @@ namespace Jirabox.ViewModel
 {
     public class SearchResultViewModel : ViewModelBase
     {
-        private IJiraService jiraService;
-        private INavigationService navigationService;
+        private readonly IJiraService jiraService;
+        private readonly INavigationService navigationService;
         private bool isDataLoaded;
         private CancellationTokenSource cancellationTokenSource = null;
 
@@ -60,7 +60,7 @@ namespace Jirabox.ViewModel
                 cancellationTokenSource = new CancellationTokenSource();
                 var searchText = searchParameter.IsFavourite ? searchParameter.JQL : searchParameter.SearchText;
                 Issues = await jiraService.Search(searchText, searchParameter.IsAssignedToMe, searchParameter.IsReportedByMe, searchParameter.IsFavourite, cancellationTokenSource);
-            }
+            }           
             IsDataLoaded = true;
         }
 

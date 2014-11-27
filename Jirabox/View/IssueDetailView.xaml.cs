@@ -2,6 +2,7 @@
 using Jirabox.Services;
 using Jirabox.ViewModel;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 using System.Windows.Navigation;
 
 namespace Jirabox.View
@@ -21,9 +22,10 @@ namespace Jirabox.View
                 return;
 
             var dialogService = new DialogService();
+            SystemTray.IsVisible = false;
             dialogService.ShowCommentDialog(selectedComment);
-
             CommentList.SelectedItem = null;
+            SystemTray.IsVisible = true;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

@@ -8,6 +8,8 @@
     xmlns:controls="clr-namespace:CS.Windows.Controls;assembly=CS.Windows.Controls"
     xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:behaviors="clr-namespace:Jirabox.Common.Behaviors"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     DataContext="{Binding Source={StaticResource Locator}, Path=LoginViewModel}"
     xmlns:converter="clr-namespace:Jirabox.Converters"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -15,16 +17,23 @@
     SupportedOrientations="Portrait"
     Orientation="Portrait"
     mc:Ignorable="d"
-    shell:SystemTray.IsVisible="False">
+    shell:SystemTray.IsVisible="{Binding IsTaskbarVisible}"
+    shell:SystemTray.ForegroundColor="Black"
+    shell:SystemTray.Opacity="0">
+
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator IsIndeterminate="True"
+                                 IsVisible="{Binding IsDataLoaded, Converter={StaticResource InvertBooleanPropertyConverter}}"
+                                 Text="Signing in..." />
+    </shell:SystemTray.ProgressIndicator>
 
     <Grid x:Name="LayoutRoot" Background="#FFECECEC">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="10"/>
+        <Grid.RowDefinitions>        
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ProgressBar x:Name="progressBar" IsIndeterminate="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" Visibility="{Binding IsDataLoaded, Converter={StaticResource IsDataLoadedToVisibilityConverter}}" Margin="0,4,0,0"/>
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="0"
+                    Margin="0,10,0,0">
             <StackPanel Orientation="Horizontal" >
                 <Image Source="/Jirabox;component/Assets/logo.png" Width="80" Height="80" Margin="10,0,0,0"/>
                 <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}"
@@ -35,7 +44,7 @@
             <TextBlock Text="Login" Style="{StaticResource PhoneTextTitle2Style}" Foreground="{StaticResource BlackForeground}"/>
         </StackPanel>
 
-        <Grid x:Name="ContentPanel" Grid.Row="2" Margin="15,25,15,94">
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="15,25,15,94">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -45,21 +54,40 @@
             </Grid.RowDefinitions>
             <StackPanel>
                 <TextBlock Text="server url" Margin="10,0,0,0"/>
-                <controls:WatermarkTextBox Text="{Binding ServerUrl, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="TextBox_TextChanged" HorizontalAlignment="Left" Width="446" Height="72"  WatermarkText="https://dev.atlassian.com/jira" VerticalContentAlignment="Center"/>
+                <controls:WatermarkTextBox Text="{Binding ServerUrl, Mode=TwoWay}"                                          
+                                           HorizontalAlignment="Left"
+                                           Width="446"
+                                           Height="72"
+                                           WatermarkText="https://dev.atlassian.com/jira"
+                                           VerticalContentAlignment="Center">
+                    <i:Interaction.Behaviors>
+                        <behaviors:TextBoxUpdatePropertyChanged />
+                    </i:Interaction.Behaviors>
+                </controls:WatermarkTextBox>
             </StackPanel>
             <StackPanel Grid.Row="1">
                 <TextBlock Text="username" Margin="10,0,0,0"/>
-                <TextBox Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="TextBox_TextChanged" Height="72" HorizontalAlignment="Left" Width="446"/>
+                <TextBox Text="{Binding UserName, Mode=TwoWay}"                       
+                         Height="72"
+                         HorizontalAlignment="Left"
+                         Width="446">
+                    <i:Interaction.Behaviors>
+                        <behaviors:TextBoxUpdatePropertyChanged />
+                    </i:Interaction.Behaviors>
+                </TextBox>
             </StackPanel>
             <StackPanel Grid.Row="2">
                 <TextBlock Text="password"
                            VerticalAlignment="Center"
                            Margin="10,0,0,0" />
-                <PasswordBox Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
-                             PasswordChanged="PasswordBox_PasswordChanged"
+                <PasswordBox Password="{Binding Password, Mode=TwoWay}"
                              Width="446"
                              Height="72"
-                             HorizontalAlignment="Left" />
+                             HorizontalAlignment="Left">
+                    <i:Interaction.Behaviors>
+                        <behaviors:PasswordBoxUpdatePropertyChanged />
+                    </i:Interaction.Behaviors>
+                </PasswordBox>
             </StackPanel>
         </Grid>
     </Grid>
@@ -90,7 +118,7 @@
                                     BackgroundColor="#1199CC"
                                     Mode="Default">
             <bar:BindableApplicationBarButton Text="login"                                             
-                                              Command="{Binding LoginCommand, Mode=TwoWay}"
+                                              Command="{Binding LoginCommand}"
                                               IconUri="/Assets/login.png" />
             <bar:BindableApplicationBarButton Text="about"
                                               Command="{Binding AboutCommand}"

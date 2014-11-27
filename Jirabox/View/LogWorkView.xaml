@@ -8,27 +8,31 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
+    xmlns:behaviors="clr-namespace:Jirabox.Common.Behaviors"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     DataContext="{Binding Source={StaticResource Locator}, Path=LogWorkViewModel}"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"    
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
-    shell:SystemTray.IsVisible="False">
-    
+    shell:SystemTray.IsVisible="{Binding IsTaskbarVisible}"
+    shell:SystemTray.ForegroundColor="Black"
+    shell:SystemTray.Opacity="0">
+
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator IsIndeterminate="True"
+                                 IsVisible="{Binding IsDataLoaded, Converter={StaticResource InvertBooleanPropertyConverter}}"
+                                 Text="Logging work..." />
+    </shell:SystemTray.ProgressIndicator>
+
     <Grid x:Name="LayoutRoot"
           Background="#FFECECEC">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="10" />
+        <Grid.RowDefinitions>            
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ProgressBar x:Name="progressBar"
-                     IsIndeterminate="True"
-                     HorizontalAlignment="Stretch"
-                     VerticalAlignment="Top"
-                     Visibility="{Binding IsDataLoaded, Converter={StaticResource IsDataLoadedToVisibilityConverter}}"
-                     Margin="0,4,0,0" />
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="0"
+                    Margin="0,10,0,0">
             <StackPanel Orientation="Horizontal">
                 <Image Source="/Jirabox;component/Assets/logo.png"
                        Width="80"
@@ -44,7 +48,7 @@
                        Foreground="{StaticResource BlackForeground}" />
         </StackPanel>
 
-        <ScrollViewer Grid.Row="2">
+        <ScrollViewer Grid.Row="1">
         <StackPanel x:Name="ContentPanel"                    
                     Margin="12,15,15,50">
             <CheckBox Name="PeriodCheckBox"
@@ -73,22 +77,28 @@
                        FontSize="27"
                        Foreground="Black" />
             <StackPanel Orientation="Horizontal">
-                <TextBox Text="{Binding Hour, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
-                         TextChanged="TextBox_TextChanged"
-                         InputScope="Number"
-                         Width="65"
-                         TextAlignment="Center" />
+                    <TextBox Text="{Binding Hour, Mode=TwoWay}"
+                             InputScope="Number"
+                             Width="65"
+                             TextAlignment="Center">
+                        <i:Interaction.Behaviors>
+                            <behaviors:TextBoxUpdatePropertyChanged />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
                 <TextBlock Text="h."
                            VerticalAlignment="Center"
                            Style="{StaticResource PhoneTextExtraLargeStyle}"
                            Margin="0"
                            FontSize="27"
                            Foreground="Black" />
-                <TextBox Width="65"
-                         TextAlignment="Center"
-                         TextChanged="TextBox_TextChanged"
-                         InputScope="Number"
-                         Text="{Binding Minute, Mode=TwoWay, UpdateSourceTrigger=Explicit}" />
+                    <TextBox Width="65"
+                             TextAlignment="Center"
+                             InputScope="Number"
+                             Text="{Binding Minute, Mode=TwoWay}">
+                        <i:Interaction.Behaviors>
+                            <behaviors:TextBoxUpdatePropertyChanged />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
                 <TextBlock Text="m."
                            VerticalAlignment="Center"
                            Style="{StaticResource PhoneTextExtraLargeStyle}"
@@ -101,10 +111,13 @@
                        Margin="15,0,0,0"
                        FontSize="27"
                        Foreground="Black" />
-            <TextBox TextWrapping="Wrap"
-                     MinHeight="200"
-                     Text="{Binding Comment,Mode=TwoWay, UpdateSourceTrigger=Explicit}"
-                     TextChanged="TextBox_TextChanged" />
+                <TextBox TextWrapping="Wrap"
+                         MinHeight="200"
+                         Text="{Binding Comment,Mode=TwoWay}">
+                    <i:Interaction.Behaviors>
+                        <behaviors:TextBoxUpdatePropertyChanged />
+                    </i:Interaction.Behaviors>
+                </TextBox>
         </StackPanel>
         </ScrollViewer>
     </Grid>
@@ -133,7 +146,7 @@
                                     BackgroundColor="#1199CC"
                                     Mode="Default">
             <bar:BindableApplicationBarButton Text="send"
-                                              Command="{Binding LogWorkCommand, Mode=TwoWay}"
+                                              Command="{Binding LogWorkCommand}"
                                               IconUri="/Assets/timesheet.png" />            
         </bar:BindableApplicationBar>
     </bar:Bindable.ApplicationBar>

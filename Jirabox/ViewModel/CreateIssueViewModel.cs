@@ -9,16 +9,20 @@ namespace Jirabox.ViewModel
 {
     public class CreateIssueViewModel : ViewModelBase
     {
-        private IJiraService jiraService;
-        private IDialogService dialogService;
-        private INavigationService navigationService;
+        private readonly IJiraService jiraService;
+        private readonly IDialogService dialogService;
+        private readonly INavigationService navigationService;
+
         private bool isDataLoaded;
+        private string loadingText;
         private string summary;
         private string description;        
+        private int selectedPriorityIndex = -1;
+        private int selectedIssueTypeIndex = -1;
+        private bool isTaskbarVisible = true;
+
         private ObservableCollection<IssueType> issueTypes;
         private ObservableCollection<Priority> priorityList;
-        private int selectedIssueTypeIndex = -1;
-        private int selectedPriorityIndex = -1;
         private Project project;
 
         public RelayCommand CreateIssueCommand { get; private set; }
@@ -35,6 +39,33 @@ namespace Jirabox.ViewModel
                 }
             }
         }
+
+        public bool IsTaskbarVisible
+        {
+            get { return isTaskbarVisible; }
+            set
+            {
+                if (isTaskbarVisible != value)
+                {
+                    isTaskbarVisible = value;
+                    RaisePropertyChanged(() => IsTaskbarVisible);
+                }
+            }
+        }
+
+        public string LoadingText
+        {
+            get { return loadingText; }
+            set
+            {
+                if (loadingText != value)
+                {
+                    loadingText = value;
+                    RaisePropertyChanged(() => LoadingText);
+                }
+            }
+        }
+
         public string Summary
         {
             get { return summary; }
@@ -47,6 +78,7 @@ namespace Jirabox.ViewModel
                 }
             }
         }
+
         public string Description
         {
             get { return description; }
@@ -156,13 +188,16 @@ namespace Jirabox.ViewModel
             Project = navigationService.GetNavigationParameter() as Project;
             if (Project == null)
             {
+                IsTaskbarVisible = false;
                 dialogService.ShowDialog(AppResources.CreateIssueNullProjectMessage, AppResources.Error);
+                IsTaskbarVisible = true;
                 IsDataLoaded = true;
                 return;
             }
             CreateIssueCommand.RaiseCanExecuteChanged();
             IssueTypes = await jiraService.GetIssueTypesOfProject(Project.Key);
             PriorityList = await jiraService.GetPriorities();
+            LoadingText = AppResources.LoadingMessage;
             IsDataLoaded = true;
         }
 
@@ -175,7 +210,7 @@ namespace Jirabox.ViewModel
 
         private async void CreateIssue()
         {
-            if (!IsParametersValid()) return;           
+            if (!ValidateParameters()) return;           
 
             var request = new CreateIssueRequest();
             request.Fields.CreateIssueProject.Key = Project.Key;
@@ -183,16 +218,21 @@ namespace Jirabox.ViewModel
             request.Fields.IssueType.Name = IssueTypes[SelectedIssueTypeIndex].Name;
             request.Fields.Priority.Id = PriorityList[SelectedPriorityIndex].Id;
             request.Fields.Summary = Summary;
+            LoadingText = AppResources.CreatingIssueMessage;
 
             IsDataLoaded = false;
             var createdIssue = await jiraService.CreateIssue(request);
             if (createdIssue == null)
             {
+                IsTaskbarVisible = false;
                 dialogService.ShowDialog(AppResources.CreateIssueErrorMessage, AppResources.Error);
+                IsTaskbarVisible = true;
             }
             else
             {
+                IsTaskbarVisible = false;
                 dialogService.ShowDialog(string.Format(AppResources.IssueCreatedMessage, createdIssue.Key), AppResources.Done);
+                IsTaskbarVisible = true;
                 MessengerInstance.Send<bool>(true, AppResources.CreateIssueToken);
                 navigationService.GoBack();
             }
@@ -206,11 +246,13 @@ namespace Jirabox.ViewModel
             navigationService.GoBack();
         }
 
-        private bool IsParametersValid()
+        private bool ValidateParameters()
         {
             if (string.IsNullOrEmpty(Summary))
             {
+                IsTaskbarVisible = false;
                 dialogService.ShowDialog(AppResources.CreateIssueSummaryValidationErrorMessage, AppResources.Warning);
+                IsTaskbarVisible = true;
                 return false;
             }
             return true;

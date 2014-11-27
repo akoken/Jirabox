@@ -75,10 +75,12 @@ namespace Jirabox.Common
             }
         }
 
-        public static void ClearCache()
+        public static void ClearImageCache()
         {
             using (var local = IsolatedStorageFile.GetUserStoreForApplication())
             {
+                if (!local.DirectoryExists("Images")) return;
+
                 var pattern = @"Images\*";
                 var files = local.GetFileNames(pattern);
 
@@ -97,7 +99,7 @@ namespace Jirabox.Common
                         extras.Add(new CrashExtraData
                         {
                             Key = "Method",
-                            Value = "StorageHelper.ClearCache"
+                            Value = "StorageHelper.ClearImageCache"
                         });
 
                         BugSenseHandler.Instance.LogException(storageException, extras);
@@ -115,6 +117,20 @@ namespace Jirabox.Common
                     isf.DeleteFile(path);
                 }
             }
+        }
+
+        public static async Task ClearAttachmentCache()
+        {
+            var local = Windows.ApplicationModel.Package.Current.InstalledLocation;
+            var folders = await local.GetFoldersAsync();
+            
+            foreach (StorageFolder folder in folders)
+            {
+                if(folder.Name == "Attachments")
+                {
+                    await folder.DeleteAsync();
+                }
+            }            
         }
 
         public static BitmapImage GetDisplayPicture(string fileName)
@@ -186,6 +202,20 @@ namespace Jirabox.Common
             {
                 if (isf.FileExists(filePath))
                     isf.DeleteFile(filePath);
+            }
+        }
+
+        public static async Task WriteDataToIsolatedStorageFile(string fileName, byte[] data)
+        {
+            StorageFolder local = Windows.ApplicationModel.Package.Current.InstalledLocation;
+
+            var dataFolder = await local.CreateFolderAsync("Attachments", CreationCollisionOption.OpenIfExists);
+
+            var file = await dataFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+
+            using (var s = await file.OpenStreamForWriteAsync())
+            {
+                s.Write(data, 0, data.Length);
             }
         }
     }

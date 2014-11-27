@@ -6,9 +6,10 @@ namespace Jirabox.ViewModel
 {
     public class UserProfileViewModel : ViewModelBase
     {
-        private IDialogService dialogService;
-        private IJiraService jiraService;
+        private readonly IDialogService dialogService;
+        private readonly IJiraService jiraService;
         private bool isDataLoaded;
+        private bool isTaskbarVisible = true;
         private User user;
 
         public User User
@@ -36,6 +37,19 @@ namespace Jirabox.ViewModel
             }
         }
 
+        public bool IsTaskbarVisible
+        {
+            get { return isTaskbarVisible; }
+            set
+            {
+                if (isTaskbarVisible != value)
+                {
+                    isTaskbarVisible = value;
+                    RaisePropertyChanged(() => IsTaskbarVisible);
+                }
+            }
+        }
+
         public UserProfileViewModel(IDialogService dialogService, IJiraService jiraService)
         {
             this.dialogService = dialogService;
@@ -44,7 +58,7 @@ namespace Jirabox.ViewModel
 
         public async void Initialize()
         {
-            IsDataLoaded = false;
+            IsDataLoaded = false;            
             User = await jiraService.GetUserProfileAsync(App.UserName);
             IsDataLoaded = true;
         }

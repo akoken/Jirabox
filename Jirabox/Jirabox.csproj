@@ -100,10 +100,13 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\AlphaKeyGroup.cs" />
+    <Compile Include="Common\Behaviors\PasswordBoxUpdatePropertyChanged.cs" />
     <Compile Include="Common\Behaviors\TextboxEnterBehavior.cs" />
+    <Compile Include="Common\DataHelper.cs" />
     <Compile Include="Common\Enumerations\JiraActionType.cs" />
     <Compile Include="Common\Enumerations\JiraRequestType.cs" />
     <Compile Include="Common\Extensions\ImageExtensions.cs" />
+    <Compile Include="Common\LiveTileManager.cs" />
     <Compile Include="Common\LiveTiles\StandartTile.xaml.cs">
       <DependentUpon>StandartTile.xaml</DependentUpon>
     </Compile>
@@ -118,10 +121,13 @@
     <Compile Include="Converters\DateTimeConverter.cs" />
     <Compile Include="Converters\DoubleToIntConverter.cs" />
     <Compile Include="Converters\HistoryToCreateDateConverter.cs" />
+    <Compile Include="Converters\InvertBooleanPropertyConverter.cs" />
+    <Compile Include="Common\Behaviors\TextBoxUpdatePropertyChanged.cs" />
     <Compile Include="Converters\UserStatusToString.cs" />
     <Compile Include="Core\Contracts\ICacheService.cs" />
     <Compile Include="Core\OperationResult.cs" />
     <Compile Include="Model\AddCommentRequest.cs" />
+    <Compile Include="Model\Attachment.cs" />
     <Compile Include="Model\ChangeLog.cs" />
     <Compile Include="Model\Comment.cs" />
     <Compile Include="Model\Comments.cs" />
@@ -309,7 +315,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
@@ -323,6 +331,7 @@
     </Content>
     <Resource Include="Assets\logo.png" />
     <Content Include="Assets\assigned.png" />
+    <Resource Include="Assets\attachment.png" />
     <Content Include="Assets\cancel.png" />
     <Content Include="Assets\check.png" />
     <Content Include="Assets\comment.png" />
@@ -331,6 +340,7 @@
     <Content Include="Assets\pin.png" />
     <Content Include="Assets\refresh.png" />
     <Content Include="Assets\reported.png" />
+    <Content Include="Assets\search.dark.png" />
     <Content Include="Assets\search.png" />
     <Content Include="Assets\send.png" />
     <Content Include="Assets\setting.png" />
@@ -352,8 +362,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\AppResources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AppResources1.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -383,7 +393,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

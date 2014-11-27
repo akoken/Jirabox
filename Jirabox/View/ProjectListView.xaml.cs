@@ -31,6 +31,6 @@ namespace Jirabox.Views
             {
                 vm.NavigateToLoginView();
             }
-        }
+        }     
     }
 }

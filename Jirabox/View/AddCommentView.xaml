@@ -8,6 +8,8 @@
         xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"        
         xmlns:converter="clr-namespace:Jirabox.Converters"      
         xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
+        xmlns:behaviors="clr-namespace:Jirabox.Common.Behaviors"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         DataContext="{Binding Source={StaticResource Locator},Path=AddCommentViewModel}"
         FontFamily="{StaticResource PhoneFontFamilyNormal}"
         FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -15,15 +17,22 @@
         SupportedOrientations="Portrait"
         Orientation="Portrait"
         mc:Ignorable="d"
-        shell:SystemTray.IsVisible="False">
+        shell:SystemTray.IsVisible="{Binding IsTaskbarVisible}"
+        shell:SystemTray.ForegroundColor="Black"
+        shell:SystemTray.Opacity="0">
+
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator IsIndeterminate="True"
+                                 IsVisible="{Binding IsDataLoaded, Converter={StaticResource InvertBooleanPropertyConverter}}"
+                                 Text="Loading..." />
+    </shell:SystemTray.ProgressIndicator>
 
     <Grid x:Name="LayoutRoot" Background="#FFECECEC">   
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="6*"/>
             <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <ProgressBar x:Name="progressBar" IsIndeterminate="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" Visibility="{Binding IsDataLoaded, Converter={StaticResource IsDataLoadedToVisibilityConverter}}" Margin="0,4,0,0"/>        
+        </Grid.RowDefinitions>       
             <StackPanel Orientation="Horizontal" Margin="10,0,0,0" Grid.Row="0">
                 <Border Height="48" Width="48" CornerRadius="5" Margin="3">
                     <Border.Background>
@@ -38,12 +47,15 @@
                        FontSize="30"
                        Margin="12,0,0,0" />
             <ScrollViewer>
-                <TextBox Text="{Binding CommentText, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
-                         TextWrapping="Wrap"
-                         TextChanged="TextBox_TextChanged"
+                <TextBox Text="{Binding CommentText, Mode=TwoWay}"
+                         TextWrapping="Wrap"                         
                          Height="Auto"
                          MinHeight="150"
-                         AcceptsReturn="True" />
+                         AcceptsReturn="True">
+                    <i:Interaction.Behaviors>
+                        <behaviors:TextBoxUpdatePropertyChanged />
+                    </i:Interaction.Behaviors>
+                </TextBox>
             </ScrollViewer>
         </StackPanel>
     </Grid>

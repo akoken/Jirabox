@@ -21,7 +21,15 @@
        SupportedOrientations="Portrait"
        Orientation="Portrait"
        mc:Ignorable="d"
-       shell:SystemTray.IsVisible="False">
+       shell:SystemTray.IsVisible="{Binding IsTaskbarVisible}"
+       shell:SystemTray.ForegroundColor="Black"
+       shell:SystemTray.Opacity="0">
+
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator IsIndeterminate="True"
+                                 IsVisible="{Binding IsDataLoaded, Converter={StaticResource InvertBooleanPropertyConverter}}"
+                                 Text="Getting projects..." />
+    </shell:SystemTray.ProgressIndicator>
 
     <phone:PhoneApplicationPage.Resources>
         <phone:JumpListItemBackgroundConverter x:Key="BackgroundConverter" />
@@ -87,21 +95,14 @@
 
     <Grid x:Name="LayoutRoot"
           Background="#FFECECEC">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="10" />
+        <Grid.RowDefinitions>        
             <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <ProgressBar x:Name="progressBar"
-                     IsIndeterminate="True"
-                     HorizontalAlignment="Stretch"
-                     VerticalAlignment="Top"
-                     Visibility="{Binding IsDataLoaded, Converter={StaticResource IsDataLoadedToVisibilityConverter}}"
-                     Margin="0,4,0,0" />
-        <phone:Panorama Grid.Row="1">
+        </Grid.RowDefinitions>      
+        <phone:Panorama Grid.Row="0">
             <phone:Panorama.TitleTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal"
-                                Margin="0,35,0,0">
+                                Margin="0,45,0,0">
                         <Image Source="/Jirabox;component/Assets/logo.png"
                                Width="80"
                                Height="80"
@@ -251,6 +252,29 @@
                                 <behavior:TextboxEnterBehavior ExecuteCommand="{Binding SearchCommand}"
                                                                ExecuteCommandParameter="{Binding ElementName=SearchTextbox, Path=Text}" />
                             </i:Interaction.Behaviors>
+                            <i:Interaction.Triggers>
+                                <ec:DataTrigger Binding="{Binding ElementName=SearchTextbox,Path=Text.Length}"
+                                                Comparison="Equal"
+                                                Value="0">
+                                    <ec:ChangePropertyAction PropertyName="Background">
+                                        <ec:ChangePropertyAction.Value>                                            
+                                            <ImageBrush ImageSource="/Assets/search.dark.png"
+                                                        AlignmentX="Left"
+                                                        Stretch="None"
+                                                        Opacity=".75" />
+                                        </ec:ChangePropertyAction.Value>
+                                    </ec:ChangePropertyAction>
+                                </ec:DataTrigger>
+                                <ec:DataTrigger Binding="{Binding ElementName=SearchTextbox,Path=Text.Length}"
+                                                Comparison="GreaterThan"
+                                                Value="0">
+                                    <ec:ChangePropertyAction PropertyName="Background">
+                                        <ec:ChangePropertyAction.Value>
+                                            <SolidColorBrush Color="White" />
+                                        </ec:ChangePropertyAction.Value>
+                                    </ec:ChangePropertyAction>
+                                </ec:DataTrigger>
+                            </i:Interaction.Triggers>                                                     
                         </TextBox>
                     </StackPanel>
                     <StackPanel Visibility="{Binding IsFavouriteExist, Converter={StaticResource BoolToVisibilityConverter}}">
