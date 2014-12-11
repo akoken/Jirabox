@@ -1,0 +1,355 @@
+﻿<phone:PhoneApplicationPage x:Class="Jirabox.Views.ProjectListView"
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+       xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+       xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+       xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+       xmlns:control="clr-namespace:Jirabox.Common.LiveTiles"
+       xmlns:extension="clr-namespace:Jirabox.Common.Extensions"
+       xmlns:converter="clr-namespace:Jirabox.Converters"
+       xmlns:behavior="clr-namespace:Jirabox.Common.Behaviors"
+       xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
+       xmlns:command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WP8"
+       xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
+       DataContext="{Binding Source={StaticResource Locator}, Path=ProjectListViewModel}"
+       FontFamily="{StaticResource PhoneFontFamilyNormal}"
+       FontSize="{StaticResource PhoneFontSizeNormal}"
+       Foreground="{StaticResource PhoneForegroundBrush}"
+       SupportedOrientations="Portrait"
+       Orientation="Portrait"
+       mc:Ignorable="d"
+       shell:SystemTray.IsVisible="{Binding IsTaskbarVisible}"
+       shell:SystemTray.ForegroundColor="Black"
+       shell:SystemTray.Opacity="0">
+
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator IsIndeterminate="True"
+                                 IsVisible="{Binding IsDataLoaded, Converter={StaticResource InvertBooleanPropertyConverter}}"
+                                 Text="Getting projects..." />
+    </shell:SystemTray.ProgressIndicator>
+
+    <phone:PhoneApplicationPage.Resources>
+        <phone:JumpListItemBackgroundConverter x:Key="BackgroundConverter" />
+        <phone:JumpListItemForegroundConverter x:Key="ForegroundConverter" />
+
+        <Style x:Key="ProjectsJumpListStyle"
+               TargetType="phone:LongListSelector">
+            <Setter Property="GridCellSize"
+                    Value="113,113" />
+            <Setter Property="LayoutMode"
+                    Value="Grid" />
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Border Background="{Binding Converter={StaticResource BackgroundConverter}}"
+                                Width="113"
+                                Height="113"
+                                Margin="6">
+                            <TextBlock Text="{Binding Key}"
+                                       FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                                       FontSize="48"
+                                       Padding="6"
+                                       Foreground="{Binding Converter={StaticResource ForegroundConverter}}"
+                                       VerticalAlignment="Center" />
+                        </Border>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <DataTemplate x:Key="ProjectsGroupHeaderTemplate">
+            <Border Background="Transparent"
+                    Padding="5">
+                <Border Background="#1199CC"
+                        BorderBrush="#1199CC"
+                        BorderThickness="2"
+                        Width="62"
+                        Height="62"
+                        Margin="0,0,18,0"
+                        HorizontalAlignment="Left">
+                    <TextBlock Text="{Binding Key}"
+                               Foreground="{StaticResource PhoneForegroundBrush}"
+                               FontSize="48"
+                               Padding="6"
+                               FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center" />
+                </Border>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="ProjectsItemTemplate">
+            <StackPanel Margin="5,2,0,12"
+                        Orientation="Horizontal">
+                <Image Source="{Binding Key, Converter={StaticResource NameToImageConverter}}" />
+                <TextBlock Text="{Binding Name}"
+                           TextWrapping="Wrap"
+                           Style="{StaticResource PhoneTextExtraLargeStyle}"
+                           FontSize="27"
+                           Foreground="Black" />
+            </StackPanel>
+        </DataTemplate>
+    </phone:PhoneApplicationPage.Resources>
+
+    <Grid x:Name="LayoutRoot"
+          Background="#FFECECEC">
+        <Grid.RowDefinitions>        
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>      
+        <phone:Panorama Grid.Row="0">
+            <phone:Panorama.TitleTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0,45,0,0">
+                        <Image Source="/Jirabox;component/Assets/logo.png"
+                               Width="80"
+                               Height="80"
+                               Margin="10,0,0,0" />
+                        <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}"
+                                   Style="{StaticResource PhoneTextTitle1Style}"
+                                   Foreground="{StaticResource BlackForeground}"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                </DataTemplate>
+            </phone:Panorama.TitleTemplate>
+            <phone:PanoramaItem Header="Projects"
+                                Orientation="Horizontal"
+                                Foreground="Black">
+                <phone:LongListSelector x:Name="projectList"
+                                        JumpListStyle="{StaticResource ProjectsJumpListStyle}"
+                                        Background="Transparent"
+                                        GroupHeaderTemplate="{StaticResource ProjectsGroupHeaderTemplate}"
+                                        ItemTemplate="{StaticResource ProjectsItemTemplate}"
+                                        LayoutMode="List"
+                                        IsGroupingEnabled="{Binding IsGroupingEnabled}"
+                                        HideEmptyGroups="True"
+                                        ItemsSource="{Binding GroupedProjects, Mode=TwoWay}"
+                                        Margin="0,0,-22,75"
+                                        toolkit:TiltEffect.IsTiltEnabled="True">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Tap">
+                            <command:EventToCommand PassEventArgsToCommand="False"
+                                                    CommandParameter="{Binding Path=SelectedItem, ElementName=projectList}"
+                                                    Command="{Binding ProjectDetailCommand}" />
+                        </i:EventTrigger>
+                        <ec:DataTrigger Binding="{Binding IsGroupingEnabled}"
+                                        Value="False">
+                            <ec:SetDataStoreValueAction PropertyName="ItemsSource"
+                                                        Value="{Binding FlatProjects}" />
+                        </ec:DataTrigger>
+                        <ec:DataTrigger Binding="{Binding IsGroupingEnabled}"
+                                        Value="True">
+                            <ec:SetDataStoreValueAction PropertyName="ItemsSource"
+                                                        Value="{Binding GroupedProjects}" />
+                        </ec:DataTrigger>
+                    </i:Interaction.Triggers>
+                </phone:LongListSelector>
+            </phone:PanoramaItem>
+            <phone:PanoramaItem Header="Features"
+                                Orientation="Horizontal"
+                                Foreground="Black">
+                <Grid Margin="15,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <control:ImageTile Margin="0,0,10,10"
+                                       Title="Me"
+                                       DisplayPicture="{Binding DisplayPicture}"
+                                       Grid.Row="0"
+                                       Grid.Column="0"
+                                       extension:TiltEffect.IsTiltEnabled="True">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Tap">
+                                <command:EventToCommand PassEventArgsToCommand="False"
+                                                        Command="{Binding ShowUserInformationCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </control:ImageTile>
+
+                    <control:StandartTile Grid.Row="0"
+                                          Grid.Column="1"
+                                          Name="AssignedToMeTile"
+                                          Title="Assigned"
+                                          Foreground="White"
+                                          BackgroundImage="/Assets/assigned.png"
+                                          HorizontalContentAlignment="Center"
+                                          Margin="0,0,10,10"
+                                          extension:TiltEffect.IsTiltEnabled="True">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Tap">
+                                <command:EventToCommand PassEventArgsToCommand="False"
+                                                        Command="{Binding ShowAssignedIssuesCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </control:StandartTile>
+
+                    <control:StandartTile Grid.Row="0"
+                                          Grid.Column="2"
+                                          Foreground="White"
+                                          Name="ReportedByMeTile"
+                                          Title="Reported"
+                                          BackgroundImage="/Assets/reported.png"
+                                          extension:TiltEffect.IsTiltEnabled="True"
+                                          Margin="0,0,10,10">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Tap">
+                                <command:EventToCommand PassEventArgsToCommand="False"
+                                                        Command="{Binding ShowIssuesReportedByMeCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </control:StandartTile>
+
+                    <control:StandartTile Width="173"
+                                          Margin="0,0,10,10"
+                                          Title="Settings"
+                                          Grid.Row="1"
+                                          Grid.Column="0"
+                                          BackgroundImage="/Assets/setting.png"
+                                          extension:TiltEffect.IsTiltEnabled="True">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Tap">
+                                <command:EventToCommand PassEventArgsToCommand="False"
+                                                        Command="{Binding ShowSettingsCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </control:StandartTile>
+
+                    <control:StandartTile Grid.Row="1"
+                                          Grid.Column="1"
+                                          Foreground="White"
+                                          Name="AboutTile"
+                                          Title="About"
+                                          BackgroundImage="/Assets/about.png"
+                                          extension:TiltEffect.IsTiltEnabled="True"
+                                          Margin="0,0,10,10">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Tap">
+                                <command:EventToCommand PassEventArgsToCommand="False"
+                                                        Command="{Binding ShowAboutViewCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </control:StandartTile>
+                </Grid>
+            </phone:PanoramaItem>
+            <phone:PanoramaItem Header="Search"
+                                Foreground="Black">
+                <StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="everything"
+                                   Margin="15,0,0,0" />
+                        <TextBox Name="SearchTextbox">
+                            <i:Interaction.Behaviors>
+                                <behavior:TextboxEnterBehavior ExecuteCommand="{Binding SearchCommand}"
+                                                               ExecuteCommandParameter="{Binding ElementName=SearchTextbox, Path=Text}" />
+                            </i:Interaction.Behaviors>
+                            <i:Interaction.Triggers>
+                                <ec:DataTrigger Binding="{Binding ElementName=SearchTextbox,Path=Text.Length}"
+                                                Comparison="Equal"
+                                                Value="0">
+                                    <ec:ChangePropertyAction PropertyName="Background">
+                                        <ec:ChangePropertyAction.Value>                                            
+                                            <ImageBrush ImageSource="/Assets/search.dark.png"
+                                                        AlignmentX="Left"
+                                                        Stretch="None"
+                                                        Opacity=".75" />
+                                        </ec:ChangePropertyAction.Value>
+                                    </ec:ChangePropertyAction>
+                                </ec:DataTrigger>
+                                <ec:DataTrigger Binding="{Binding ElementName=SearchTextbox,Path=Text.Length}"
+                                                Comparison="GreaterThan"
+                                                Value="0">
+                                    <ec:ChangePropertyAction PropertyName="Background">
+                                        <ec:ChangePropertyAction.Value>
+                                            <SolidColorBrush Color="White" />
+                                        </ec:ChangePropertyAction.Value>
+                                    </ec:ChangePropertyAction>
+                                </ec:DataTrigger>
+                            </i:Interaction.Triggers>                                                     
+                        </TextBox>
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding IsFavouriteExist, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <TextBlock Text="Favorites"
+                                   Foreground="Black"
+                                   Margin="12,0,0,0"
+                                   FontSize="45" />
+                        <ScrollViewer>
+                            <phone:LongListSelector Name="favouriteList" ItemsSource="{Binding Favourites}"
+                                                    Height="354"
+                                                    toolkit:TiltEffect.IsTiltEnabled="True">
+                                <phone:LongListSelector.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="/Assets/favorites.png"
+                                                   HorizontalAlignment="Center" />
+                                            <TextBlock Text="{Binding Name}"
+                                                       Foreground="Black"
+                                                       HorizontalAlignment="Center"
+                                                       FontSize="26"
+                                                       Margin="0,6,0,0" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </phone:LongListSelector.ItemTemplate>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Tap">
+                                        <command:EventToCommand PassEventArgsToCommand="False"
+                                                                CommandParameter="{Binding Path=SelectedItem, ElementName=favouriteList}"
+                                                                Command="{Binding SearchWithFavouriteCommand}" />
+                                    </i:EventTrigger>                                   
+                                </i:Interaction.Triggers>
+                            </phone:LongListSelector>
+                        </ScrollViewer>
+                    </StackPanel>
+                </StackPanel>
+            </phone:PanoramaItem>
+        </phone:Panorama>
+    </Grid>
+
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn" />
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn" />
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut" />
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut" />
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+
+    <bar:Bindable.ApplicationBar>
+        <bar:BindableApplicationBar IsVisible="True"
+                                    BackgroundColor="#1199CC"
+                                    Mode="Default">
+            <bar:BindableApplicationBarButton Text="refresh"
+                                              Command="{Binding RefreshCommand}"
+                                              IconUri="/Assets/refresh.png" />
+            <bar:BindableApplicationBarButton Text="about"
+                                              Command="{Binding ShowAboutViewCommand}"
+                                              IconUri="/Assets/about.png" />
+            <bar:BindableApplicationBar.MenuItems>
+                <bar:BindableApplicationBarMenuItem Text="logout"
+                                                    Command="{Binding LogoutCommand}" />
+            </bar:BindableApplicationBar.MenuItems>
+        </bar:BindableApplicationBar>
+    </bar:Bindable.ApplicationBar>
+
+</phone:PhoneApplicationPage>

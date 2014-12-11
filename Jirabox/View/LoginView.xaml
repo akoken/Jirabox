@@ -1,0 +1,129 @@
+﻿<phone:PhoneApplicationPage x:Class="Jirabox.View.LoginView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="clr-namespace:CS.Windows.Controls;assembly=CS.Windows.Controls"
+    xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:behaviors="clr-namespace:Jirabox.Common.Behaviors"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    DataContext="{Binding Source={StaticResource Locator}, Path=LoginViewModel}"
+    xmlns:converter="clr-namespace:Jirabox.Converters"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    SupportedOrientations="Portrait"
+    Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="{Binding IsTaskbarVisible}"
+    shell:SystemTray.ForegroundColor="Black"
+    shell:SystemTray.Opacity="0">
+
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator IsIndeterminate="True"
+                                 IsVisible="{Binding IsDataLoaded, Converter={StaticResource InvertBooleanPropertyConverter}}"
+                                 Text="Signing in..." />
+    </shell:SystemTray.ProgressIndicator>
+
+    <Grid x:Name="LayoutRoot" Background="#FFECECEC">
+        <Grid.RowDefinitions>        
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0"
+                    Margin="0,10,0,0">
+            <StackPanel Orientation="Horizontal" >
+                <Image Source="/Jirabox;component/Assets/logo.png" Width="80" Height="80" Margin="10,0,0,0"/>
+                <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}"
+                           Style="{StaticResource PhoneTextTitle1Style}" 
+                           Foreground="{StaticResource BlackForeground}"                           
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+            <TextBlock Text="Login" Style="{StaticResource PhoneTextTitle2Style}" Foreground="{StaticResource BlackForeground}"/>
+        </StackPanel>
+
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="15,25,15,94">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <StackPanel>
+                <TextBlock Text="server url" Margin="10,0,0,0"/>
+                <controls:WatermarkTextBox Text="{Binding ServerUrl, Mode=TwoWay}"                                          
+                                           HorizontalAlignment="Left"
+                                           Width="446"
+                                           Height="72"
+                                           WatermarkText="https://dev.atlassian.com/jira"
+                                           VerticalContentAlignment="Center">
+                    <i:Interaction.Behaviors>
+                        <behaviors:TextBoxUpdatePropertyChanged />
+                    </i:Interaction.Behaviors>
+                </controls:WatermarkTextBox>
+            </StackPanel>
+            <StackPanel Grid.Row="1">
+                <TextBlock Text="username" Margin="10,0,0,0"/>
+                <TextBox Text="{Binding UserName, Mode=TwoWay}"                       
+                         Height="72"
+                         HorizontalAlignment="Left"
+                         Width="446">
+                    <i:Interaction.Behaviors>
+                        <behaviors:TextBoxUpdatePropertyChanged />
+                    </i:Interaction.Behaviors>
+                </TextBox>
+            </StackPanel>
+            <StackPanel Grid.Row="2">
+                <TextBlock Text="password"
+                           VerticalAlignment="Center"
+                           Margin="10,0,0,0" />
+                <PasswordBox Password="{Binding Password, Mode=TwoWay}"
+                             Width="446"
+                             Height="72"
+                             HorizontalAlignment="Left">
+                    <i:Interaction.Behaviors>
+                        <behaviors:PasswordBoxUpdatePropertyChanged />
+                    </i:Interaction.Behaviors>
+                </PasswordBox>
+            </StackPanel>
+        </Grid>
+    </Grid>
+
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+
+    <bar:Bindable.ApplicationBar>
+        <bar:BindableApplicationBar IsVisible="True"
+                                    BackgroundColor="#1199CC"
+                                    Mode="Default">
+            <bar:BindableApplicationBarButton Text="login"                                             
+                                              Command="{Binding LoginCommand}"
+                                              IconUri="/Assets/login.png" />
+            <bar:BindableApplicationBarButton Text="about"
+                                              Command="{Binding AboutCommand}"
+                                              IconUri="/Assets/about.png" />          
+        </bar:BindableApplicationBar>
+    </bar:Bindable.ApplicationBar>
+
+</phone:PhoneApplicationPage>

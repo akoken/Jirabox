@@ -1,0 +1,432 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{00671C99-305D-4B36-AE3F-8E647ECFF70A}</ProjectGuid>
+    <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Jirabox</RootNamespace>
+    <AssemblyName>Jirabox</AssemblyName>
+    <TargetFrameworkIdentifier>WindowsPhone</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>
+    </SupportedCultures>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>Jirabox_$(Configuration)_$(Platform).xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>Jirabox.App</SilverlightAppEntry>
+    <ValidateXaml>true</ValidateXaml>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <NuGetPackageImportStamp>3075c483</NuGetPackageImportStamp>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\x86\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\x86\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|ARM' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\ARM\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|ARM' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\ARM\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\AlphaKeyGroup.cs" />
+    <Compile Include="Common\Behaviors\PasswordBoxUpdatePropertyChanged.cs" />
+    <Compile Include="Common\Behaviors\TextboxEnterBehavior.cs" />
+    <Compile Include="Common\Behaviors\TextBoxUpdatePropertyChanged.cs" />
+    <Compile Include="Common\DataHelper.cs" />
+    <Compile Include="Common\Enumerations\JiraActionType.cs" />
+    <Compile Include="Common\Enumerations\JiraRequestType.cs" />
+    <Compile Include="Common\Extensions\ImageExtensions.cs" />
+    <Compile Include="Common\Extensions\ObservableCollectionExtensions.cs" />
+    <Compile Include="Common\Extensions\TiltEffect.cs" />
+    <Compile Include="Common\LiveTileManager.cs" />
+    <Compile Include="Common\LiveTiles\FlipTile.xaml.cs">
+      <DependentUpon>FlipTile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\LiveTiles\ImageTile.xaml.cs">
+      <DependentUpon>ImageTile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\LiveTiles\StandartTile.xaml.cs">
+      <DependentUpon>StandartTile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Settings.cs" />
+    <Compile Include="Common\SettingsHelper.cs" />
+    <Compile Include="Common\StorageHelper.cs" />
+    <Compile Include="Common\ToolStackCRCLib.cs" />
+    <Compile Include="Common\ToolStackPNGWriterLib.cs" />
+    <Compile Include="Common\ViewNames.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\CheckIssueSummaryLengthConverter.cs" />
+    <Compile Include="Converters\DataLoadedToVisibilityConverter.cs" />
+    <Compile Include="Converters\DateTimeConverter.cs" />
+    <Compile Include="Converters\DoubleToIntConverter.cs" />
+    <Compile Include="Converters\HistoryToCreateDateConverter.cs" />
+    <Compile Include="Converters\InvertBooleanPropertyConverter.cs" />
+    <Compile Include="Converters\NameToImageConverter.cs" />
+    <Compile Include="Converters\UserStatusToString.cs" />
+    <Compile Include="Core\Contracts\ICacheService.cs" />
+    <Compile Include="Core\Contracts\IDialogService.cs" />
+    <Compile Include="Core\Contracts\IHttpManager.cs" />
+    <Compile Include="Core\Contracts\IJiraService.cs" />
+    <Compile Include="Core\Contracts\INavigationService.cs" />
+    <Compile Include="Core\Exceptions\HttpRequestStatusCodeException.cs" />
+    <Compile Include="Core\OperationResult.cs" />
+    <Compile Include="LocalizedStrings.cs" />
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AddCommentRequest.cs" />
+    <Compile Include="Model\Attachment.cs" />
+    <Compile Include="Model\AvatarUrls.cs" />
+    <Compile Include="Model\ChangeLog.cs" />
+    <Compile Include="Model\Comment.cs" />
+    <Compile Include="Model\Comments.cs" />
+    <Compile Include="Model\CreateIssueFields.cs" />
+    <Compile Include="Model\CreateIssueProject.cs" />
+    <Compile Include="Model\CreateIssueRequest.cs" />
+    <Compile Include="Model\CreateIssueResponse.cs" />
+    <Compile Include="Model\CreateIssueType.cs" />
+    <Compile Include="Model\Favourite.cs" />
+    <Compile Include="Model\Fields.cs" />
+    <Compile Include="Model\History.cs" />
+    <Compile Include="Model\Issue.cs" />
+    <Compile Include="Model\IssueKey.cs" />
+    <Compile Include="Model\IssueType.cs" />
+    <Compile Include="Model\IssueTypeRequest.cs" />
+    <Compile Include="Model\LogWorkRequest.cs" />
+    <Compile Include="Model\Priority.cs" />
+    <Compile Include="Model\Project.cs" />
+    <Compile Include="Model\SearchParameter.cs" />
+    <Compile Include="Model\SearchRequest.cs" />
+    <Compile Include="Model\SearchResponse.cs" />
+    <Compile Include="Model\Status.cs" />
+    <Compile Include="Model\StatusPackage.cs" />
+    <Compile Include="Model\Transition.cs" />
+    <Compile Include="Model\TransitionRequest.cs" />
+    <Compile Include="Model\User.cs" />
+    <Compile Include="Model\UserCredential.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\AppResources.Designer.cs">
+      <DependentUpon>AppResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Services\CacheService.cs" />
+    <Compile Include="Services\DialogService.cs" />
+    <Compile Include="Services\HttpManager.cs" />
+    <Compile Include="Services\JiraService.cs" />
+    <Compile Include="Services\NavigationService.cs" />
+    <Compile Include="ViewModel\AboutViewModel.cs" />
+    <Compile Include="ViewModel\AddCommentViewModel.cs" />
+    <Compile Include="ViewModel\ChangeStatusViewModel.cs" />
+    <Compile Include="ViewModel\CreateIssueViewModel.cs" />
+    <Compile Include="ViewModel\IssueDetailViewModel.cs" />
+    <Compile Include="ViewModel\LoginViewModel.cs" />
+    <Compile Include="ViewModel\LogWorkViewModel.cs" />
+    <Compile Include="ViewModel\ProjectDetailViewModel.cs" />
+    <Compile Include="ViewModel\ProjectListViewModel.cs" />
+    <Compile Include="ViewModel\SearchResultViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
+    <Compile Include="ViewModel\UserProfileViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\AboutView.xaml.cs">
+      <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AddCommentView.xaml.cs">
+      <DependentUpon>AddCommentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ChangeLogView.xaml.cs">
+      <DependentUpon>ChangeLogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ChangeStatusView.xaml.cs">
+      <DependentUpon>ChangeStatusView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CreateIssueView.xaml.cs">
+      <DependentUpon>CreateIssueView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\IssueDetailView.xaml.cs">
+      <DependentUpon>IssueDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LogWorkView.xaml.cs">
+      <DependentUpon>LogWorkView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PrivacyPolicyView.xaml.cs">
+      <DependentUpon>PrivacyPolicyView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ProjectDetailView.xaml.cs">
+      <DependentUpon>ProjectDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ProjectListView.xaml.cs">
+      <DependentUpon>ProjectListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SearchResultView.xaml.cs">
+      <DependentUpon>SearchResultView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserProfileView.xaml.cs">
+      <DependentUpon>UserProfileView.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+    <Page Include="Common\LiveTiles\FlipTile.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Common\LiveTiles\ImageTile.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Common\LiveTiles\StandartTile.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AboutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\AddCommentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ChangeLogView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ChangeStatusView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\CreateIssueView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\IssueDetailView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\LoginView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\LogWorkView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\PrivacyPolicyView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ProjectDetailView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ProjectListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SearchResultView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\UserProfileView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Properties\AppManifest.xml" />
+    <None Include="Properties\WMAppManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\about.png" />
+    <Content Include="Assets\add.png" />
+    <Content Include="Assets\ApplicationIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\assigned.png" />
+    <Content Include="Assets\attachment.png" />
+    <Content Include="Assets\cancel.png" />
+    <Content Include="Assets\check.png" />
+    <Content Include="Assets\comment.png" />
+    <Content Include="Assets\favorites.png" />
+    <Content Include="Assets\login.png" />
+    <Resource Include="Assets\Logo.png" />
+    <Content Include="Assets\pin.png" />
+    <Content Include="Assets\refresh.png" />
+    <Content Include="Assets\reported.png" />
+    <Content Include="Assets\search.dark.png" />
+    <Content Include="Assets\search.png" />
+    <Content Include="Assets\send.png" />
+    <Content Include="Assets\setting.png" />
+    <Content Include="Assets\SplashScreen.png" />
+    <Content Include="Assets\status.png" />
+    <Content Include="Assets\Tiles\LiveTileM.png" />
+    <Content Include="Assets\Tiles\LiveTileS.png" />
+    <Content Include="Assets\time.png" />
+    <Content Include="Assets\timesheet.png" />
+    <Content Include="BugSense\BugSense - SDK License Agreement.txt" />
+    <Content Include="CortanaCommands.xml" />
+    <Content Include="README_FIRST.txt" />
+    <Content Include="SplashScreenImage.jpg" />
+    <Content Include="Toolkit.Content\ApplicationBar.Add.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="BindableApplicationBar">
+      <HintPath>packages\BindableApplicationBar.1.1.0.0\lib\wp8\BindableApplicationBar.dll</HintPath>
+    </Reference>
+    <Reference Include="BugSense-WP8">
+      <HintPath>packages\BugSense.WP8.3.6.8.0\lib\wp8\BugSense-WP8.dll</HintPath>
+    </Reference>
+    <Reference Include="CS.Windows.Controls">
+      <HintPath>packages\WindowsPhoneControls.0.3.0\lib\sl4-windowsphone71\CS.Windows.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras.WP8">
+      <HintPath>packages\MvvmLightLibs.4.3.31.0\lib\wp8\GalaSoft.MvvmLight.Extras.WP8.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.WP8">
+      <HintPath>packages\MvvmLightLibs.4.3.31.0\lib\wp8\GalaSoft.MvvmLight.WP8.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=3.9.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Phone.Controls.Toolkit">
+      <HintPath>packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>packages\MvvmLightLibs.4.3.31.0\lib\wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>packages\Microsoft.Net.Http.2.2.28\lib\sl4-windowsphone71\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>packages\Microsoft.Net.Http.2.2.28\lib\sl4-windowsphone71\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>packages\Microsoft.Net.Http.2.2.28\lib\sl4-windowsphone71\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=3.9.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\AppResources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions />
+  <Import Project="packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+</Project>

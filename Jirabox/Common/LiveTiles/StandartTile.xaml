@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="Jirabox.Common.LiveTiles.StandartTile"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    x:Name="standartTile"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DesignHeight="480" d:DesignWidth="480">
+
+    <StackPanel Width="173" Height="173">
+    <Grid Name="LayoutRoot"
+          Background="#1199CC"          
+          Canvas.ZIndex="1"
+          Width="173"
+          Height="173">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Image Name="img1"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Margin="10,10,0,0"
+               Width="100"
+               Height="100"
+               Stretch="Fill"
+               Source="{Binding Path=BackgroundImage, ElementName=standartTile}" />
+        <TextBlock Name="txt1"
+                   Grid.Row="1"
+                   Margin="15,0,5,10"
+                       Text="{Binding Path=Title, ElementName=standartTile}"
+                   Width="150"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left"
+                   TextAlignment="Left"
+                   FontFamily="Segoe UI"
+                   FontSize="26" />
+    </Grid>
+    </StackPanel>
+</UserControl>
