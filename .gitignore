@@ -53,7 +53,9 @@ dlldata.c
 *.pidb
 *.svclog
 *.scc
-*ApiPortabilityAnalysis.htm
+
+# Portability Analyzer Report
+ApiPortabilityAnalysis.htm
 
 # Chutzpah Test files
 _Chutzpah*
