@@ -4,7 +4,8 @@ namespace Jirabox.Model
 {
     public class Issue
     {
-        private string m_KeyString;
+        private string mKeyString;
+
 
         [JsonProperty("expand")]
         public string Expand { get; set; }
@@ -22,7 +23,7 @@ namespace Jirabox.Model
             }
             set
             {
-                m_KeyString = value;
+                mKeyString = value;
             }
         }
 
@@ -31,16 +32,15 @@ namespace Jirabox.Model
         {
             get
             {
-                return IssueKey.Parse(m_KeyString);
+                return IssueKey.Parse(mKeyString);
             }
         }
-        #endregion Special key solution
+        #endregion Special key solution     
 
         [JsonProperty("fields")]
         public Fields Fields { get; set; }
 
-
         [JsonProperty("changelog")]
         public ChangeLog ChangeLog { get; set; }
-    }
+    }  
 }

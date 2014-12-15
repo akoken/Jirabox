@@ -31,5 +31,14 @@ namespace Jirabox.Model
 
         [JsonProperty("attachment")]
         public List<Attachment> Attachments { get; set; }
+
+        [JsonProperty("project")]
+        public IssueProject Project { get; set; }
+    }
+
+    public class IssueProject
+    {
+        [JsonProperty("name")]
+        public string Name { get; set; }
     }
 }
