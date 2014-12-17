@@ -9,8 +9,7 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WP8"
-    DataContext="{Binding Source={StaticResource Locator}, Path=SearchResultViewModel}"
-    xmlns:converter="clr-namespace:Jirabox.Converters"
+    DataContext="{Binding Source={StaticResource Locator}, Path=SearchResultViewModel}"   
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -67,7 +66,8 @@
                                                Height="Auto" Grid.RowSpan="3"/>
                                     <TextBlock Text="{Binding Fields.Project.Name}"
                                                Grid.Column="1"
-                                               Grid.ColumnSpan="2"
+                                               Grid.Row="0" Grid.ColumnSpan="2"
+                                               Margin="4,0,0,0"
                                                Foreground="Black"
                                                FontSize="24" />
                                     <Image Source="{Binding Fields.IssueType.IconUrl}" Grid.Row="1" Grid.Column="1" Width="25" Height="25"/>
