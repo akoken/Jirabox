@@ -188,7 +188,7 @@ namespace Jirabox.Services
 
         public async Task<ObservableCollection<Issue>> Search(string searchText, bool assignedToMe = false, bool reportedByMe = false, bool isFavourite = false, CancellationTokenSource tokenSource = null)
         {
-            var fields = new List<string> { "summary", "status", "assignee", "reporter", "description", "issuetype", "priority", "comment" };
+            var fields = new List<string> { "summary", "status", "assignee", "reporter", "description", "issuetype", "priority", "comment","project" };
             var expands = new List<string> { "changelog" };
             var url = string.Format("{0}{1}", App.BaseUrl, JiraRequestType.Search.ToString().ToLower());
             var jql = string.Empty;
