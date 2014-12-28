@@ -140,9 +140,6 @@
     <Compile Include="Core\Exceptions\HttpRequestStatusCodeException.cs" />
     <Compile Include="Core\OperationResult.cs" />
     <Compile Include="LocalizedStrings.cs" />
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Model\AddCommentRequest.cs" />
     <Compile Include="Model\Attachment.cs" />
     <Compile Include="Model\AvatarUrls.cs" />
@@ -254,10 +251,6 @@
     <Page Include="Common\LiveTiles\StandartTile.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="MainPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AboutView.xaml">
       <Generator>MSBuild:Compile</Generator>
