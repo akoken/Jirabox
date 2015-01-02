@@ -10,7 +10,6 @@
     xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
     xmlns:behaviors="clr-namespace:Jirabox.Common.Behaviors"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-    xmlns:converter="clr-namespace:Jirabox.Converters"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"    
     SupportedOrientations="Portrait" Orientation="Portrait"
@@ -60,7 +59,7 @@
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <TextBlock Text="Project" VerticalAlignment="Center"/>
-                <Image Name="projectPicture" Source="{Binding Project.Key, Converter={StaticResource NameToImageConverter}}" Margin="50,0,0,0"/>
+                <Image Name="ProjectPicture" Source="{Binding Project.Key, Converter={StaticResource NameToImageConverter}}" Margin="50,0,0,0"/>
                 <TextBlock Text="{Binding Project.Name}" Margin="10,0,0,0" VerticalAlignment="Center"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="1">

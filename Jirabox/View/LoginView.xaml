@@ -11,7 +11,6 @@
     xmlns:behaviors="clr-namespace:Jirabox.Common.Behaviors"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     DataContext="{Binding Source={StaticResource Locator}, Path=LoginViewModel}"
-    xmlns:converter="clr-namespace:Jirabox.Converters"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     SupportedOrientations="Portrait"
@@ -59,7 +58,8 @@
                                            Width="446"
                                            Height="72"
                                            WatermarkText="https://dev.atlassian.com/jira"
-                                           VerticalContentAlignment="Center">
+                                           VerticalContentAlignment="Center"
+                                           InputScope="Url">
                     <i:Interaction.Behaviors>
                         <behaviors:TextBoxUpdatePropertyChanged />
                     </i:Interaction.Behaviors>

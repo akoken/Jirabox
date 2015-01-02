@@ -11,7 +11,6 @@
     xmlns:command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WP8"
     xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
     DataContext="{Binding Source={StaticResource Locator}, Path=ProjectDetailViewModel}"
-    xmlns:converter="clr-namespace:Jirabox.Converters"  
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -32,7 +31,7 @@
         <Grid.RowDefinitions>            
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>      
-        <phone:Pivot Grid.Row="1">
+        <phone:Pivot>
             <phone:Pivot.TitleTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal"
@@ -51,7 +50,7 @@
                 <phone:PivotItem.Header>
                     <TextBlock Text="Project" Foreground="Black"/>
                 </phone:PivotItem.Header>
-                <Grid x:Name="ContentPanel" Grid.Row="0" Margin="12,0,12,10">
+                <Grid x:Name="ContentPanel" Margin="12,0,12,10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="75"/>
                         <RowDefinition Height="55"/>

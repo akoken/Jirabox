@@ -9,7 +9,6 @@
        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
        xmlns:control="clr-namespace:Jirabox.Common.LiveTiles"
        xmlns:extension="clr-namespace:Jirabox.Common.Extensions"
-       xmlns:converter="clr-namespace:Jirabox.Converters"
        xmlns:behavior="clr-namespace:Jirabox.Common.Behaviors"
        xmlns:bar="clr-namespace:BindableApplicationBar;assembly=BindableApplicationBar"
        xmlns:command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WP8"
