@@ -1,9 +1,11 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System.Threading.Tasks;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Jirabox.Core.Contracts;
 using Jirabox.Model;
 using Jirabox.Resources;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Jirabox.ViewModel
 {
@@ -174,7 +176,7 @@ namespace Jirabox.ViewModel
             this.jiraService = jiraService;
             this.dialogService = dialogService;
             this.navigationService = navigationService;
-            CreateIssueCommand = new RelayCommand(CreateIssue, CanCreateIssue);
+            CreateIssueCommand = new RelayCommand(async()=> await CreateIssue(), CanCreateIssue);
             CancelCommand = new RelayCommand(NavigateToBack);                        
         }
 
@@ -208,9 +210,11 @@ namespace Jirabox.ViewModel
             Description = string.Empty;
         }
 
-        private async void CreateIssue()
+        private async Task CreateIssue()
         {
-            if (!ValidateParameters()) return;           
+            if (!ValidateSummary()) return;
+            if (!ValidateIssueTypes()) return;
+            if (!ValidatePriorities()) return;
 
             var request = new CreateIssueRequest();
             request.Fields.CreateIssueProject.Key = Project.Key;
@@ -246,12 +250,34 @@ namespace Jirabox.ViewModel
             navigationService.GoBack();
         }
 
-        public bool ValidateParameters()
+        public bool ValidateSummary()
         {
             if (!string.IsNullOrEmpty(Summary)) return true;
 
             IsTaskbarVisible = false;
             dialogService.ShowDialog(AppResources.CreateIssueSummaryValidationErrorMessage, AppResources.Warning);
+            IsTaskbarVisible = true;
+
+            return false;
+        }
+
+        public bool ValidateIssueTypes()
+        {
+            if (IssueTypes.Any()) return true;
+
+            IsTaskbarVisible = false;
+            dialogService.ShowDialog(AppResources.CreateIssueIssueTypeValidationErrorMessage, AppResources.Warning);
+            IsTaskbarVisible = true;
+
+            return false;
+        }
+
+        public bool ValidatePriorities()
+        {
+            if (PriorityList.Any()) return true;
+
+            IsTaskbarVisible = false;
+            dialogService.ShowDialog(AppResources.CreateIssuePriorityValidationErrorMessage, AppResources.Warning);
             IsTaskbarVisible = true;
 
             return false;

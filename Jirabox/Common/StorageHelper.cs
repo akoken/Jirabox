@@ -81,7 +81,7 @@ namespace Jirabox.Common
             {
                 if (!local.DirectoryExists("Images")) return;
 
-                var pattern = @"Images\*";
+                const string pattern = @"Images\*";
                 var files = local.GetFileNames(pattern);
 
                 foreach (var file in files)
@@ -138,7 +138,6 @@ namespace Jirabox.Common
             if (fileName == null) return null;
 
             var filename = fileName.Replace(":", ".").Replace(" ", "");
-            byte[] data;
             var displayPicture = new BitmapImage();
 
             lock (Sync)
@@ -150,7 +149,7 @@ namespace Jirabox.Common
 
                     using (var fs = isf.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                     {
-                        data = new byte[fs.Length];
+                        var data = new byte[fs.Length];
                         if (data.Length == 0) return null;
                         fs.Read(data, 0, data.Length);
                         using (var ms = new MemoryStream(data))
@@ -196,7 +195,7 @@ namespace Jirabox.Common
 
         public static void DeleteOldCredentialFile()
         {
-            string filePath = "credential.ak";
+            const string filePath = "credential.ak";
             using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 if (isf.FileExists(filePath))

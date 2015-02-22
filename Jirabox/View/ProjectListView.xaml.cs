@@ -10,12 +10,12 @@ namespace Jirabox.Views
         {
             InitializeComponent();
         }
-        protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            projectList.SelectedItem = null;           
+            ProjectList.SelectedItem = null;           
         }
 
-        protected async override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             var vm = this.DataContext as ProjectListViewModel;
 

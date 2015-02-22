@@ -19,7 +19,7 @@ namespace Jirabox.Model
         {
             if (issueKeyString == null)
             {
-                throw new ArgumentNullException("IssueKeyString is null!");
+                throw new ArgumentNullException("issueKeyString");
             }
 
             string[] split = issueKeyString.Split('-');
@@ -29,7 +29,7 @@ namespace Jirabox.Model
                 throw new ArgumentException("The string entered is not a JIRA key!");
             }
 
-            int issueId = 0;
+            int issueId;
             if (!int.TryParse(split[1], out issueId))
             {
                 throw new ArgumentException("The string entered could not be parsed, issue id is non-integer!");

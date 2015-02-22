@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace Jirabox.Core.ExceptionExtension
+namespace Jirabox.Core.Exceptions
 {
     public class HttpRequestStatusCodeException : Exception
     {

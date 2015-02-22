@@ -135,7 +135,7 @@
     <value>Menu Item</value>
   </data>
   <data name="ApplicationDescription" xml:space="preserve">
-    <value>A Jira client for Windows Phone 8.</value>
+    <value>A Jira client application for Windows Phone 8.1</value>
   </data>
   <data name="ApplicationEmail" xml:space="preserve">
     <value>akoken@outlook.com</value>
@@ -201,13 +201,13 @@
     <value>Please type a comment.</value>
   </data>
   <data name="CreateIssueNullProjectMessage" xml:space="preserve">
-    <value>Opps! Something went wrong. Unable to get project detail</value>
+    <value>Opps! Something went wrong. Unable to get project details.</value>
   </data>
   <data name="CreateIssueErrorMessage" xml:space="preserve">
     <value>Opps! Something went wrong while creating issue.</value>
   </data>
   <data name="CreateIssueSummaryValidationErrorMessage" xml:space="preserve">
-    <value>You must specify a summary for issue.</value>
+    <value>Please text a summary.</value>
   </data>
   <data name="CreateIssueToken" xml:space="preserve">
     <value>IssueCreatedCallback</value>
@@ -268,5 +268,11 @@
   </data>
   <data name="AttachmentCacheClearedMessage" xml:space="preserve">
     <value>Attachment cache cleared.</value>
+  </data>
+  <data name="CreateIssueIssueTypeValidationErrorMessage" xml:space="preserve">
+    <value>Please choose an issue type.</value>
+  </data>
+  <data name="CreateIssuePriorityValidationErrorMessage" xml:space="preserve">
+    <value>Please choose a priority.</value>
   </data>
 </root>

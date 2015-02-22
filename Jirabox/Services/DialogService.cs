@@ -30,24 +30,32 @@ namespace Jirabox.Services
                 Margin = new Thickness(3)
             };
 
-            var txtDisplayName = new TextBlock { Text = comment.Author.DisplayName};
-            txtDisplayName.VerticalAlignment = VerticalAlignment.Center;
-            txtDisplayName.FontSize = 24;
-            txtDisplayName.FontWeight = FontWeights.SemiBold;
-            txtDisplayName.Margin = new Thickness(10, 0, 0, 0);
+            var txtDisplayName = new TextBlock
+            {
+                Text = comment.Author.DisplayName,
+                VerticalAlignment = VerticalAlignment.Center,
+                FontSize = 24,
+                FontWeight = FontWeights.SemiBold,
+                Margin = new Thickness(10, 0, 0, 0)
+            };
 
-            var txtComment = new TextBlock { Text = comment.Message, TextWrapping = TextWrapping.Wrap };
-            txtComment.Margin = new Thickness(15, 15, 10, 0);
-            
+            var txtComment = new TextBlock
+            {
+                Text = comment.Message,
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(15, 15, 10, 0)
+            };
+
             scrollViewer.Content = txtComment;
-            var userInfoPanel = new StackPanel();
-            userInfoPanel.Margin = new Thickness(10, 0, 0, 0);
-            userInfoPanel.Orientation = Orientation.Horizontal;
+            var userInfoPanel = new StackPanel
+            {
+                Margin = new Thickness(10, 0, 0, 0),
+                Orientation = Orientation.Horizontal
+            };
             userInfoPanel.Children.Add(border);
             userInfoPanel.Children.Add(txtDisplayName);
 
-            var rootPanel = new StackPanel();
-            rootPanel.Margin = new Thickness(10, 30, 0, 0);
+            var rootPanel = new StackPanel {Margin = new Thickness(10, 30, 0, 0)};
             rootPanel.Children.Add(userInfoPanel);
             rootPanel.Children.Add(scrollViewer);
             
@@ -60,11 +68,19 @@ namespace Jirabox.Services
         public CustomMessageBox ShowPromptDialog(string warningMessage, string confirmMessage, string caption)
         {
             var messageBox = new CustomMessageBox();
-            var warningTextBlock = new TextBlock { Text = warningMessage, TextWrapping = TextWrapping.Wrap };
-            warningTextBlock.Margin = new Thickness(15, 15, 0, 0);
+            var warningTextBlock = new TextBlock
+            {
+                Text = warningMessage,
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(15, 15, 0, 0)
+            };
 
-            var confirmTextBlock = new TextBlock { Text = confirmMessage, TextWrapping = TextWrapping.Wrap };
-            confirmTextBlock.Margin = new Thickness(15, 15, 0, 0);
+            var confirmTextBlock = new TextBlock
+            {
+                Text = confirmMessage,
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(15, 15, 0, 0)
+            };
 
             var rootPanel = new StackPanel();
             rootPanel.Children.Add(warningTextBlock);

@@ -1,8 +1,7 @@
-﻿using Jirabox.ViewModel;
-using Microsoft.Phone.Controls;
-using System.Windows.Controls;
-using System.Windows.Data;
+﻿using System.ComponentModel;
 using System.Windows.Navigation;
+using Jirabox.ViewModel;
+using Microsoft.Phone.Controls;
 
 namespace Jirabox.View
 {
@@ -22,7 +21,7 @@ namespace Jirabox.View
             }
         }
 
-        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        protected override void OnBackKeyPress(CancelEventArgs e)
         {
             var vm = DataContext as LogWorkViewModel;
             vm.Cancel();

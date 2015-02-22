@@ -14,7 +14,7 @@ namespace Jirabox.Common.LiveTiles
 
         // Using a DependencyProperty as the backing store for Title.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TitleProperty =
-            DependencyProperty.Register("Title", typeof(string), typeof(StandartTile), new PropertyMetadata(string.Empty, new PropertyChangedCallback(OnTitleChanged)));
+            DependencyProperty.Register("Title", typeof(string), typeof(StandartTile), new PropertyMetadata(string.Empty, OnTitleChanged));
 
         private static void OnTitleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
