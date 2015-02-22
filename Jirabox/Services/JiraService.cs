@@ -1,8 +1,8 @@
-﻿using System.Diagnostics;
-using BugSense;
+﻿using BugSense;
 using BugSense.Core.Model;
 using Jirabox.Common;
 using Jirabox.Common.Enumerations;
+using Jirabox.Core;
 using Jirabox.Core.Contracts;
 using Jirabox.Core.ExceptionExtension;
 using Jirabox.Model;
@@ -15,6 +15,7 @@ using System.Globalization;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,13 +30,15 @@ namespace Jirabox.Services
     public class JiraService : IJiraService
     {
         private readonly IHttpManager httpManager;
+        private readonly IJsonHttpClient jsonClient;
         private readonly IDialogService dialogService;
         private readonly ICacheService cacheService;
-        public CancellationTokenSource TokenSource = null;
+        public CancellationTokenSource TokenSource;
 
-        public JiraService(IHttpManager httpManager, IDialogService dialogService, ICacheService cacheDataService)
+        public JiraService(IHttpManager httpManager, IJsonHttpClient jsonClient, IDialogService dialogService, ICacheService cacheDataService)
         {
             this.httpManager = httpManager;
+            this.jsonClient = jsonClient;
             this.dialogService = dialogService;
             cacheService = cacheDataService;
             TokenSource = new CancellationTokenSource();
@@ -101,11 +104,18 @@ namespace Jirabox.Services
         public async Task<Project> GetProjectByKey(string serverUrl, string username, string password, string key, bool withoutCache = false)
         {
             var cacheFileName = string.Format("ProjectByKey.{0}.cache", key);
-            
+            var extras = BugSenseHandler.Instance.CrashExtraData;
+
             //Check cache file is exist            
             var isCacheExist = cacheService.DoesFileExist(cacheFileName);
             if (!withoutCache && isCacheExist)
             {
+                extras.Add(new CrashExtraData
+                {
+                    Key = "Cached Method",
+                    Value = "JiraService.GetProjectByKey"
+                });
+
                 var projectFile = cacheService.Read(cacheFileName);
                 return JsonConvert.DeserializeObject<Project>(projectFile);
             }
@@ -114,21 +124,18 @@ namespace Jirabox.Services
             Project project = null;
             try
             {
-                HttpResponseMessage response = await httpManager.GetAsync(requestUrl, true, username, password);
-                response.EnsureSuccessStatusCode();
-                var responseStr = await response.Content.ReadAsStringAsync();
-                project = JsonConvert.DeserializeObject<Project>(responseStr);
+                var response = await jsonClient.Get(new Uri(requestUrl), username, password, null);
+                project = JsonConvert.DeserializeObject<Project>(response);
 
                 //Download project and project lead images if they do not exist
                 await DownloadImage(project.AvatarUrls.Size48, key);
                 await DownloadImage(project.Lead.AvatarUrls.Size48, project.Lead.UserName);
 
                 //Save new data to the cache
-                cacheService.Save(cacheFileName, responseStr);
+                cacheService.Save(cacheFileName, response);
             }
             catch (Exception exception)
             {
-                var extras = BugSenseHandler.Instance.CrashExtraData;
                 extras.Add(new CrashExtraData
                 {
                     Key = "Method",
@@ -178,7 +185,7 @@ namespace Jirabox.Services
                 {
                     Key = "Method",
                     Value = "JiraService.GetIssueByKey"
-                });               
+                });
 
                 BugSenseHandler.Instance.LogException(exception, extras);
                 dialogService.ShowDialog(AppResources.ErrorMessage, "Error");
@@ -188,7 +195,7 @@ namespace Jirabox.Services
 
         public async Task<ObservableCollection<Issue>> Search(string searchText, bool assignedToMe = false, bool reportedByMe = false, bool isFavourite = false, CancellationTokenSource tokenSource = null)
         {
-            var fields = new List<string> { "summary", "status", "assignee", "reporter", "description", "issuetype", "priority", "comment","project" };
+            var fields = new List<string> { "summary", "status", "assignee", "reporter", "description", "issuetype", "priority", "comment", "project" };
             var expands = new List<string> { "changelog" };
             var url = string.Format("{0}{1}", App.BaseUrl, JiraRequestType.Search.ToString().ToLower());
             var jql = string.Empty;
@@ -245,9 +252,9 @@ namespace Jirabox.Services
                 {
                     Key = "Method",
                     Value = "JiraService.Search"
-                });              
+                });
 
-                var result = await httpManager.PostAsync(url, data, true, App.UserName, App.Password, tokenSource);               
+                var result = await httpManager.PostAsync(url, data, true, App.UserName, App.Password, tokenSource);
                 result.EnsureSuccessStatusCode();
 
                 var responseString = await result.Content.ReadAsStringAsync();
@@ -261,7 +268,7 @@ namespace Jirabox.Services
 
                 var response = JsonConvert.DeserializeObject<SearchResponse>(responseString);
                 return new ObservableCollection<Issue>(response.Issues);
-            }            
+            }
             catch (Exception exception)
             {
                 BugSenseHandler.Instance.LogException(exception, extras);
@@ -283,29 +290,26 @@ namespace Jirabox.Services
             var issues = await GetIssues(jql);
 
             //Save issues to the cache
-            cacheService.Save(cacheFileName, JsonConvert.SerializeObject(issues));
+            if (issues != null)
+                cacheService.Save(cacheFileName, JsonConvert.SerializeObject(issues));
             return issues;
         }
 
         public async Task<ObservableCollection<Issue>> GetIssues(string jql, List<string> fields = null, int startAt = 0, int maxResult = 50)
         {
-            fields = fields ?? new List<string> { "summary", "status", "assignee", "reporter", "description", "issuetype", "priority", "comment","attachment" };
+            fields = fields ?? new List<string> { "summary", "status", "assignee", "reporter", "description", "issuetype", "priority", "comment", "attachment" };
             var requestUrl = string.Format("{0}{1}", App.BaseUrl, JiraRequestType.Search.ToString().ToLower());
 
-            var request = new SearchRequest {Fields = fields, JQL = jql, MaxResults = maxResult, StartAt = startAt};
-
-            string data = JsonConvert.SerializeObject(request);
+            var request = new SearchRequest { Fields = fields, JQL = jql, MaxResults = maxResult, StartAt = startAt };            
             try
             {
-                var response = await httpManager.PostAsync(requestUrl, data, true, App.UserName, App.Password);
-                response.EnsureSuccessStatusCode();
-                var responseString = await response.Content.ReadAsStringAsync();
-                var searchResponse = JsonConvert.DeserializeObject<SearchResponse>(responseString);
+                var searchResponse = await jsonClient.Post<SearchRequest, SearchResponse>(new Uri(requestUrl), request, App.UserName, App.Password, HttpStatusCode.OK, null);
+                if (searchResponse == null) return null;
                 return new ObservableCollection<Issue>(searchResponse.Issues);
             }
             catch (Exception exception)
             {
-                var extras = BugSenseHandler.Instance.CrashExtraData;             
+                var extras = BugSenseHandler.Instance.CrashExtraData;
                 extras.Add(new CrashExtraData
                 {
                     Key = "Method",
@@ -368,15 +372,12 @@ namespace Jirabox.Services
         public async Task<CreateIssueResponse> CreateIssue(CreateIssueRequest request)
         {
             var url = string.Format("{0}{1}/", App.BaseUrl, JiraRequestType.Issue.ToString().ToLower(CultureInfo.InvariantCulture));
-            var data = JsonConvert.SerializeObject(request);
-            CreateIssueResponse createIssueResponse = null;
 
             try
             {
-                var result = await httpManager.PostAsync(url, data, true, App.UserName, App.Password);
-                result.EnsureSuccessStatusCode();
-                var responseString = await result.Content.ReadAsStringAsync();
-                createIssueResponse = JsonConvert.DeserializeObject<CreateIssueResponse>(responseString);
+                var result = await jsonClient.Post<CreateIssueRequest, CreateIssueResponse>(new Uri(url), request, App.UserName, App.Password, HttpStatusCode.Created, TokenSource);
+
+                return result;
             }
             catch (Exception exception)
             {
@@ -389,7 +390,7 @@ namespace Jirabox.Services
 
                 BugSenseHandler.Instance.LogException(exception, extras);
             }
-            return createIssueResponse;
+            return null;
         }
 
         public async Task<ObservableCollection<Priority>> GetPriorities()
@@ -452,7 +453,7 @@ namespace Jirabox.Services
             User user = null;
             try
             {
-                var responseStr = await response.Content.ReadAsStringAsync();                
+                var responseStr = await response.Content.ReadAsStringAsync();
                 user = JsonConvert.DeserializeObject<User>(responseStr);
                 var userDisplayPictureUrl = user.AvatarUrls.Size48.Substring(0, user.AvatarUrls.Size48.Length - 2) + "183";
 
@@ -502,9 +503,9 @@ namespace Jirabox.Services
 
                 BugSenseHandler.Instance.LogException(exception, extras);
             }
-
-            Debug.Assert(response != null, "response is not null");
-            if (response.StatusCode == System.Net.HttpStatusCode.Created)
+            
+// ReSharper disable once PossibleNullReferenceException
+            if (response.StatusCode == HttpStatusCode.Created)
                 return true;
             return false;
         }
@@ -523,7 +524,7 @@ namespace Jirabox.Services
                     {
                         data = new byte[fs.Length];
                         if (data.Length == 0) return null;
-                        fs.Read(data, 0, data.Length);                       
+                        fs.Read(data, 0, data.Length);
                     }
                     return data;
                 }
@@ -562,8 +563,11 @@ namespace Jirabox.Services
                         var contentResult = await result.Content.ReadAsByteArrayAsync();
 
                         var image = new BitmapImage();
-                        var stream = new MemoryStream(contentResult);
-                        image.SetSource(stream);
+                        using (var stream = new MemoryStream(contentResult))
+                        {
+                            image.SetSource(stream);
+                        }
+
                         var wb = new WriteableBitmap(image);
 
                         using (var fs = isf.CreateFile(path))
@@ -573,7 +577,6 @@ namespace Jirabox.Services
                         if (isProjectAvatar)
                         {
                             CreateCustomeLiveTile(image, filename);
-                            //SaveLiveTileImage(wb, filename);
                         }
                     }
                 }
@@ -640,7 +643,7 @@ namespace Jirabox.Services
 
             var transitionRequest = new TransitionRequest
             {
-                Transition = new Transition { Id = transitionId }                
+                Transition = new Transition { Id = transitionId }
             };
 
             var data = JsonConvert.SerializeObject(transitionRequest);
@@ -660,9 +663,9 @@ namespace Jirabox.Services
 
                 BugSenseHandler.Instance.LogException(exception, extras);
             }
-
-            Debug.Assert(response != null, "response != null");
-            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+           
+// ReSharper disable once PossibleNullReferenceException
+            if (response.StatusCode == HttpStatusCode.NoContent)
                 return true;
             return false;
         }
@@ -699,7 +702,8 @@ namespace Jirabox.Services
 
         public async Task<bool> LogWork(string issueKey, string startedDate, string worked, string comment, CancellationTokenSource tokenSource = null)
         {
-            HttpResponseMessage response = null;
+            OperationResult operationResult = null;
+            var extras = BugSenseHandler.Instance.CrashExtraData;
             var requestUrl = string.Format("{0}issue/{1}/worklog", App.BaseUrl, issueKey);
 
             var logWorkRequest = new LogWorkRequest
@@ -712,31 +716,27 @@ namespace Jirabox.Services
             var data = JsonConvert.SerializeObject(logWorkRequest);
             try
             {
-                response = await httpManager.PostAsync(requestUrl, data, true, App.UserName, App.Password);
-                response.EnsureSuccessStatusCode();
+                operationResult = await jsonClient.PostData(new Uri(requestUrl), data, App.UserName, App.Password, HttpStatusCode.Created, tokenSource);
+
             }
             catch (Exception exception)
             {
-                var extras = BugSenseHandler.Instance.CrashExtraData;
                 extras.Add(new CrashExtraData
                 {
                     Key = "Method",
                     Value = "JiraService.LogWork"
                 });
-
                 BugSenseHandler.Instance.LogException(exception, extras);
             }
 
-            Debug.Assert(response != null, "response != null");
-            if (response.StatusCode == System.Net.HttpStatusCode.Created)
-                return true;
-            return false;
+            // ReSharper disable once PossibleNullReferenceException
+            return operationResult.IsValid;
         }
 
         public async Task<bool> DownloadAttachment(string fileUrl, string fileName)
         {
             HttpResponseMessage response = null;
-                   
+
             try
             {
                 response = await httpManager.DownloadAttachment(fileUrl, true, App.UserName, App.Password);
@@ -744,7 +744,7 @@ namespace Jirabox.Services
 
                 var data = await response.Content.ReadAsByteArrayAsync();
                 await StorageHelper.WriteDataToIsolatedStorageFile(fileName, data);
-                
+
                 var local = Windows.ApplicationModel.Package.Current.InstalledLocation;
                 var dataFolder = await local.GetFolderAsync("Attachments");
                 var storageFile = await dataFolder.GetFileAsync(fileName);
@@ -761,38 +761,42 @@ namespace Jirabox.Services
 
                 BugSenseHandler.Instance.LogException(exception, extras);
             }
-
-            Debug.Assert(response != null, "response != null");
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+          
+// ReSharper disable once PossibleNullReferenceException
+            if (response.StatusCode == HttpStatusCode.OK)
                 return true;
             return false;
         }
 
         private void CreateCustomeLiveTile(BitmapImage imageSource, string projectKey)
         {
-            WriteableBitmap b = new WriteableBitmap(173, 173);            
+            var b = new WriteableBitmap(173, 173);
 
-            var canvas = new Grid();
-            canvas.Width = b.PixelWidth;
-            canvas.Height = b.PixelHeight;
-            canvas.Background = new SolidColorBrush(Colors.LightGray);
-            canvas.HorizontalAlignment = HorizontalAlignment.Center;
-            canvas.VerticalAlignment = VerticalAlignment.Center;
+            var canvas = new Grid
+            {
+                Width = b.PixelWidth,
+                Height = b.PixelHeight,
+                Background = new SolidColorBrush(Colors.LightGray),
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            };
 
-            var image = new Image();
-            image.Height = 74;
-            image.Width = 74;
-            image.Margin = new Thickness(b.PixelWidth / 2 - 37, b.PixelHeight / 2 - 37, 0, 0);            
-            image.HorizontalAlignment = HorizontalAlignment.Center;
-            image.VerticalAlignment = VerticalAlignment.Center;
-            image.Source = imageSource;
+            var image = new Image
+            {
+                Height = 74,
+                Width = 74,
+                Margin = new Thickness(b.PixelWidth / 2 - 37, b.PixelHeight / 2 - 37, 0, 0),
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Source = imageSource
+            };
             canvas.Children.Add(image);
-            
+
             b.Render(canvas, null);
-            b.Invalidate(); //Draw bitmap
+            b.Invalidate();
 
             //Save bitmap as jpeg file in Isolated Storage
-            var imageFolder = @"\Shared\ShellContent";
+            const string imageFolder = @"\Shared\ShellContent";
             var fileName = string.Format("{0}.png", projectKey.Trim());
             using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
             {
