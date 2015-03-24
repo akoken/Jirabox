@@ -118,7 +118,7 @@ namespace Jirabox.Common
                 Alpha = 3;
         */
         private static int[] WBByteOrder = { 2, 1, 0, 3 };
-        private static Boolean WBBODetectionRun = false;
+        private static Boolean WBBODetectionRun;
 
         /// <summary>
         /// Detects the color order of a stored byte array.  Byte order may change between platforms, you should call this once before writting a PNG or if you have any issues with colors changing.
@@ -126,7 +126,7 @@ namespace Jirabox.Common
         public static void DetectWBByteOrder()
         {
             // We should only ever run the detection once (assuming it succeeded at least).
-            if (WBBODetectionRun == true)
+            if (WBBODetectionRun)
             {
                 return;
             }
@@ -209,12 +209,12 @@ namespace Jirabox.Common
             // Now set the byte order, if any of the values are still set to 4, something went wrong and return the default values.
             if( red == 4 || green == 4 || blue == 4 || trans == 4 )
             {
-                WBByteOrder = new int[] { 2, 1, 0, 3};
+                WBByteOrder = new[] { 2, 1, 0, 3};
             }
             else
             {
                 WBBODetectionRun = true;
-                WBByteOrder = new int[] { red, green, blue, trans };
+                WBByteOrder = new[] { red, green, blue, trans };
             }
         }
 
@@ -223,7 +223,7 @@ namespace Jirabox.Common
         /// </summary>
         /// <param name="image">The WriteableBitmap to work on.</param>
         /// <param name="stream">The destination file stream.</param>
-        public static void WritePNG(WriteableBitmap image, System.IO.Stream stream)
+        public static void WritePNG(WriteableBitmap image, Stream stream)
         {
             WritePNG(image, stream, -1);
         }
@@ -234,7 +234,7 @@ namespace Jirabox.Common
         /// <param name="image">The WriteableBitmap to work on.</param>
         /// <param name="stream">The destination file stream.</param>
         /// <param name="compression">Level of compression to use (-1=auto, 0=none, 1-100 is percentage).</param>
-        public static void WritePNG(WriteableBitmap image, System.IO.Stream stream, int compression)
+        public static void WritePNG(WriteableBitmap image, Stream stream, int compression)
         {
             // Set the global class variables for the image and stream.
             _image = image;
@@ -278,7 +278,7 @@ namespace Jirabox.Common
             else
             {
                 // Write the PNG with a desired compression level
-                WriteDataChunks( compression );
+                WriteDataChunks();
             }
 
             // Write out the end of the PNG.
@@ -320,7 +320,7 @@ namespace Jirabox.Common
         }
 
         // Currently only uncompressed PNG are supported, so just call the uncompressed method.
-        private static void WriteDataChunks( int compression )
+        private static void WriteDataChunks()
         {
             WriteDataChunksUncompressed();
         }
@@ -608,7 +608,7 @@ namespace Jirabox.Common
                 crcCode.addToCRC(data, length, (UInt32)offset);
             }
 
-            WriteInteger(_stream, (uint)crcCode.crc());
+            WriteInteger(_stream, crcCode.crc());
         }
 
         private static void WriteInteger(byte[] data, int offset, int value)

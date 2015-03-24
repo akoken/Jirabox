@@ -2,10 +2,10 @@
 using GalaSoft.MvvmLight.Command;
 using Jirabox.Common;
 using Jirabox.Core.Contracts;
-using Jirabox.Core.ExceptionExtension;
 using Jirabox.Resources;
 using System;
 using System.Threading;
+using Jirabox.Core.Exceptions;
 
 namespace Jirabox.ViewModel
 {

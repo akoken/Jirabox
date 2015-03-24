@@ -1,8 +1,8 @@
-﻿using Jirabox.ViewModel;
-using Microsoft.Phone.Controls;
+﻿using System.ComponentModel;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Navigation;
+using Jirabox.ViewModel;
+using Microsoft.Phone.Controls;
 
 namespace Jirabox.View
 {
@@ -22,17 +22,17 @@ namespace Jirabox.View
             vm.Initialize();      
         }
 
-        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        protected override void OnBackKeyPress(CancelEventArgs e)
         {            
             vm.CleanUp();
         }
 
-        private void ListPickerIssueTypes_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void ListPickerIssueTypes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {         
             vm.SelectedIssueTypeIndex = ListPickerIssueTypes.SelectedIndex;
         }
 
-        private void ListPickerPriorities_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void ListPickerPriorities_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {            
             vm.SelectedPriorityIndex = ListPickerPriorities.SelectedIndex;
         }      

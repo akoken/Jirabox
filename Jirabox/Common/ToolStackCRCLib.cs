@@ -199,7 +199,7 @@ namespace Jirabox.Common
     {
         private const int MOD_ADLER = 65521;
         private UInt32 AdlerA = 1;
-        private UInt32 AdlerB = 0;
+        private UInt32 AdlerB;
 
         /*
          * The Adler32 checksum code for use in zlib compression

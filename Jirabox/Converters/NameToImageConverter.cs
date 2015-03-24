@@ -17,7 +17,6 @@ namespace Jirabox.Converters
                 if (value == null) return null;
 
                 var filename = value.ToString().Replace(":", ".").Replace(" ", "");
-                byte[] data;
                 var bi = new BitmapImage();
 
                 lock (sync)
@@ -29,7 +28,7 @@ namespace Jirabox.Converters
 
                         using (var fs = isf.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                         {
-                            data = new byte[fs.Length];
+                            var data = new byte[fs.Length];
                             if (data.Length == 0) return null;
                             fs.Read(data, 0, data.Length);
                             using (var ms = new MemoryStream(data))

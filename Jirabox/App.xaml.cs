@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Resources;
 using System.Windows;
 using System.Windows.Markup;
+using System.Windows.Media;
 using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
-using Jirabox.Resources;
-using Jirabox.Model;
+using Windows.ApplicationModel.Activation;
+using Windows.Phone.Speech.VoiceCommands;
 using BugSense;
 using BugSense.Core.Model;
-using Jirabox.Services;
 using Jirabox.Common;
-using Windows.Phone.Speech.VoiceCommands;
-using System.Windows.Media;
+using Jirabox.Model;
+using Jirabox.Resources;
+using Jirabox.Services;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 
 namespace Jirabox
 {
@@ -55,7 +55,7 @@ namespace Jirabox
             if (Debugger.IsAttached)
             {
                 // Display the current frame rate counters.
-                Application.Current.Host.Settings.EnableFrameRateCounter = true;
+                Current.Host.Settings.EnableFrameRateCounter = true;
 
                 // Show the areas of the app that are being redrawn in each frame.
                 //Application.Current.Host.Settings.EnableRedrawRegions = true;
@@ -72,13 +72,13 @@ namespace Jirabox
             }
 
             //Set checkbox check color
-            (App.Current.Resources["PhoneRadioCheckBoxCheckBrush"] as SolidColorBrush).Color = (App.Current.Resources["JiraboxSolidColorBrush"] as SolidColorBrush).Color;
+            (Current.Resources["PhoneRadioCheckBoxCheckBrush"] as SolidColorBrush).Color = (Current.Resources["JiraboxSolidColorBrush"] as SolidColorBrush).Color;
 
         }
 
         // Code to execute when a contract activation such as a file open or save picker returns 
         // with the picked file or other return values
-        private void Application_ContractActivated(object sender, Windows.ApplicationModel.Activation.IActivatedEventArgs e)
+        private void Application_ContractActivated(object sender, IActivatedEventArgs e)
         {
         }
 
@@ -91,7 +91,7 @@ namespace Jirabox
             cacheService.ClearCache();
 
             //Clear image data
-            var cacheSetting = new IsolatedStorageProperty<bool>("ClearImageCache", false);
+            var cacheSetting = new IsolatedStorageProperty<bool>("ClearImageCache");
             if (cacheSetting.Value)
             {
                 StorageHelper.ClearImageCache();
@@ -159,7 +159,7 @@ namespace Jirabox
         #region Phone application initialization
 
         // Avoid double-initialization
-        private bool phoneApplicationInitialized = false;
+        private bool phoneApplicationInitialized;
 
         // Do not add any additional code to this method
         private void InitializePhoneApplication()
@@ -191,10 +191,10 @@ namespace Jirabox
             if (credential != null)
             {
                 IsLoggedIn = true;
-                App.ServerUrl = credential.ServerUrl;
-                App.UserName = credential.UserName;
-                App.Password = credential.Password;
-                App.BaseUrl = string.Format("{0}/rest/api/latest/", App.ServerUrl);
+                ServerUrl = credential.ServerUrl;
+                UserName = credential.UserName;
+                Password = credential.Password;
+                BaseUrl = string.Format("{0}/rest/api/latest/", ServerUrl);
                 RootFrame.Navigate(new Uri("/View/ProjectListView.xaml", UriKind.Relative));
             }
             else
@@ -234,7 +234,6 @@ namespace Jirabox
             // For UI consistency, clear the entire page stack
             while (RootFrame.RemoveBackEntry() != null)
             {
-                ; // do nothing
             }
         }
 

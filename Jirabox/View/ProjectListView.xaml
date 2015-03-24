@@ -116,7 +116,7 @@
             <phone:PanoramaItem Header="Projects"
                                 Orientation="Horizontal"
                                 Foreground="Black">
-                <phone:LongListSelector x:Name="projectList"
+                <phone:LongListSelector x:Name="ProjectList"
                                         JumpListStyle="{StaticResource ProjectsJumpListStyle}"
                                         Background="Transparent"
                                         GroupHeaderTemplate="{StaticResource ProjectsGroupHeaderTemplate}"
@@ -130,7 +130,7 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Tap">
                             <command:EventToCommand PassEventArgsToCommand="False"
-                                                    CommandParameter="{Binding Path=SelectedItem, ElementName=projectList}"
+                                                    CommandParameter="{Binding Path=SelectedItem, ElementName=ProjectList}"
                                                     Command="{Binding ProjectDetailCommand}" />
                         </i:EventTrigger>
                         <ec:DataTrigger Binding="{Binding IsGroupingEnabled}"
@@ -282,7 +282,7 @@
                                    Margin="12,0,0,0"
                                    FontSize="45" />
                         <ScrollViewer>
-                            <phone:LongListSelector Name="favouriteList" ItemsSource="{Binding Favourites}"
+                            <phone:LongListSelector Name="FavouriteList" ItemsSource="{Binding Favourites}"
                                                     Height="354"
                                                     toolkit:TiltEffect.IsTiltEnabled="True">
                                 <phone:LongListSelector.ItemTemplate>
@@ -301,7 +301,7 @@
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Tap">
                                         <command:EventToCommand PassEventArgsToCommand="False"
-                                                                CommandParameter="{Binding Path=SelectedItem, ElementName=favouriteList}"
+                                                                CommandParameter="{Binding Path=SelectedItem, ElementName=FavouriteList}"
                                                                 Command="{Binding SearchWithFavouriteCommand}" />
                                     </i:EventTrigger>                                   
                                 </i:Interaction.Triggers>

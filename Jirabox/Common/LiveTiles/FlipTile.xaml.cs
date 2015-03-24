@@ -8,10 +8,6 @@ namespace Jirabox.Common.LiveTiles
 {    
     public partial class FlipTile : UserControl
     {
-        Random random = null;
-
-
-
         public ImageSource IconSource
         {
             get { return (ImageSource)GetValue(IconSourceProperty); }
@@ -32,7 +28,7 @@ namespace Jirabox.Common.LiveTiles
 
         // Using a DependencyProperty as the backing store for Title.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TitleProperty =
-            DependencyProperty.Register("Title", typeof(string), typeof(FlipTile), new PropertyMetadata(string.Empty, new PropertyChangedCallback(OnTitleChanged)));
+            DependencyProperty.Register("Title", typeof(string), typeof(FlipTile), new PropertyMetadata(string.Empty, OnTitleChanged));
 
 
         private static void OnTitleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -50,7 +46,7 @@ namespace Jirabox.Common.LiveTiles
 
         // Using a DependencyProperty as the backing store for Message.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty MessageProperty =
-            DependencyProperty.Register("Message", typeof(string), typeof(FlipTile), new PropertyMetadata(string.Empty, new PropertyChangedCallback(OnMessageChanged)));
+            DependencyProperty.Register("Message", typeof(string), typeof(FlipTile), new PropertyMetadata(string.Empty, OnMessageChanged));
 
         private static void OnMessageChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -61,7 +57,7 @@ namespace Jirabox.Common.LiveTiles
         public FlipTile()
         {
             InitializeComponent();
-            random = new Random();
+            new Random();
             Storyboard anim = (Storyboard)FindName("liveTileAnim1");            
             anim.Begin();
         }

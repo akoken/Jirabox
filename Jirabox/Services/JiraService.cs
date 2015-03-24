@@ -4,7 +4,6 @@ using Jirabox.Common;
 using Jirabox.Common.Enumerations;
 using Jirabox.Core;
 using Jirabox.Core.Contracts;
-using Jirabox.Core.ExceptionExtension;
 using Jirabox.Model;
 using Jirabox.Resources;
 using Newtonsoft.Json;
@@ -24,6 +23,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Windows.System;
+using Jirabox.Core.Exceptions;
 
 namespace Jirabox.Services
 {
@@ -483,8 +483,7 @@ namespace Jirabox.Services
             HttpResponseMessage response = null;
             var requestUrl = string.Format("{0}{1}/{2}/comment", App.BaseUrl, JiraRequestType.Issue.ToString().ToLower(CultureInfo.InvariantCulture), issueKey);
 
-            var commentRequest = new AddCommentRequest();
-            commentRequest.Body = comment;
+            var commentRequest = new AddCommentRequest {Body = comment};
 
             var data = JsonConvert.SerializeObject(commentRequest);
             try
