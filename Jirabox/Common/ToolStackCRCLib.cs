@@ -77,12 +77,12 @@ namespace Jirabox.Common
         /// </summary>
         public void makeCRCTable()
         {
-            UInt32 c;
-            UInt32 n, k;
+            UInt32 n;
 
             for (n = 0; n < 256; n++)
             {
-                c = n;
+                var c = n;
+                UInt32 k;
                 for (k = 0; k < 8; k++)
                 {
                     if ((c & (UInt32)1) == 1)

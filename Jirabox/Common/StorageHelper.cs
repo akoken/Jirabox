@@ -81,7 +81,7 @@ namespace Jirabox.Common
             {
                 if (!local.DirectoryExists("Images")) return;
 
-                var pattern = @"Images\*";
+                const string pattern = @"Images\*";
                 var files = local.GetFileNames(pattern);
 
                 foreach (var file in files)
