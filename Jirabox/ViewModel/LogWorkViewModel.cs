@@ -1,11 +1,11 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System.Threading.Tasks;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Jirabox.Core;
 using Jirabox.Core.Contracts;
 using Jirabox.Resources;
 using System;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Jirabox.ViewModel
 {
@@ -136,7 +136,7 @@ namespace Jirabox.ViewModel
             this.navigationService = navigationService;
             this.jiraService = jiraService;
             this.dialogService = dialogService;    
-            LogWorkCommand = new RelayCommand(async () => await LogWork());       
+            LogWorkCommand = new RelayCommand(async()=>await LogWork());       
         }
 
         public void Initialize()

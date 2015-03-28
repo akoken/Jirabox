@@ -91,7 +91,7 @@ namespace Jirabox.Common.Extensions
         /// <summary>
         /// Whether the animation just completed was for a 'pause' or not
         /// </summary>
-        static bool wasPauseAnimation = false;
+        static bool wasPauseAnimation;
 
         /// <summary>
         /// Whether to use a slightly more accurate (but slightly slower) tilt animation easing function
@@ -170,7 +170,7 @@ namespace Jirabox.Common.Extensions
             if (target is FrameworkElement)
             {
                 // Add / remove the event handler if necessary
-                if ((bool)args.NewValue == true)
+                if ((bool)args.NewValue)
                 {
                     (target as FrameworkElement).ManipulationStarted += TiltEffect_ManipulationStarted;
                 }
@@ -381,7 +381,7 @@ namespace Jirabox.Common.Extensions
         /// <summary>
         /// Creates the tilt return storyboard (if not already created) and targets it to the projection
         /// </summary>
-        /// <param name="projection">the projection that should be the target of the animation</param>
+        /// <param name="element"></param>
         static void PrepareTiltReturnStoryboard(FrameworkElement element)
         {
 

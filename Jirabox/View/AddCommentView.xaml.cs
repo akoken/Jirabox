@@ -1,8 +1,6 @@
-﻿using Jirabox.ViewModel;
+﻿using System.Windows.Navigation;
+using Jirabox.ViewModel;
 using Microsoft.Phone.Controls;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Navigation;
 
 namespace Jirabox.View
 {

@@ -77,12 +77,12 @@ namespace Jirabox.Common
         /// </summary>
         public void makeCRCTable()
         {
-            UInt32 c;
-            UInt32 n, k;
+            UInt32 n;
 
             for (n = 0; n < 256; n++)
             {
-                c = n;
+                var c = n;
+                UInt32 k;
                 for (k = 0; k < 8; k++)
                 {
                     if ((c & (UInt32)1) == 1)
@@ -199,7 +199,7 @@ namespace Jirabox.Common
     {
         private const int MOD_ADLER = 65521;
         private UInt32 AdlerA = 1;
-        private UInt32 AdlerB = 0;
+        private UInt32 AdlerB;
 
         /*
          * The Adler32 checksum code for use in zlib compression

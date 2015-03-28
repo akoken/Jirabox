@@ -44,6 +44,32 @@
                         <ColumnDefinition Width="58*" />
                         <ColumnDefinition Width="170*" />
                     </Grid.ColumnDefinitions>
+                    <TextBlock Text="v2.9.1.1"
+                               Style="{StaticResource PhoneTextNormalStyle}"
+                               FontSize="24"
+                               FontWeight="SemiBold"
+                               Foreground="Black"
+                               Grid.Column="0" />
+                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                               FontSize="24"
+                               Foreground="Black"
+                               Text="- Minor bug fixes"
+                               Grid.Row="1"
+                               Grid.Column="0"
+                               TextWrapping="Wrap"
+                               Grid.ColumnSpan="2" />
+                </Grid>
+                <Grid Margin="0,30,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="58*" />
+                        <ColumnDefinition Width="170*" />
+                    </Grid.ColumnDefinitions>
                     <TextBlock Text="v2.9"
                                Style="{StaticResource PhoneTextNormalStyle}"
                                FontSize="24"

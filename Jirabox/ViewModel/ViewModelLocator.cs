@@ -12,6 +12,7 @@ namespace Jirabox.ViewModel
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             SimpleIoc.Default.Register<IHttpManager, HttpManager>();
+            SimpleIoc.Default.Register<IJsonHttpClient, JsonHttpClient>();
             SimpleIoc.Default.Register<IJiraService, JiraService>();
             SimpleIoc.Default.Register<INavigationService, NavigationService>();
             SimpleIoc.Default.Register<IDialogService, DialogService>();

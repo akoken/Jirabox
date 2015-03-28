@@ -8,7 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-
 namespace Jirabox.Resources {
     using System;
     
@@ -89,7 +88,7 @@ namespace Jirabox.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A Jira client for Windows Phone 8..
+        ///   Looks up a localized string similar to A Jira client application for Windows Phone 8.1.
         /// </summary>
         public static string ApplicationDescription {
             get {
@@ -105,14 +104,12 @@ namespace Jirabox.Resources {
                 return ResourceManager.GetString("ApplicationEmail", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to http://www.windowsphone.com/s?appid=d1413cdb-ea8f-4fba-b3b5-0d776f69b8bb.
         /// </summary>
-        public static string ApplicationStoreUrl
-        {
-            get
-            {
+        public static string ApplicationStoreUrl {
+            get {
                 return ResourceManager.GetString("ApplicationStoreUrl", resourceCulture);
             }
         }
@@ -125,14 +122,12 @@ namespace Jirabox.Resources {
                 return ResourceManager.GetString("ApplicationTitle", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Attachment cache cleared..
         /// </summary>
-        public static string AttachmentCacheClearedMessage
-        {
-            get
-            {
+        public static string AttachmentCacheClearedMessage {
+            get {
                 return ResourceManager.GetString("AttachmentCacheClearedMessage", resourceCulture);
             }
         }
@@ -163,20 +158,18 @@ namespace Jirabox.Resources {
                 return ResourceManager.GetString("CreateIssueErrorMessage", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar to Opps! Something went wrong. Unable to get project detail.
+        ///   Looks up a localized string similar to Please choose an issue type..
         /// </summary>
-        public static string CreatingIssueMessage
-        {
-            get
-            {
-                return ResourceManager.GetString("CreatingIssueMessage", resourceCulture);
+        public static string CreateIssueIssueTypeValidationErrorMessage {
+            get {
+                return ResourceManager.GetString("CreateIssueIssueTypeValidationErrorMessage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Opps! Something went wrong. Unable to get project detail.
+        ///   Looks up a localized string similar to Opps! Something went wrong. Unable to get project details..
         /// </summary>
         public static string CreateIssueNullProjectMessage {
             get {
@@ -185,7 +178,16 @@ namespace Jirabox.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You must specify a summary of the issue..
+        ///   Looks up a localized string similar to Please choose a priority..
+        /// </summary>
+        public static string CreateIssuePriorityValidationErrorMessage {
+            get {
+                return ResourceManager.GetString("CreateIssuePriorityValidationErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please text a summary..
         /// </summary>
         public static string CreateIssueSummaryValidationErrorMessage {
             get {
@@ -203,6 +205,15 @@ namespace Jirabox.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creating issue....
+        /// </summary>
+        public static string CreatingIssueMessage {
+            get {
+                return ResourceManager.GetString("CreatingIssueMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Done.
         /// </summary>
         public static string Done {
@@ -210,26 +221,13 @@ namespace Jirabox.Resources {
                 return ResourceManager.GetString("Done", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Downloading....
         /// </summary>
-        public static string DownloadingMessage
-        {
-            get
-            {
+        public static string DownloadingMessage {
+            get {
                 return ResourceManager.GetString("DownloadingMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Getting issue details....
-        /// </summary>
-        public static string GettingIssueDetailsMessage
-        {
-            get
-            {
-                return ResourceManager.GetString("GettingIssueDetailsMessage", resourceCulture);
             }
         }
         
@@ -288,7 +286,16 @@ namespace Jirabox.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Image cache cleared..
+        ///   Looks up a localized string similar to Getting issue details....
+        /// </summary>
+        public static string GettingIssueDetailsMessage {
+            get {
+                return ResourceManager.GetString("GettingIssueDetailsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image cache cleaned..
         /// </summary>
         public static string ImageCacheClearedMessage {
             get {
@@ -324,21 +331,19 @@ namespace Jirabox.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sorry, something went wrong. We couldn&apos;t get issue key..
+        ///   Looks up a localized string similar to Sorry, something went wrong. We could not get the issue key..
         /// </summary>
         public static string IssueKeyNotFoundMessage {
             get {
                 return ResourceManager.GetString("IssueKeyNotFoundMessage", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Loading....
         /// </summary>
-        public static string LoadingMessage
-        {
-            get
-            {
+        public static string LoadingMessage {
+            get {
                 return ResourceManager.GetString("LoadingMessage", resourceCulture);
             }
         }
@@ -407,7 +412,7 @@ namespace Jirabox.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Worked time cannot be zero..
+        ///   Looks up a localized string similar to Worked time cannot be null..
         /// </summary>
         public static string LogWorkLoggedTimeZeroErrorMessage {
             get {
@@ -443,6 +448,15 @@ namespace Jirabox.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, we could not get navigation parameter. Please try again..
+        /// </summary>
+        public static string NavigationParameterIsNullError {
+            get {
+                return ResourceManager.GetString("NavigationParameterIsNullError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LeftToRight.
         /// </summary>
         public static string ResourceFlowDirection {
@@ -457,17 +471,6 @@ namespace Jirabox.Resources {
         public static string ResourceLanguage {
             get {
                 return ResourceManager.GetString("ResourceLanguage", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Sorry, we could not get navigation parameter. Please try again..
-        /// </summary>
-        public static string NavigationParameterIsNullError
-        {
-            get
-            {
-                return ResourceManager.GetString("NavigationParameterIsNullError", resourceCulture);
             }
         }
         
@@ -506,17 +509,15 @@ namespace Jirabox.Resources {
                 return ResourceManager.GetString("UnhandledErrorMessage", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to http://jirabox.uservoice.com.
         /// </summary>
-        public static string UserVoiceUrl
-        {
+        public static string UserVoiceUrl {
             get {
                 return ResourceManager.GetString("UserVoiceUrl", resourceCulture);
             }
         }
-        
         
         /// <summary>
         ///   Looks up a localized string similar to Warning.

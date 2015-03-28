@@ -64,7 +64,7 @@ namespace Jirabox.Tests.ViewModel
         {
             //Arrange
             navigationServiceMock.Setup(x => x.GoBack()).Verifiable();
-            jiraServiceMock.Setup(x => x.CreateIssue(It.IsAny<CreateIssueRequest>())).Returns(Task.FromResult(new CreateIssueResponse {Key = "ALM"}));
+            jiraServiceMock.Setup(x => x.CreateIssue(It.IsAny<CreateIssueRequest>())).Returns(new CreateIssueResponse {Key = "ALM"});
             createIssueViewModel.Project = new Project {Key = "ALM"};
             createIssueViewModel.Description = "Application Lifecycle Management";
             createIssueViewModel.Summary = "Application Lifecycle Management";
@@ -116,7 +116,7 @@ namespace Jirabox.Tests.ViewModel
             createIssueViewModel.Summary = string.Empty;
 
             //Act
-            var actual = createIssueViewModel.ValidateParameters();
+            var actual = createIssueViewModel.ValidateSummary();
 
             //Assert
             Assert.IsTrue(actual == expected);
@@ -130,7 +130,7 @@ namespace Jirabox.Tests.ViewModel
             createIssueViewModel.Summary = "This is a valid summary.";
 
             //Act
-            var actual = createIssueViewModel.ValidateParameters();
+            var actual = createIssueViewModel.ValidateSummary();
 
             //Assert
             Assert.IsTrue(actual == expected);

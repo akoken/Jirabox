@@ -14,7 +14,7 @@ namespace Jirabox.View
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             var vm = DataContext as SearchResultViewModel;
-            if (e.NavigationMode == System.Windows.Navigation.NavigationMode.New)
+            if (e.NavigationMode == NavigationMode.New)
             {
                 if (App.IsLoggedIn)
                 {
@@ -34,8 +34,6 @@ namespace Jirabox.View
                                     string searchText = NavigationContext.QueryString["dictatedSearchTerms"];                                    
                                     vm.SetNavigationSearchText(searchText);
                                 }break;
-                            default:
-                                break;
                         }
                     }
 
