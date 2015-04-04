@@ -16,7 +16,8 @@ namespace Jirabox.Services
         public async Task<TR> Post<T, TR>(Uri requestUri, T data, string username, string password, HttpStatusCode expectedStatus, CancellationTokenSource cancellationTokenSource)
         {
             var serializedData = JsonConvert.SerializeObject(data);
-            var result = await Post(requestUri, serializedData, username, password, HttpStatusCode.OK, cancellationTokenSource);
+            var result = await Post(requestUri, serializedData, username, password, expectedStatus, cancellationTokenSource);
+
             return JsonConvert.DeserializeObject<TR>(result);
         }
 
@@ -69,6 +70,7 @@ namespace Jirabox.Services
 
                 var result = response.Content.ReadAsStringAsync().Result;
                 Ensure(response, result, expectedStatusCode);
+
                 return new OperationResult { IsValid = true };
             }
         }
@@ -76,6 +78,7 @@ namespace Jirabox.Services
         public async Task<TR> Get<TR>(Uri requestUri, string username, string password, CancellationTokenSource cancellationTokenSource)
         {
             string result = await Get(requestUri, username, password, cancellationTokenSource);
+
             return JsonConvert.DeserializeObject<TR>(result);
         }
 
@@ -118,6 +121,7 @@ namespace Jirabox.Services
         {
             string mergedCredentials = string.Format("{0}:{1}", username, password);
             byte[] byteCredentials = Encoding.UTF8.GetBytes(mergedCredentials);
+
             return Convert.ToBase64String(byteCredentials);
         }
     }

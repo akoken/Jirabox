@@ -121,8 +121,8 @@ namespace Jirabox.ViewModel
             if (Project == null) return;
 
             const string imageFolder = @"\Shared\ShellContent";
-            var projectKey = string.Format("{0}.png", Project.Key.Trim());
-            var avatarPath = Path.Combine(imageFolder, projectKey);
+            var projectKey = Project.Key.Trim();
+            var avatarPath = Path.Combine(imageFolder, string.Format("{0}.png", projectKey));
             var tileUri = new Uri(string.Format("/View/ProjectDetailView.xaml?Key={0}", projectKey), UriKind.Relative);
 
             //Create project tile

@@ -156,7 +156,6 @@ namespace Jirabox.Services
                 HttpResponseMessage response = await httpManager.GetAsync(requestUrl, true, username, password);
                 response.EnsureSuccessStatusCode();
 
-
                 var responseStr = await response.Content.ReadAsStringAsync();
                 issue = JsonConvert.DeserializeObject<Issue>(responseStr);
 
