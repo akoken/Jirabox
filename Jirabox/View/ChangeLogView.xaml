@@ -44,7 +44,7 @@
                         <ColumnDefinition Width="58*" />
                         <ColumnDefinition Width="170*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="v2.9.1.1"
+                    <TextBlock Text="v3.0"
                                Style="{StaticResource PhoneTextNormalStyle}"
                                FontSize="24"
                                FontWeight="SemiBold"
@@ -53,8 +53,16 @@
                     <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
                                FontSize="24"
                                Foreground="Black"
-                               Text="- Minor bug fixes"
+                               Text="- Upgraded to Windows Phone 8.1"
                                Grid.Row="1"
+                               Grid.Column="0"
+                               TextWrapping="Wrap"
+                               Grid.ColumnSpan="2" />
+                    <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
+                               FontSize="24"
+                               Foreground="Black"
+                               Text="- Minor bug fixes"
+                               Grid.Row="2"
                                Grid.Column="0"
                                TextWrapping="Wrap"
                                Grid.ColumnSpan="2" />
