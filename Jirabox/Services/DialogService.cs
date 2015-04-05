@@ -4,6 +4,7 @@ using Microsoft.Phone.Controls;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Jirabox.Services
 {
@@ -11,7 +12,14 @@ namespace Jirabox.Services
     {
         public void ShowDialog(string message, string caption)
         {
-            MessageBox.Show(message, caption, MessageBoxButton.OK);
+            Messenger.Default.Send(false, "TaskBarVisibility");
+
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                var messageBoxResult = MessageBox.Show(message, caption, MessageBoxButton.OK);
+                if (messageBoxResult == MessageBoxResult.OK)
+                    Messenger.Default.Send(true, "TaskBarVisibility");
+            });
         }     
 
         public CustomMessageBox ShowCommentDialog(Model.Comment comment)

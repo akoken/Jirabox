@@ -16,37 +16,10 @@ namespace Jirabox.ViewModel
         private readonly IDialogService dialogService;
 
         private CancellationTokenSource cancellationTokenSource;
-        private bool isTaskbarVisible = true;
 
         public RelayCommand LogWorkCommand { get; private set; }
 
-        private bool isDataLoaded;
-        public bool IsDataLoaded
-        {
-            get { return isDataLoaded; }
-            set
-            {
-                if (isDataLoaded != value)
-                {
-                    isDataLoaded = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        public bool IsTaskbarVisible
-        {
-            get { return isTaskbarVisible; }
-            set
-            {
-                if (isTaskbarVisible != value)
-                {
-                    isTaskbarVisible = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
+     
         private DateTime startDate;
         public DateTime StartDate
         {
@@ -140,8 +113,8 @@ namespace Jirabox.ViewModel
         }
 
         public void Initialize()
-        {                      
-            IsDataLoaded = true;
+        {
+            MessengerInstance.Send(false, "TaskBarVisibility");
             cancellationTokenSource = new CancellationTokenSource();
            
             StartDate = DateTime.Now;
@@ -158,10 +131,8 @@ namespace Jirabox.ViewModel
             
             OperationResult validationResult = ValidateInputs(issueKey);
             if (!validationResult.IsValid)
-            {
-                IsTaskbarVisible = false;
+            {             
                 dialogService.ShowDialog(validationResult.ErrorMessage, AppResources.Error);
-                IsTaskbarVisible = true;
                 return;
             }
 
@@ -171,15 +142,14 @@ namespace Jirabox.ViewModel
                 {                                        
                     var formattedDate = FormatDate(StartDate);                  
                     var timeSpent = String.Format("{0}h {1}m", Hour, minute);
-                    IsDataLoaded = false;
+                    
+                    MessengerInstance.Send(true, "TaskBarVisibility");
                     var isLogged = await jiraService.LogWork(issueKey, formattedDate, timeSpent, Comment);
-                    IsDataLoaded = true;
+                    MessengerInstance.Send(false, "TaskBarVisibility");
 
                     if (!isLogged)
                     {
-                        IsTaskbarVisible = false;
                         dialogService.ShowDialog(AppResources.LogWorkError, AppResources.Error);
-                        IsTaskbarVisible = true;
                         return;
                     }
                     StartDate = StartDate.AddDays(1);
@@ -189,20 +159,19 @@ namespace Jirabox.ViewModel
             {                
                 var formattedDate = FormatDate(StartDate);
                 var timeSpent = String.Format("{0}h {1}m", Hour, minute);
-                IsDataLoaded = false;
+
+                MessengerInstance.Send(true, "TaskBarVisibility");
                 var isLogged = await jiraService.LogWork(issueKey, formattedDate, timeSpent, Comment, cancellationTokenSource);
-                IsDataLoaded = true;
+                MessengerInstance.Send(false, "TaskBarVisibility");
+
                 if (!isLogged)
                 {
-                    IsTaskbarVisible = false;
                     dialogService.ShowDialog(AppResources.LogWorkError, AppResources.Error);
-                    IsTaskbarVisible = true;
                     return;
                 }
             }
-            IsTaskbarVisible = false;
+
             dialogService.ShowDialog(AppResources.LogWorkSuccess, AppResources.Done);
-            IsTaskbarVisible = true;
             navigationService.GoBack();
         }
 
@@ -216,7 +185,7 @@ namespace Jirabox.ViewModel
         {          
             var timeOffset = new DateTimeOffset(DateTime.Now).Offset;
             var offsetStr = timeOffset.ToString();
-// ReSharper disable once StringLastIndexOfIsCultureSpecific.1
+            // ReSharper disable once StringLastIndexOfIsCultureSpecific.1
             string formattedTimeOffset = offsetStr.Remove(offsetStr.LastIndexOf(":"), 3);
 
             if (timeOffset.Hours > -1)

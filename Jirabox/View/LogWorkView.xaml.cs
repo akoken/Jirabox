@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Windows.Navigation;
+using GalaSoft.MvvmLight.Messaging;
 using Jirabox.ViewModel;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 
 namespace Jirabox.View
 {
@@ -10,6 +12,11 @@ namespace Jirabox.View
         public LogWorkView()
         {
             InitializeComponent();
+            Messenger.Default.Register<bool>(this, "TaskBarVisibility", message =>
+            {
+                SystemTray.IsVisible = message;
+                ProgressIndicator.IsVisible = message;
+            });
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

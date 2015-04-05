@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using GalaSoft.MvvmLight.Messaging;
 using Jirabox.ViewModel;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 
 namespace Jirabox.View
 {
@@ -12,7 +14,14 @@ namespace Jirabox.View
         public CreateIssueView()
         {
             InitializeComponent();
-            vm = this.DataContext as CreateIssueViewModel;     
+            
+            vm = this.DataContext as CreateIssueViewModel;
+            
+            Messenger.Default.Register<bool>(this, "TaskBarVisibility", message =>
+            {
+                SystemTray.IsVisible = message;                
+                ProgressIndicator.IsVisible = message;
+            });
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

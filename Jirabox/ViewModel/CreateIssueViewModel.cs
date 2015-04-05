@@ -14,46 +14,19 @@ namespace Jirabox.ViewModel
         private readonly IJiraService jiraService;
         private readonly IDialogService dialogService;
         private readonly INavigationService navigationService;
-
-        private bool isDataLoaded;
+        
         private string loadingText;
         private string summary;
         private string description;        
         private int selectedPriorityIndex = -1;
-        private int selectedIssueTypeIndex = -1;
-        private bool isTaskbarVisible = true;
+        private int selectedIssueTypeIndex = -1;      
 
         private ObservableCollection<IssueType> issueTypes;
         private ObservableCollection<Priority> priorityList;
         private Project project;
 
         public RelayCommand CreateIssueCommand { get; private set; }
-        public RelayCommand CancelCommand { get; private set; }
-        public bool IsDataLoaded
-        {
-            get { return isDataLoaded; }
-            set
-            {
-                if (isDataLoaded != value)
-                {
-                    isDataLoaded = value;
-                    RaisePropertyChanged(() => IsDataLoaded);
-                }
-            }
-        }
-
-        public bool IsTaskbarVisible
-        {
-            get { return isTaskbarVisible; }
-            set
-            {
-                if (isTaskbarVisible != value)
-                {
-                    isTaskbarVisible = value;
-                    RaisePropertyChanged(() => IsTaskbarVisible);
-                }
-            }
-        }
+        public RelayCommand CancelCommand { get; private set; }       
 
         public string LoadingText
         {
@@ -189,18 +162,18 @@ namespace Jirabox.ViewModel
         {
             Project = navigationService.GetNavigationParameter() as Project;
             if (Project == null)
-            {
-                IsTaskbarVisible = false;
-                dialogService.ShowDialog(AppResources.CreateIssueNullProjectMessage, AppResources.Error);
-                IsTaskbarVisible = true;
-                IsDataLoaded = true;
+            {                
+                dialogService.ShowDialog(AppResources.CreateIssueNullProjectMessage, AppResources.Error);             
                 return;
             }
+
             CreateIssueCommand.RaiseCanExecuteChanged();
+
             IssueTypes = await jiraService.GetIssueTypesOfProject(Project.Key);
             PriorityList = await jiraService.GetPriorities();
+
             LoadingText = AppResources.LoadingMessage;
-            IsDataLoaded = true;
+            MessengerInstance.Send(false, "TaskBarVisibility");
         }
 
         public void CleanUp()
@@ -224,24 +197,19 @@ namespace Jirabox.ViewModel
             request.Fields.Summary = Summary;
             LoadingText = AppResources.CreatingIssueMessage;
 
-            IsDataLoaded = false;
+            MessengerInstance.Send(true, "TaskBarVisibility");
             var createdIssue = await jiraService.CreateIssue(request);
+            MessengerInstance.Send(false, "TaskBarVisibility");
             if (createdIssue == null)
-            {
-                IsTaskbarVisible = false;
-                dialogService.ShowDialog(AppResources.CreateIssueErrorMessage, AppResources.Error);
-                IsTaskbarVisible = true;
+            {                
+                dialogService.ShowDialog(AppResources.CreateIssueErrorMessage, AppResources.Error);                
             }
             else
-            {
-                IsTaskbarVisible = false;
-                dialogService.ShowDialog(string.Format(AppResources.IssueCreatedMessage, createdIssue.Key), AppResources.Done);
-                IsTaskbarVisible = true;
+            {                
+                dialogService.ShowDialog(string.Format(AppResources.IssueCreatedMessage, createdIssue.Key), AppResources.Done);                
                 MessengerInstance.Send(true, AppResources.CreateIssueToken);
                 navigationService.GoBack();
-            }
-
-            IsDataLoaded = true;
+            }            
         }
 
         private void NavigateToBack()
@@ -253,10 +221,8 @@ namespace Jirabox.ViewModel
         public bool ValidateSummary()
         {
             if (!string.IsNullOrEmpty(Summary)) return true;
-
-            IsTaskbarVisible = false;
+            
             dialogService.ShowDialog(AppResources.CreateIssueSummaryValidationErrorMessage, AppResources.Warning);
-            IsTaskbarVisible = true;
 
             return false;
         }
@@ -264,10 +230,8 @@ namespace Jirabox.ViewModel
         public bool ValidateIssueTypes()
         {
             if (IssueTypes.Any()) return true;
-
-            IsTaskbarVisible = false;
+          
             dialogService.ShowDialog(AppResources.CreateIssueIssueTypeValidationErrorMessage, AppResources.Warning);
-            IsTaskbarVisible = true;
 
             return false;
         }
@@ -275,10 +239,8 @@ namespace Jirabox.ViewModel
         public bool ValidatePriorities()
         {
             if (PriorityList.Any()) return true;
-
-            IsTaskbarVisible = false;
+           
             dialogService.ShowDialog(AppResources.CreateIssuePriorityValidationErrorMessage, AppResources.Warning);
-            IsTaskbarVisible = true;
 
             return false;
         }

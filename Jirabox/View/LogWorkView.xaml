@@ -15,12 +15,13 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"    
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
-    shell:SystemTray.IsVisible="{Binding IsTaskbarVisible}"
+    shell:SystemTray.IsVisible="True"
     shell:SystemTray.ForegroundColor="Black"
     shell:SystemTray.Opacity="0">
 
     <shell:SystemTray.ProgressIndicator>
-        <shell:ProgressIndicator IsIndeterminate="True"
+        <shell:ProgressIndicator x:Name="ProgressIndicator"
+                                 IsIndeterminate="True"
                                  IsVisible="{Binding IsDataLoaded, Converter={StaticResource InvertBooleanPropertyConverter}}"
                                  Text="Logging work..." />
     </shell:SystemTray.ProgressIndicator>
