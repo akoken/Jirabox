@@ -33,7 +33,10 @@ namespace Jirabox.Services
         private readonly IJsonHttpClient jsonClient;
         private readonly IDialogService dialogService;
         private readonly ICacheService cacheService;
+
         public CancellationTokenSource TokenSource;
+
+        private static readonly object Sync = new object();
 
         public JiraService(IHttpManager httpManager, IJsonHttpClient jsonClient, IDialogService dialogService, ICacheService cacheDataService)
         {
@@ -545,15 +548,15 @@ namespace Jirabox.Services
         {
             try
             {
-                using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
+                using (var storage = IsolatedStorageFile.GetUserStoreForApplication())
                 {
-                    if (!isf.DirectoryExists("Images"))
+                    if (!storage.DirectoryExists("Images"))
                     {
-                        isf.CreateDirectory("Images");
+                        storage.CreateDirectory("Images");
                     }
 
                     var path = Path.Combine("Images", filename.Replace(":", ".").Replace(" ", "") + ".png");
-                    if (isf.FileExists(path)) return;
+                    if (storage.FileExists(path)) return;
 
                     var result = await httpManager.GetAsync(url, true, App.UserName, App.Password);
                     if (result.IsSuccessStatusCode)
@@ -566,12 +569,15 @@ namespace Jirabox.Services
                             image.SetSource(stream);
                         }
 
-                        var wb = new WriteableBitmap(image);
-
-                        using (var fs = isf.CreateFile(path))
+                        var writeableBitmap = new WriteableBitmap(image);
+                        lock (Sync)
                         {
-                            PngWriter.WritePNG(wb, fs);
+                            using (var fs = storage.CreateFile(path))
+                            {
+                                PngWriter.WritePNG(writeableBitmap, fs);
+                            }
                         }
+
                         if (isProjectAvatar)
                         {
                             CreateCustomeLiveTile(image, filename);
