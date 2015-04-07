@@ -4,6 +4,7 @@ using Jirabox.ViewModel;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Windows.Navigation;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Jirabox.View
 {
@@ -13,6 +14,11 @@ namespace Jirabox.View
         {
             InitializeComponent();
             CommentList.SelectionChanged += CommentList_SelectionChanged;
+
+            Messenger.Default.Register<bool>(this, "TaskBarVisibility", message =>
+            {
+                SystemTray.IsVisible = message;              
+            });
         }
 
         void CommentList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -21,16 +27,22 @@ namespace Jirabox.View
             if (selectedComment == null)
                 return;
 
-            var dialogService = new DialogService();
-            SystemTray.IsVisible = false;
-            dialogService.ShowCommentDialog(selectedComment);
-            CommentList.SelectedItem = null;
-            SystemTray.IsVisible = true;
+            Messenger.Default.Send(false, "TaskBarVisibility");
+
+            var dialogService = new DialogService();            
+            var messageBox = dialogService.ShowCommentDialog(selectedComment);
+            messageBox.Dismissed += messageBox_Dismissed;
+            CommentList.SelectedItem = null;            
+        }
+
+        void messageBox_Dismissed(object sender, DismissedEventArgs e)
+        {
+            Messenger.Default.Send(true, "TaskBarVisibility");
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var vm = this.DataContext as IssueDetailViewModel;
+            var vm = DataContext as IssueDetailViewModel;
             if (NavigationContext.QueryString.ContainsKey("param"))
             {
                 var issueKey = NavigationContext.QueryString["param"];

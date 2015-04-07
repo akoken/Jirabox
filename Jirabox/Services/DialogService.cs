@@ -74,7 +74,7 @@ namespace Jirabox.Services
         }
 
         public CustomMessageBox ShowPromptDialog(string warningMessage, string confirmMessage, string caption)
-        {
+        {           
             var messageBox = new CustomMessageBox();
             var warningTextBlock = new TextBlock
             {
@@ -93,13 +93,15 @@ namespace Jirabox.Services
             var rootPanel = new StackPanel();
             rootPanel.Children.Add(warningTextBlock);
             rootPanel.Children.Add(confirmTextBlock);
-
+            
             messageBox.Caption = caption;
             messageBox.Content = rootPanel;
             messageBox.LeftButtonContent = "OK";
             messageBox.RightButtonContent = "Cancel";
+            
             messageBox.Show();
+
             return messageBox;
-        }
+        }     
     }
 }
