@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2014/deployment" AppPlatformVersion="8.1">
   <DefaultLanguage xmlns="" code="en-US" />
-  <App xmlns="" ProductID="{00671c99-305d-4b36-ae3f-8e647ecff70a}" Title="Jirabox" RuntimeType="Silverlight" Version="3.0.0.0" Genre="apps.normal" Author="Abdurrahman Köken" Description="Jirabox is a JIRA client application for Windows Phone." SDOptOut="true" BackUpOptOut="false" Publisher="Abdurrahman Köken" PublisherID="{521feecc-29ac-44fb-b679-835409b60b67}">
+  <App xmlns="" ProductID="{00671c99-305d-4b36-ae3f-8e647ecff70a}" Title="Jirabox" RuntimeType="Silverlight" Version="3.0.21.0" Genre="apps.normal" Author="Abdurrahman Köken" Description="Jirabox is a JIRA client application for Windows Phone." SDOptOut="true" BackUpOptOut="false" Publisher="Abdurrahman Köken" PublisherID="{521feecc-29ac-44fb-b679-835409b60b67}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />

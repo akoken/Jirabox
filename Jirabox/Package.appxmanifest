@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
-  <Identity Name="55055AbdurrahmanKken.Jirabox" Publisher="CN=AFEF3E55-3324-465A-A6B1-1D6CECCEDA49" Version="3.0.0.0" />
+  <Identity Name="55055AbdurrahmanKken.Jirabox" Publisher="CN=AFEF3E55-3324-465A-A6B1-1D6CECCEDA49" Version="3.0.21.0" />
   <mp:PhoneIdentity PhoneProductId="00671c99-305d-4b36-ae3f-8e647ecff70a" PhonePublisherId="521feecc-29ac-44fb-b679-835409b60b67" />
   <Properties>
     <DisplayName>Jirabox</DisplayName>
