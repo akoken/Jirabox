@@ -37,7 +37,7 @@ namespace Jirabox
         public App()
         {
             //Initialize Bug Sense Logging            
-            BugSenseHandler.Instance.InitAndStartSession(new ExceptionManager(Current), RootFrame, "72335f35");
+            //BugSenseHandler.Instance.InitAndStartSession(new ExceptionManager(Current), RootFrame, "72335f35");
 
             // Global handler for uncaught exceptions.
             UnhandledException += Application_UnhandledException;
